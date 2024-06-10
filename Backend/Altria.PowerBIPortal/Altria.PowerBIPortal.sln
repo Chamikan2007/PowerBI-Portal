@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Altria.PowerBIPortal.Infras
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altria.PowerBIPortal.Migrations", "Altria.PowerBIPortal.Migrations\Altria.PowerBIPortal.Migrations.csproj", "{14AA3FFC-04F5-4BD9-B531-A6B42F1DD63C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Altria.PowerBIPortal.Persistence", "Altria.PowerBIPortal.Persistence\Altria.PowerBIPortal.Persistence.csproj", "{F245A361-A4DE-4FCA-8C02-E98B83669C37}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{14AA3FFC-04F5-4BD9-B531-A6B42F1DD63C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14AA3FFC-04F5-4BD9-B531-A6B42F1DD63C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14AA3FFC-04F5-4BD9-B531-A6B42F1DD63C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F245A361-A4DE-4FCA-8C02-E98B83669C37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F245A361-A4DE-4FCA-8C02-E98B83669C37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F245A361-A4DE-4FCA-8C02-E98B83669C37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F245A361-A4DE-4FCA-8C02-E98B83669C37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
