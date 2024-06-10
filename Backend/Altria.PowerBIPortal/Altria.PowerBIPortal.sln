@@ -5,11 +5,11 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Altria.PowerBIPortal.Application", "Altria.PowerBIPortal.Application\Altria.PowerBIPortal.Application.csproj", "{D6A8D321-421B-47DB-8EB9-37D1DFC0EC17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altria.PowerBIPortal.Domain", "Altria.PowerBIPortal.Domain\Altria.PowerBIPortal.Domain.csproj", "{D03FBE39-9D55-42C5-9A8E-E75830316877}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Altria.PowerBIPortal.Domain", "Altria.PowerBIPortal.Domain\Altria.PowerBIPortal.Domain.csproj", "{D03FBE39-9D55-42C5-9A8E-E75830316877}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altria.PowerBIPortal.Persistence", "Altria.PowerBIPortal.Persistence\Altria.PowerBIPortal.Persistence.csproj", "{3F5D9A11-295C-4111-9582-B043497FB818}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Altria.PowerBIPortal.Infrastructure", "Altria.PowerBIPortal.Infrastructure\Altria.PowerBIPortal.Infrastructure.csproj", "{5BB6AB41-63B4-4703-8858-9526B7F4BD04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altria.PowerBIPortal.Infrastructure", "Altria.PowerBIPortal.Infrastructure\Altria.PowerBIPortal.Infrastructure.csproj", "{5BB6AB41-63B4-4703-8858-9526B7F4BD04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Altria.PowerBIPortal.Migrations", "Altria.PowerBIPortal.Migrations\Altria.PowerBIPortal.Migrations.csproj", "{14AA3FFC-04F5-4BD9-B531-A6B42F1DD63C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +25,14 @@ Global
 		{D03FBE39-9D55-42C5-9A8E-E75830316877}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D03FBE39-9D55-42C5-9A8E-E75830316877}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D03FBE39-9D55-42C5-9A8E-E75830316877}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F5D9A11-295C-4111-9582-B043497FB818}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F5D9A11-295C-4111-9582-B043497FB818}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F5D9A11-295C-4111-9582-B043497FB818}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F5D9A11-295C-4111-9582-B043497FB818}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5BB6AB41-63B4-4703-8858-9526B7F4BD04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5BB6AB41-63B4-4703-8858-9526B7F4BD04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BB6AB41-63B4-4703-8858-9526B7F4BD04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BB6AB41-63B4-4703-8858-9526B7F4BD04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14AA3FFC-04F5-4BD9-B531-A6B42F1DD63C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14AA3FFC-04F5-4BD9-B531-A6B42F1DD63C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14AA3FFC-04F5-4BD9-B531-A6B42F1DD63C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14AA3FFC-04F5-4BD9-B531-A6B42F1DD63C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
