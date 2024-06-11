@@ -1,5 +1,4 @@
-﻿using Altria.PowerBIPortal.Application.Endpoints.Subscriptions.Approvals;
-using Altria.PowerBIPortal.Application.Infrastructure;
+﻿using Altria.PowerBIPortal.Application.Infrastructure;
 using Altria.PowerBIPortal.Domain.Contracts;
 
 namespace Altria.PowerBIPortal.Application.Endpoints.Subscriptions.Approvals.CreateSubscriptionApprovalRequest;

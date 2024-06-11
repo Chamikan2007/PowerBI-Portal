@@ -1,8 +1,9 @@
-﻿using Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
+﻿using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
+using Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
 
 namespace Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionApprovals;
 
-public class SubscriptionRequest : ApprovalRequest
+public class SubscriptionRequest : ApprovalRequest<SubscriptionApprovalStep>
 {
     private SubscriptionRequest() : base(ApprovalRequestType.SubscriptionApproval)
     {
@@ -12,14 +13,14 @@ public class SubscriptionRequest : ApprovalRequest
 
     public required string Email { get; set; }
 
-    public new void Approved()
+    public new void Approved(User approvalOfficer)
     {
-        var currentApprovalStep = base.Approved();
+        var currentApprovalStep = base.Approved(approvalOfficer);
 
         switch (currentApprovalStep.StepIndex)
         {
             case 1:
-                ApprovalRequestSteps.Add(ApprovalRequestStep.Create(currentApprovalStep.StepIndex + 1));
+                ApprovalRequestSteps.Add(SubscriptionApprovalStep.Create(currentApprovalStep.StepIndex + 1));
                 break;
 
             case 2:

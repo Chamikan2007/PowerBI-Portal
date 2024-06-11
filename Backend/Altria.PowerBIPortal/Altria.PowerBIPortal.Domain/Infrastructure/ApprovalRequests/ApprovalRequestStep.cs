@@ -2,7 +2,7 @@
 
 namespace Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
 
-public class ApprovalRequestStep : Entity
+public abstract class ApprovalRequestStep : Entity
 {
     protected ApprovalRequestStep()
     {
@@ -11,25 +11,22 @@ public class ApprovalRequestStep : Entity
 
     public ApprovalStatus Status { get; private set; }
 
-    public User? ApprovalOfficer { get; init; }
+    public User? ApprovalOfficer { get; private set; }
 
     public int StepIndex { get; init; }
 
-    public string? Comment { get; set; }
+    public string? Comment { get; private set; }
 
-    public static ApprovalRequestStep Create(int stepIndex)
+    public void Approved(User approvalOfficer)
     {
-        return new ApprovalRequestStep { StepIndex = stepIndex };
-    }
-
-    public void Approved()
-    {
+        ApprovalOfficer = approvalOfficer;
         Status = ApprovalStatus.Approved;
     }
 
-    public void Rejected(string comment)
+    public void Rejected(User approvalOfficer, string comment)
     {
         Comment = comment;
+        ApprovalOfficer = approvalOfficer;
         Status = ApprovalStatus.Rejected;
     }
 }

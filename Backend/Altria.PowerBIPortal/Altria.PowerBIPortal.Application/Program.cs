@@ -1,4 +1,10 @@
 using Altria.PowerBIPortal.Application.Infrastructure;
+using Altria.PowerBIPortal.Domain;
+using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
+using Altria.PowerBIPortal.Domain.Contracts;
+using Altria.PowerBIPortal.Persistence;
+using Altria.PowerBIPortal.Persistence.Repositories.SubscriptionRequests;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +14,27 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.RegisterEndpoints();
+
+#region Register dataContext / identity
+
+builder.Services.AddDbContext<DataContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("defaultDb"));
+})
+    .AddIdentity<User, Role>()
+    .AddEntityFrameworkStores<DataContext>();
+
+builder.Services.AddScoped<IUnitOfWork, DataContext>();
+
+builder.Services.AddScoped<RequestContext>();
+
+#endregion
+
+#region Register repositories
+
+builder.Services.AddScoped<ISubscriptionRequestRepository, SubscriptionRequestRepository>();
+
+#endregion
 
 var app = builder.Build();
 

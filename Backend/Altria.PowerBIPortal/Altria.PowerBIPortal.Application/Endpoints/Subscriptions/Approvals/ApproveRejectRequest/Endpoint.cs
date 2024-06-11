@@ -1,4 +1,6 @@
 ﻿using Altria.PowerBIPortal.Application.Infrastructure;
+using Altria.PowerBIPortal.Domain;
+using Altria.PowerBIPortal.Domain.AggregateRoots.Identity;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
 using Altria.PowerBIPortal.Domain.Contracts;
 using Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
@@ -11,10 +13,17 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
     public void Configure(IEndpointRouteBuilder app)
     {
         app.MapPost("/{requestId}/steps/{stepId}/action/{action}",
-            async (Guid requestId, Guid stepId, Request request, ApprovalStatus action,
-            ISubscriptionRequestRepository subscriptionRequestRepository, UserManager<User> UserManager, IUnitOfWork unitOfWork) =>
+            async (Guid requestId, Guid stepId, ApproveRejectRequestModel request, ApprovalStatus action,
+            ISubscriptionRequestRepository subscriptionRequestRepository, UserManager<User> userManager,
+            RequestContext requestContext, IUnitOfWork unitOfWork) =>
             {
-                if (action == ApprovalStatus.Approved || action == ApprovalStatus.Rejected)
+                var approvalOfficer = await userManager.FindByIdAsync(requestContext.UserId.ToString());
+                if(approvalOfficer == null)
+                {
+                    return Result.Faliour(IdentityErrors.UserNotFound);
+                }
+
+                if (action != ApprovalStatus.Approved || action != ApprovalStatus.Rejected)
                 {
                     return Result.Faliour(ApprovalRequestErrors.InvalidAction);
                 }
@@ -38,11 +47,11 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
 
                 if (action == ApprovalStatus.Approved)
                 {
-                    approvalRequest.Approved();
+                    approvalRequest.Approved(approvalOfficer);
                 }
                 else
                 {
-                    approvalRequest.Rejected(request.Comment!);
+                    approvalRequest.Rejected(approvalOfficer, request.Comment!);
                 }
 
                 await unitOfWork.SaveChangesAsync();

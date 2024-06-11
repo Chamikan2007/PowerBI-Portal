@@ -1,4 +1,4 @@
-﻿namespace Altria.PowerBIPortal.Application;
+﻿namespace Altria.PowerBIPortal.Domain;
 
 public class RequestContext
 {

@@ -1,5 +1,4 @@
 ﻿using Altria.PowerBIPortal.Migrations;
-using Altria.PowerBIPortal.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,20 +24,16 @@ static IHostBuilder CreateHostBuilder(string[] args)
 
         var options = new MigrationOptions
         {
-            EnsureDatabase = false,
+            EnsureDatabase = true,
             ConnectionString = connectionString,
         };
 
 #else
 
-        var parseResult = Parser.Default.ParseArguments<MigrationOptions>(args);
-        if (parseResult.Errors.Any())
+        var options = new MigrationOptions
         {
-            var errors = parseResult.Errors.Select(e => e.Tag.ToString());
-            throw new Exception(string.Join(Environment.NewLine, errors));
-        }
-
-        var options = parseResult.Value;
+            ConnectionString = args[0],
+        };
 
 #endif
         services.AddTransient((s) => options);
