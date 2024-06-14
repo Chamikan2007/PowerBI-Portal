@@ -1,6 +1,6 @@
-﻿namespace Altria.PowerBIPortal.Domain;
+﻿namespace Altria.PowerBIPortal.Application.Endpoints.Account.IsAuthenticated;
 
-public class RequestContext
+public class RequestContextModel
 {
     public Guid UserId { get; set; }
 

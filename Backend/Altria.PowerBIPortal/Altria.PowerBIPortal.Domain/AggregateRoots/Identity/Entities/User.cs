@@ -8,13 +8,11 @@ public class User : IdentityUser<Guid>
     {        
     }
 
-    public required string FirstName { get; set; }
+    public required string Name { get; set; }
 
-    public required string LastName { get; set; }
-
-    public static User Create(string firstName, string lastName, string email)
+    public static User Create(string name, string email)
     {
-        var user = new User { FirstName = firstName, LastName = lastName, Email = email, UserName = email };
+        var user = new User { Name = name, Email = email, UserName = email };
         return user;
     }
 }

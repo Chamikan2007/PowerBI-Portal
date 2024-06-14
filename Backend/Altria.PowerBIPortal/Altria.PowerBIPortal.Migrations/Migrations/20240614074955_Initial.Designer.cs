@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Altria.PowerBIPortal.Migrations.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240611144255_Initial")]
+    [Migration("20240614074955_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -106,6 +106,11 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(50)

@@ -1,4 +1,6 @@
 ﻿using Altria.PowerBIPortal.Application.Infrastructure;
+using Altria.PowerBIPortal.Domain;
+using System.Security.Claims;
 
 namespace Altria.PowerBIPortal.Application.Endpoints.Users.GetUsers;
 
@@ -6,7 +8,7 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
 {
     public void Configure(IEndpointRouteBuilder app)
     {
-        app.MapGet("/", async () =>
+        app.MapGet("/", async (RequestContext requestContext) =>
         {
             var users = new List<UserModel>
             {

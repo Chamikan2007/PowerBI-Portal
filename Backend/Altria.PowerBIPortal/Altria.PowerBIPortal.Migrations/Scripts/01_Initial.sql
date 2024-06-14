@@ -22,6 +22,7 @@ GO
 
 CREATE TABLE [Users] (
     [Id] uniqueidentifier NOT NULL,
+    [Name] nvarchar(50) NOT NULL,
     [UserName] nvarchar(50) NULL,
     [NormalizedUserName] nvarchar(50) NULL,
     [Email] nvarchar(50) NULL,
@@ -153,7 +154,7 @@ CREATE UNIQUE INDEX [UserNameIndex] ON [Users] ([NormalizedUserName]) WHERE [Nor
 GO
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20240611144255_Initial', N'8.0.6');
+VALUES (N'20240614074955_Initial', N'8.0.6');
 GO
 
 COMMIT;

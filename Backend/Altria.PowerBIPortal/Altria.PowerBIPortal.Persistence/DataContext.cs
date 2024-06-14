@@ -15,7 +15,7 @@ public class DataContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRo
     public DataContext(DbContextOptions options, RequestContext? requestContext = default) : base(options)
     {
         IsInDesignTime = requestContext == default;
-        _requestContext = requestContext == default ? new RequestContext { DisplayName = "" } : requestContext;
+        _requestContext = requestContext == default ? new RequestContext { DisplayName = "", Email = "" } : requestContext;
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
