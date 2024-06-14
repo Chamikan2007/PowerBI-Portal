@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FeatherModule } from 'angular-feather';
 
 @Component({
@@ -11,7 +11,15 @@ import { FeatherModule } from 'angular-feather';
 export class FeatherIconsComponent {
   @Input() public icon?: string;
   @Input() public class?: string;
+
+  @Output() onClicked: EventEmitter<any> = new EventEmitter<any>();
+
   constructor() {
     // constructor
   }
+
+  onClick() {
+    this.onClicked.emit();
+  }
+
 }

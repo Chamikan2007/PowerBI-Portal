@@ -1,0 +1,42 @@
+<section class="content">
+    <div class="content-block">
+        <p>requests-list works!</p>
+
+        <div class="tableBody">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Requested By</th>
+                            <th>Assigned To</th>
+                            <th>Purpose</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="table-img">
+                                date
+                            </td>
+                            <td>John Doe</td>
+                            <td><a href="mailto:test@gmail.com"> Jacob Ryan </a></td>
+                            <td>
+                                <div class="badge col-red">Cricket</div>
+                            </td>
+                            <td>
+                                <button mat-icon-button class="tbl-action-btn">
+                                    <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'" (onClicked)="editClicked($event)"></app-feather-icons>
+                                </button>
+                                <button mat-icon-button class="tbl-action-btn">
+                                    <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</section>
