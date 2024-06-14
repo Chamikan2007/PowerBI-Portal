@@ -39,7 +39,7 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                     return Result.Faliour(ApprovalRequestErrors.InvalidRequest);
                 }
 
-                var currentApprovalStep = approvalRequest.ApprovalRequestSteps.MaxBy(s => s.StepIndex)!;
+                var currentApprovalStep = approvalRequest.ApprovalRequestSteps.MaxBy(s => s.ApprovalLevel)!;
                 if (approvalRequest.Status != ApprovalStatus.Pending || currentApprovalStep.Status != ApprovalStatus.Pending)
                 {
                     return Result.Faliour(ApprovalRequestErrors.InvalidStatus);

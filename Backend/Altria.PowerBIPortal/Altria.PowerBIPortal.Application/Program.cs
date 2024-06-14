@@ -6,7 +6,6 @@ using Altria.PowerBIPortal.Domain.Contracts;
 using Altria.PowerBIPortal.Infrastructure.WindowsActiveDirectory;
 using Altria.PowerBIPortal.Persistence;
 using Altria.PowerBIPortal.Persistence.Repositories.SubscriptionRequests;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,8 +28,6 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 builder.Services.AddScoped<IUnitOfWork, DataContext>();
 
-builder.Services.AddScoped<RequestContext>();
-
 #endregion
 
 #region Register repositories
@@ -50,9 +47,10 @@ builder.Services.AddAuthentication().AddCookie(options =>
 });
 builder.Services.AddAuthorization(configure =>
 {
-    configure.AddPolicy("AuthenticatedUser", policy => policy.RequireAuthenticatedUser());
+    configure.AddPolicy("AuthenticatedUser", policy =>  policy.RequireAuthenticatedUser());
 });
 
+builder.Services.AddScoped<RequestContext>();
 
 #endregion
 

@@ -3,7 +3,7 @@ using Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
 
 namespace Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionApprovals;
 
-public class SubscriptionRequest : ApprovalRequest<SubscriptionApprovalStep>
+public class SubscriptionRequest : ApprovalRequest<SubscriptionApprovalLevel>
 {
     private SubscriptionRequest() : base(ApprovalRequestType.SubscriptionApproval)
     {
@@ -17,10 +17,10 @@ public class SubscriptionRequest : ApprovalRequest<SubscriptionApprovalStep>
     {
         var currentApprovalStep = base.Approved(approvalOfficer);
 
-        switch (currentApprovalStep.StepIndex)
+        switch (currentApprovalStep.ApprovalLevel)
         {
             case 1:
-                ApprovalRequestSteps.Add(SubscriptionApprovalStep.Create(currentApprovalStep.StepIndex + 1));
+                ApprovalRequestSteps.Add(SubscriptionApprovalLevel.Create(currentApprovalStep.ApprovalLevel + 1));
                 break;
 
             case 2:

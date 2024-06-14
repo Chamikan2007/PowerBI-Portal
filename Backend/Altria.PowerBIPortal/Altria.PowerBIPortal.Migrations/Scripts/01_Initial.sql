@@ -106,7 +106,7 @@ CREATE TABLE [UserTokens] (
 );
 GO
 
-CREATE TABLE [SubscriptionApprovalStep] (
+CREATE TABLE [SubscriptionApprovalLevel] (
     [Id] uniqueidentifier NOT NULL,
     [SubscriptionRequestId] uniqueidentifier NULL,
     [CreatedAt] datetime2 NOT NULL,
@@ -115,11 +115,11 @@ CREATE TABLE [SubscriptionApprovalStep] (
     [UpdatedBy] uniqueidentifier NOT NULL,
     [Status] int NOT NULL,
     [ApprovalOfficerId] uniqueidentifier NULL,
-    [StepIndex] int NOT NULL,
+    [ApprovalLevel] int NOT NULL,
     [Comment] nvarchar(500) NULL,
-    CONSTRAINT [PK_SubscriptionApprovalStep] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_SubscriptionApprovalStep_SubscriptionRequests_SubscriptionRequestId] FOREIGN KEY ([SubscriptionRequestId]) REFERENCES [SubscriptionRequests] ([Id]),
-    CONSTRAINT [FK_SubscriptionApprovalStep_Users_ApprovalOfficerId] FOREIGN KEY ([ApprovalOfficerId]) REFERENCES [Users] ([Id])
+    CONSTRAINT [PK_SubscriptionApprovalLevel] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_SubscriptionApprovalLevel_SubscriptionRequests_SubscriptionRequestId] FOREIGN KEY ([SubscriptionRequestId]) REFERENCES [SubscriptionRequests] ([Id]),
+    CONSTRAINT [FK_SubscriptionApprovalLevel_Users_ApprovalOfficerId] FOREIGN KEY ([ApprovalOfficerId]) REFERENCES [Users] ([Id])
 );
 GO
 
@@ -129,10 +129,10 @@ GO
 CREATE UNIQUE INDEX [RoleNameIndex] ON [Roles] ([NormalizedName]) WHERE [NormalizedName] IS NOT NULL;
 GO
 
-CREATE INDEX [IX_SubscriptionApprovalStep_ApprovalOfficerId] ON [SubscriptionApprovalStep] ([ApprovalOfficerId]);
+CREATE INDEX [IX_SubscriptionApprovalLevel_ApprovalOfficerId] ON [SubscriptionApprovalLevel] ([ApprovalOfficerId]);
 GO
 
-CREATE INDEX [IX_SubscriptionApprovalStep_SubscriptionRequestId] ON [SubscriptionApprovalStep] ([SubscriptionRequestId]);
+CREATE INDEX [IX_SubscriptionApprovalLevel_SubscriptionRequestId] ON [SubscriptionApprovalLevel] ([SubscriptionRequestId]);
 GO
 
 CREATE INDEX [IX_SubscriptionRequests_RequesterId] ON [SubscriptionRequests] ([RequesterId]);
@@ -154,7 +154,7 @@ CREATE UNIQUE INDEX [UserNameIndex] ON [Users] ([NormalizedUserName]) WHERE [Nor
 GO
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20240614074955_Initial', N'8.0.6');
+VALUES (N'20240614131604_Initial', N'8.0.6');
 GO
 
 COMMIT;

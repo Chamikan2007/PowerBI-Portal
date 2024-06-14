@@ -15,9 +15,8 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
             async (SignInModel request,
             UserManager<User> userManager, IExternalUserAuthenticator externalUserAuthenticator, SignInManager<User> signInManager) =>
             {
-
                 var result = externalUserAuthenticator.AuthenticateUser(request.UserName, request.Password);
-                if(!result.IsAuthenticated)
+                if (!result.IsAuthenticated)
                 {
                     return Result.Faliour(IdentityErrors.InvalidLoginDetails);
                 }

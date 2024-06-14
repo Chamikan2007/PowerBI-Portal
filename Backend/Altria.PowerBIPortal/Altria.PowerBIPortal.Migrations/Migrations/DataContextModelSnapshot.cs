@@ -239,11 +239,14 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     b.ToTable("UserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionApprovals.SubscriptionApprovalStep", b =>
+            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionApprovals.SubscriptionApprovalLevel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ApprovalLevel")
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("ApprovalOfficerId")
                         .HasColumnType("uniqueidentifier");
@@ -261,9 +264,6 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("StepIndex")
-                        .HasColumnType("int");
-
                     b.Property<Guid?>("SubscriptionRequestId")
                         .HasColumnType("uniqueidentifier");
 
@@ -279,7 +279,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
 
                     b.HasIndex("SubscriptionRequestId");
 
-                    b.ToTable("SubscriptionApprovalStep");
+                    b.ToTable("SubscriptionApprovalLevel");
                 });
 
             modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionApprovals.SubscriptionRequest", b =>
@@ -377,7 +377,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionApprovals.SubscriptionApprovalStep", b =>
+            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionApprovals.SubscriptionApprovalLevel", b =>
                 {
                     b.HasOne("Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities.User", "ApprovalOfficer")
                         .WithMany()

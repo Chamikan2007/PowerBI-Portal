@@ -177,7 +177,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubscriptionApprovalStep",
+                name: "SubscriptionApprovalLevel",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -188,19 +188,19 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     ApprovalOfficerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    StepIndex = table.Column<int>(type: "int", nullable: false),
+                    ApprovalLevel = table.Column<int>(type: "int", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubscriptionApprovalStep", x => x.Id);
+                    table.PrimaryKey("PK_SubscriptionApprovalLevel", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SubscriptionApprovalStep_SubscriptionRequests_SubscriptionRequestId",
+                        name: "FK_SubscriptionApprovalLevel_SubscriptionRequests_SubscriptionRequestId",
                         column: x => x.SubscriptionRequestId,
                         principalTable: "SubscriptionRequests",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_SubscriptionApprovalStep_Users_ApprovalOfficerId",
+                        name: "FK_SubscriptionApprovalLevel_Users_ApprovalOfficerId",
                         column: x => x.ApprovalOfficerId,
                         principalTable: "Users",
                         principalColumn: "Id");
@@ -219,13 +219,13 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                 filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubscriptionApprovalStep_ApprovalOfficerId",
-                table: "SubscriptionApprovalStep",
+                name: "IX_SubscriptionApprovalLevel_ApprovalOfficerId",
+                table: "SubscriptionApprovalLevel",
                 column: "ApprovalOfficerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubscriptionApprovalStep_SubscriptionRequestId",
-                table: "SubscriptionApprovalStep",
+                name: "IX_SubscriptionApprovalLevel_SubscriptionRequestId",
+                table: "SubscriptionApprovalLevel",
                 column: "SubscriptionRequestId");
 
             migrationBuilder.CreateIndex(
@@ -268,7 +268,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                 name: "RoleClaims");
 
             migrationBuilder.DropTable(
-                name: "SubscriptionApprovalStep");
+                name: "SubscriptionApprovalLevel");
 
             migrationBuilder.DropTable(
                 name: "UserClaims");

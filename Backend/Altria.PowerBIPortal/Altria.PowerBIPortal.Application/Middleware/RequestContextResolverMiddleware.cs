@@ -1,6 +1,4 @@
 ﻿using Altria.PowerBIPortal.Domain;
-using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
-using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
 namespace Altria.PowerBIPortal.Application.Middleware;

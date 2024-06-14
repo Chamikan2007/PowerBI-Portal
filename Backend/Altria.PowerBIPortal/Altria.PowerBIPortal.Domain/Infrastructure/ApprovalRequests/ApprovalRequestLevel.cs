@@ -2,9 +2,9 @@
 
 namespace Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
 
-public abstract class ApprovalRequestStep : Entity
+public abstract class ApprovalRequestLevel : Entity
 {
-    protected ApprovalRequestStep()
+    protected ApprovalRequestLevel()
     {
         Status = ApprovalStatus.Pending;
     }
@@ -13,7 +13,7 @@ public abstract class ApprovalRequestStep : Entity
 
     public User? ApprovalOfficer { get; private set; }
 
-    public int StepIndex { get; init; }
+    public int ApprovalLevel { get; init; }
 
     public string? Comment { get; private set; }
 

@@ -2,7 +2,7 @@
 
 namespace Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
 
-public abstract class ApprovalRequest<TApprovalRequestStep> : AggregateRoot where TApprovalRequestStep : ApprovalRequestStep
+public abstract class ApprovalRequest<TApprovalRequestStep> : AggregateRoot where TApprovalRequestStep : ApprovalRequestLevel
 {
     protected ApprovalRequest(ApprovalRequestType approvalRequest)
     {
@@ -18,16 +18,16 @@ public abstract class ApprovalRequest<TApprovalRequestStep> : AggregateRoot wher
 
     public ApprovalRequestType Type { get; init; }
 
-    protected ApprovalRequestStep Approved(User approvalOfficer)
+    protected ApprovalRequestLevel Approved(User approvalOfficer)
     {
-        var currentApprovalStep = ApprovalRequestSteps.MaxBy(s => s.StepIndex)!;
+        var currentApprovalStep = ApprovalRequestSteps.MaxBy(s => s.ApprovalLevel)!;
         currentApprovalStep.Approved(approvalOfficer);
         return currentApprovalStep;
     }
 
     public void Rejected(User approvalOfficer, string comment)
     {
-        var currentApprovalStep = ApprovalRequestSteps.MaxBy(s => s.StepIndex)!;
+        var currentApprovalStep = ApprovalRequestSteps.MaxBy(s => s.ApprovalLevel)!;
         currentApprovalStep.Rejected(approvalOfficer, comment);
         Status = ApprovalStatus.Rejected;
     }
