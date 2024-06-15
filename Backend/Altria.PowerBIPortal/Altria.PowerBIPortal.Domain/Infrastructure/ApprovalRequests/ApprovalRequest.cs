@@ -6,11 +6,11 @@ public abstract class ApprovalRequest<TApprovalRequestLevel> : AggregateRoot whe
 {
     protected ApprovalRequest(ApprovalRequestType approvalRequest)
     {
-        ApprovalRequestSteps = new List<TApprovalRequestLevel>();
+        ApprovalRequestLevels = new List<TApprovalRequestLevel>();
         Type = approvalRequest;
     }
 
-    public IList<TApprovalRequestLevel> ApprovalRequestSteps { get; init; }
+    public IList<TApprovalRequestLevel> ApprovalRequestLevels { get; init; }
 
     public ApprovalStatus Status { get; protected set; }
 

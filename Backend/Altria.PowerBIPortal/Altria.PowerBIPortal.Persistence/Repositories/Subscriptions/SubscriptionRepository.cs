@@ -1,5 +1,6 @@
 ﻿using Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions;
 using Altria.PowerBIPortal.Domain.Contracts;
+using Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
 using Microsoft.EntityFrameworkCore;
 
 namespace Altria.PowerBIPortal.Persistence.Repositories.Subscriptions;
@@ -12,11 +13,21 @@ public class SubscriptionRepository : Repository<Subscription>, ISubscriptionRep
 
     public Task<Subscription?> GetByIdAsync(Guid requestId)
     {
-        return _store.Include(r => r.ApprovalRequestSteps).FirstOrDefaultAsync(r => r.Id == requestId);
+        return _store.Include(r => r.ApprovalRequestLevels).FirstOrDefaultAsync(r => r.Id == requestId);
     }
 
     public void Create(Subscription subscription)
     {
         _store.Add(subscription);
+    }
+
+    public Task<List<Subscription>> GeSubscritionRequestsToApproveAsync(Guid approvalOfficeId, int[] applicableApprovalLevels, bool includeAll)
+    {
+        return _readOnlyStore.Include(s => s.ApprovalRequestLevels).Include(s => s.Requester)
+                .SelectMany(a => a.ApprovalRequestLevels).Include(l => l.ApprovalOfficer)
+                .Where(l => (l.ApprovalOfficer != null && l.ApprovalOfficer.Id == approvalOfficeId) || 
+                            (includeAll && l.Status == ApprovalStatus.Pending && applicableApprovalLevels.Contains(l.ApprovalLevel)))
+                .Select(l => l.Subscription)
+                .ToListAsync();
     }
 }

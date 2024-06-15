@@ -16,7 +16,7 @@ public class Subscription : ApprovalRequest<SubscriptionApprovalLevel>
     public static Subscription Create(string report, string email, User requester)
     {
         var subscription =  new Subscription() { Report = report, Email = email, Requester = requester };
-        subscription.ApprovalRequestSteps.Add(SubscriptionApprovalLevel.Create(1));
+        subscription.ApprovalRequestLevels.Add(SubscriptionApprovalLevel.Create(subscription, 1));
 
         return subscription;
     }
@@ -28,7 +28,7 @@ public class Subscription : ApprovalRequest<SubscriptionApprovalLevel>
         switch (currentApprovalLevel.ApprovalLevel)
         {
             case 1:
-                ApprovalRequestSteps.Add(SubscriptionApprovalLevel.Create(currentApprovalLevel.ApprovalLevel + 1));
+                ApprovalRequestLevels.Add(SubscriptionApprovalLevel.Create(this, currentApprovalLevel.ApprovalLevel + 1));
                 break;
 
             case 2:

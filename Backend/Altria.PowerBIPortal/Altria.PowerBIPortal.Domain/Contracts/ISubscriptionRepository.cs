@@ -7,4 +7,6 @@ public interface ISubscriptionRepository
     Task<Subscription?> GetByIdAsync(Guid requestId);
 
     void Create(Subscription subscription);
+
+    Task<List<Subscription>> GeSubscritionRequestsToApproveAsync(Guid approvalOfficeId, int[] applicableApprovalLevels, bool includeAll);
 }

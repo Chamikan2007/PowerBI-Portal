@@ -24,12 +24,6 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                     return Result.Faliour(ApprovalRequestErrors.InvalidAction);
                 }
 
-                var approvalOfficer = await userManager.FindByIdAsync(requestContext.UserId.ToString());
-                if (approvalOfficer == null)
-                {
-                    return Result.Faliour(IdentityErrors.UserNotFound);
-                }
-
                 if (approvalAction == ApprovalStatus.Approved || approvalAction != ApprovalStatus.Rejected)
                 {
                     return Result.Faliour(ApprovalRequestErrors.InvalidAction);
@@ -40,13 +34,19 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                     return Result.Faliour(ApprovalRequestErrors.CommentCannotBeEmpty);
                 }
 
+                var approvalOfficer = await userManager.FindByIdAsync(requestContext.UserId.ToString());
+                if (approvalOfficer == null)
+                {
+                    return Result.Faliour(IdentityErrors.UserNotFound);
+                }
+
                 var subscription = await subscriptionRepository.GetByIdAsync(subscriptionId);
-                if (subscription == null || subscription.ApprovalRequestSteps == null || subscription.ApprovalRequestSteps.Count == 0)
+                if (subscription == null || subscription.ApprovalRequestLevels == null || subscription.ApprovalRequestLevels.Count == 0)
                 {
                     return Result.Faliour(ApprovalRequestErrors.InvalidRequest);
                 }
 
-                var currentApprovalLevel = subscription.ApprovalRequestSteps.MaxBy(s => s.ApprovalLevel)!;
+                var currentApprovalLevel = subscription.ApprovalRequestLevels.MaxBy(s => s.ApprovalLevel)!;
                 if (currentApprovalLevel.Id != levelId)
                 {
                     return Result.Faliour(ApprovalRequestErrors.InvalidLevel);
