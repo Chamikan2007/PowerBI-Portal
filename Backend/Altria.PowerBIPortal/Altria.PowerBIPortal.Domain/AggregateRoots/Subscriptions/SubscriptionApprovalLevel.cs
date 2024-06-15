@@ -1,6 +1,6 @@
 ﻿using Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
 
-namespace Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionApprovals;
+namespace Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions;
 
 public class SubscriptionApprovalLevel : ApprovalRequestLevel
 {

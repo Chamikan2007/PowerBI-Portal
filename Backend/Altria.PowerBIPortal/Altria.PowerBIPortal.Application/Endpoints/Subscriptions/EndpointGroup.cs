@@ -1,14 +1,14 @@
 ﻿using Altria.PowerBIPortal.Application.Infrastructure;
 
-namespace Altria.PowerBIPortal.Application.Endpoints.Subscriptions.Approvals;
+namespace Altria.PowerBIPortal.Application.Endpoints.Subscriptions;
 
 public class EndpointGroup : IEndpointGroup
 {
     public IEndpointRouteBuilder Configure(IEndpointRouteBuilder app)
     {
         return app
-            .MapGroup("/subscriptions/approvals")
-            .WithTags("Approvals")
+            .MapGroup("/subscriptions")
+            .WithTags("Subscriptions")
             .WithOpenApi();
     }
 }

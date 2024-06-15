@@ -26,6 +26,23 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SubscriptionWhiteList",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    WhiteListEntry = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    EntryType = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubscriptionWhiteList", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -72,7 +89,30 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubscriptionRequests",
+                name: "ApprovalOfficers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ApprovalRequestType = table.Column<int>(type: "int", nullable: false),
+                    ApprovalLevel = table.Column<int>(type: "int", nullable: false),
+                    OfficerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApprovalOfficers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ApprovalOfficers_Users_OfficerId",
+                        column: x => x.OfficerId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Subscriptions",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -88,9 +128,9 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubscriptionRequests", x => x.Id);
+                    table.PrimaryKey("PK_Subscriptions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SubscriptionRequests_Users_RequesterId",
+                        name: "FK_Subscriptions_Users_RequesterId",
                         column: x => x.RequesterId,
                         principalTable: "Users",
                         principalColumn: "Id");
@@ -181,7 +221,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SubscriptionRequestId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    SubscriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -195,9 +235,9 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                 {
                     table.PrimaryKey("PK_SubscriptionApprovalLevel", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SubscriptionApprovalLevel_SubscriptionRequests_SubscriptionRequestId",
-                        column: x => x.SubscriptionRequestId,
-                        principalTable: "SubscriptionRequests",
+                        name: "FK_SubscriptionApprovalLevel_Subscriptions_SubscriptionId",
+                        column: x => x.SubscriptionId,
+                        principalTable: "Subscriptions",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_SubscriptionApprovalLevel_Users_ApprovalOfficerId",
@@ -205,6 +245,16 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                         principalTable: "Users",
                         principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApprovalOfficers_ApprovalRequestType_ApprovalLevel",
+                table: "ApprovalOfficers",
+                columns: new[] { "ApprovalRequestType", "ApprovalLevel" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApprovalOfficers_OfficerId",
+                table: "ApprovalOfficers",
+                column: "OfficerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_RoleId",
@@ -224,14 +274,25 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                 column: "ApprovalOfficerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubscriptionApprovalLevel_SubscriptionRequestId",
+                name: "IX_SubscriptionApprovalLevel_SubscriptionId",
                 table: "SubscriptionApprovalLevel",
-                column: "SubscriptionRequestId");
+                column: "SubscriptionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubscriptionRequests_RequesterId",
-                table: "SubscriptionRequests",
+                name: "IX_Subscriptions_RequesterId",
+                table: "Subscriptions",
                 column: "RequesterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubscriptionWhiteList_EntryType",
+                table: "SubscriptionWhiteList",
+                column: "EntryType");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubscriptionWhiteList_WhiteListEntry",
+                table: "SubscriptionWhiteList",
+                column: "WhiteListEntry",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserClaims_UserId",
@@ -265,10 +326,16 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ApprovalOfficers");
+
+            migrationBuilder.DropTable(
                 name: "RoleClaims");
 
             migrationBuilder.DropTable(
                 name: "SubscriptionApprovalLevel");
+
+            migrationBuilder.DropTable(
+                name: "SubscriptionWhiteList");
 
             migrationBuilder.DropTable(
                 name: "UserClaims");
@@ -283,7 +350,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                 name: "UserTokens");
 
             migrationBuilder.DropTable(
-                name: "SubscriptionRequests");
+                name: "Subscriptions");
 
             migrationBuilder.DropTable(
                 name: "Roles");

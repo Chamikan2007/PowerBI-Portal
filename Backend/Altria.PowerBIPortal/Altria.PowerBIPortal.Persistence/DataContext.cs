@@ -2,9 +2,11 @@
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
 using Microsoft.EntityFrameworkCore;
 using Altria.PowerBIPortal.Domain.Contracts;
-using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionApprovals;
 using Altria.PowerBIPortal.Domain.Infrastructure;
 using Altria.PowerBIPortal.Domain;
+using Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions;
+using Altria.PowerBIPortal.Domain.AggregateRoots.ApprovalConfigs;
+using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionWhiteList;
 
 namespace Altria.PowerBIPortal.Persistence;
 
@@ -63,7 +65,11 @@ public class DataContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRo
         builder.ApplyConfigurationsFromAssembly(typeof(DataContext).Assembly);
     }
 
-    public DbSet<SubscriptionRequest> SubscriptionRequests { get; set; }
+    public DbSet<Subscription> Subscriptions { get; set; }
+
+    public DbSet<ApprovalOfficer> ApprovalOfficers { get; set; }
+
+    public DbSet<SubscriptionWhiteListEntry> SubscriptionWhiteList { get; set; }
 
     public bool IsInDesignTime { get; }
 

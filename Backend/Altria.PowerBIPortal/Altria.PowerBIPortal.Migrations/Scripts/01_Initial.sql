@@ -20,6 +20,18 @@ CREATE TABLE [Roles] (
 );
 GO
 
+CREATE TABLE [SubscriptionWhiteList] (
+    [Id] uniqueidentifier NOT NULL,
+    [WhiteListEntry] nvarchar(50) NOT NULL,
+    [EntryType] int NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [CreatedBy] uniqueidentifier NOT NULL,
+    [UpdatedAt] datetime2 NOT NULL,
+    [UpdatedBy] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_SubscriptionWhiteList] PRIMARY KEY ([Id])
+);
+GO
+
 CREATE TABLE [Users] (
     [Id] uniqueidentifier NOT NULL,
     [Name] nvarchar(50) NOT NULL,
@@ -51,7 +63,21 @@ CREATE TABLE [RoleClaims] (
 );
 GO
 
-CREATE TABLE [SubscriptionRequests] (
+CREATE TABLE [ApprovalOfficers] (
+    [Id] uniqueidentifier NOT NULL,
+    [ApprovalRequestType] int NOT NULL,
+    [ApprovalLevel] int NOT NULL,
+    [OfficerId] uniqueidentifier NOT NULL,
+    [CreatedAt] datetime2 NOT NULL,
+    [CreatedBy] uniqueidentifier NOT NULL,
+    [UpdatedAt] datetime2 NOT NULL,
+    [UpdatedBy] uniqueidentifier NOT NULL,
+    CONSTRAINT [PK_ApprovalOfficers] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_ApprovalOfficers_Users_OfficerId] FOREIGN KEY ([OfficerId]) REFERENCES [Users] ([Id])
+);
+GO
+
+CREATE TABLE [Subscriptions] (
     [Id] uniqueidentifier NOT NULL,
     [Report] nvarchar(50) NOT NULL,
     [Email] nvarchar(50) NOT NULL,
@@ -62,8 +88,8 @@ CREATE TABLE [SubscriptionRequests] (
     [Status] int NOT NULL,
     [RequesterId] uniqueidentifier NOT NULL,
     [Type] int NOT NULL,
-    CONSTRAINT [PK_SubscriptionRequests] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_SubscriptionRequests_Users_RequesterId] FOREIGN KEY ([RequesterId]) REFERENCES [Users] ([Id])
+    CONSTRAINT [PK_Subscriptions] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Subscriptions_Users_RequesterId] FOREIGN KEY ([RequesterId]) REFERENCES [Users] ([Id])
 );
 GO
 
@@ -108,7 +134,7 @@ GO
 
 CREATE TABLE [SubscriptionApprovalLevel] (
     [Id] uniqueidentifier NOT NULL,
-    [SubscriptionRequestId] uniqueidentifier NULL,
+    [SubscriptionId] uniqueidentifier NULL,
     [CreatedAt] datetime2 NOT NULL,
     [CreatedBy] uniqueidentifier NOT NULL,
     [UpdatedAt] datetime2 NOT NULL,
@@ -118,9 +144,15 @@ CREATE TABLE [SubscriptionApprovalLevel] (
     [ApprovalLevel] int NOT NULL,
     [Comment] nvarchar(500) NULL,
     CONSTRAINT [PK_SubscriptionApprovalLevel] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_SubscriptionApprovalLevel_SubscriptionRequests_SubscriptionRequestId] FOREIGN KEY ([SubscriptionRequestId]) REFERENCES [SubscriptionRequests] ([Id]),
+    CONSTRAINT [FK_SubscriptionApprovalLevel_Subscriptions_SubscriptionId] FOREIGN KEY ([SubscriptionId]) REFERENCES [Subscriptions] ([Id]),
     CONSTRAINT [FK_SubscriptionApprovalLevel_Users_ApprovalOfficerId] FOREIGN KEY ([ApprovalOfficerId]) REFERENCES [Users] ([Id])
 );
+GO
+
+CREATE INDEX [IX_ApprovalOfficers_ApprovalRequestType_ApprovalLevel] ON [ApprovalOfficers] ([ApprovalRequestType], [ApprovalLevel]);
+GO
+
+CREATE INDEX [IX_ApprovalOfficers_OfficerId] ON [ApprovalOfficers] ([OfficerId]);
 GO
 
 CREATE INDEX [IX_RoleClaims_RoleId] ON [RoleClaims] ([RoleId]);
@@ -132,10 +164,16 @@ GO
 CREATE INDEX [IX_SubscriptionApprovalLevel_ApprovalOfficerId] ON [SubscriptionApprovalLevel] ([ApprovalOfficerId]);
 GO
 
-CREATE INDEX [IX_SubscriptionApprovalLevel_SubscriptionRequestId] ON [SubscriptionApprovalLevel] ([SubscriptionRequestId]);
+CREATE INDEX [IX_SubscriptionApprovalLevel_SubscriptionId] ON [SubscriptionApprovalLevel] ([SubscriptionId]);
 GO
 
-CREATE INDEX [IX_SubscriptionRequests_RequesterId] ON [SubscriptionRequests] ([RequesterId]);
+CREATE INDEX [IX_Subscriptions_RequesterId] ON [Subscriptions] ([RequesterId]);
+GO
+
+CREATE INDEX [IX_SubscriptionWhiteList_EntryType] ON [SubscriptionWhiteList] ([EntryType]);
+GO
+
+CREATE UNIQUE INDEX [IX_SubscriptionWhiteList_WhiteListEntry] ON [SubscriptionWhiteList] ([WhiteListEntry]);
 GO
 
 CREATE INDEX [IX_UserClaims_UserId] ON [UserClaims] ([UserId]);
@@ -154,7 +192,7 @@ CREATE UNIQUE INDEX [UserNameIndex] ON [Users] ([NormalizedUserName]) WHERE [Nor
 GO
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20240614131604_Initial', N'8.0.6');
+VALUES (N'20240615191536_Initial', N'8.0.6');
 GO
 
 COMMIT;

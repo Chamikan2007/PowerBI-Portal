@@ -5,7 +5,9 @@ using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
 using Altria.PowerBIPortal.Domain.Contracts;
 using Altria.PowerBIPortal.Infrastructure.WindowsActiveDirectory;
 using Altria.PowerBIPortal.Persistence;
-using Altria.PowerBIPortal.Persistence.Repositories.SubscriptionRequests;
+using Altria.PowerBIPortal.Persistence.Repositories.ApprovalConfigs;
+using Altria.PowerBIPortal.Persistence.Repositories.Subscriptions;
+using Altria.PowerBIPortal.Persistence.Repositories.SubscriptionWhiteList;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,12 +32,6 @@ builder.Services.AddScoped<IUnitOfWork, DataContext>();
 
 #endregion
 
-#region Register repositories
-
-builder.Services.AddScoped<ISubscriptionRequestRepository, SubscriptionRequestRepository>();
-
-#endregion
-
 #region Register authentication services
 
 builder.Services.Configure<LdapOptions>(builder.Configuration.GetSection(LdapOptions.Options));
@@ -51,6 +47,14 @@ builder.Services.AddAuthorization(configure =>
 });
 
 builder.Services.AddScoped<RequestContext>();
+
+#endregion
+
+#region Register repositories
+
+builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+builder.Services.AddScoped<ISubscriptionWhiteListEntryRepository, SubscriptionWhiteListEntryRepository>();
+builder.Services.AddScoped<IApprovalOfficerRepository, ApprovalOfficerRepository>();
 
 #endregion
 
