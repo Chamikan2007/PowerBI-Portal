@@ -1,20 +1,5 @@
 import { RouteInfo } from './sidebar.metadata';
 export const ROUTES: RouteInfo[] = [
-
-  {
-    path: '/requests/list',
-    title: 'Requests',
-    iconType: 'material-icons-outlined',
-    icon: 'description',
-    class: '',
-    groupTitle: false,
-    badge: '',
-    badgeClass: '',
-    role: ['Admin'],
-    submenu: [],
-  },
-
-  // template items are below
   {
     path: '',
     title: 'MENUITEMS.MAIN.TEXT',

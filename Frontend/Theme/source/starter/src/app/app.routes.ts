@@ -14,15 +14,6 @@ export const APP_ROUTE: Route[] = [
       { path: '', redirectTo: '/authentication/signin', pathMatch: 'full' },
 
       {
-        path: 'requests',
-        canActivate: [AuthGuard],
-        data: {
-          role: Role.Admin,
-        },
-        loadChildren: () => import('./requests/requests.routes').then((m) => m.REQUESTS_ROUTE),
-      },
-
-      {
         path: 'admin',
         canActivate: [AuthGuard],
         data: {

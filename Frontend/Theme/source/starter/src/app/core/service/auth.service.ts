@@ -55,10 +55,6 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  // isAuthenticated() {
-  //   return of(true);
-  // }
-
   login(username: string, password: string) {
 
     const user = this.users.find((u) => u.username === username && u.password === password);

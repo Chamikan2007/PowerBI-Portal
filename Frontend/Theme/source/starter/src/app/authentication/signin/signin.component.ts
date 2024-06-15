@@ -7,8 +7,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { ApiService } from '@core/service/api-service.service';
-import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -24,20 +22,19 @@ import { HttpClient } from '@angular/common/http';
     MatIconModule,
   ],
 })
-export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnInit {
+export class SigninComponent
+  extends UnsubscribeOnDestroyAdapter
+  implements OnInit {
   authForm!: UntypedFormGroup;
   submitted = false;
   loading = false;
   error = '';
   hide = true;
-
   constructor(
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService,
-    private apiService: ApiService,
-    private httpClient: HttpClient
+    private authService: AuthService
   ) {
     super();
   }
@@ -48,26 +45,21 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
       password: ['admin@123', Validators.required],
     });
   }
-
   get f() {
     return this.authForm.controls;
   }
-
   adminSet() {
     this.authForm.get('username')?.setValue('admin@school.org');
     this.authForm.get('password')?.setValue('admin@123');
   }
-
   teacherSet() {
     this.authForm.get('username')?.setValue('teacher@school.org');
     this.authForm.get('password')?.setValue('teacher@123');
   }
-
   studentSet() {
     this.authForm.get('username')?.setValue('student@school.org');
     this.authForm.get('password')?.setValue('student@123');
   }
-
   onSubmit() {
     this.submitted = true;
     this.loading = true;
@@ -76,18 +68,6 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
       this.error = 'Username and Password not valid !';
       return;
     } else {
-
-      // this.httpClient.post('https://api.sampleapis.com/countries/countries',
-      //   {
-      //     userName: this.f['username'].value,
-      //     password: this.f['password'].value
-      //   }).subscribe({
-      //     next(value) {
-      //       debugger;
-      //     },
-      //   });
-      // return;
-
       this.subs.sink = this.authService
         .login(this.f['username'].value, this.f['password'].value)
         .subscribe({

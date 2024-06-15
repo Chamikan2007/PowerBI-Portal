@@ -7,11 +7,11 @@
     <div class="col-sm-6 auth-form-section">
       <div class="form-section">
         <div class="auth-wrapper">
-          <h6 class="welcome-msg"> Welcome to Altria PowerBI Portal</h6>
-          <!-- <p class="auth-signup-text text-muted">Need an account?<a routerLink="/authentication/signup" class="sign-up-link">Sign Up
-            </a>
-          </p> -->
-          <!-- <div class="d-flex justify-content-between lbl-alert mb-3">
+          <h6 class="welcome-msg"> Welcome to Smart</h6>
+          <p class="auth-signup-text text-muted">Need an account?<a routerLink="/authentication/signup"
+              class="sign-up-link">Sign Up
+            </a></p>
+          <div class="d-flex justify-content-between lbl-alert mb-3">
             <div>
               <button mat-stroked-button color="primary" type="button" (click)="adminSet();">Admin</button>
             </div>
@@ -21,8 +21,8 @@
             <div>
               <button mat-stroked-button color="accent" type="button" (click)="studentSet();">Student</button>
             </div>
-          </div> -->
-          <h6 class="login-title mt-5">Sign in</h6>
+          </div>
+          <h6 class="login-title">Sign in</h6>
           <form class="validate-form" [formGroup]="authForm" (ngSubmit)="onSubmit()">
             <div class="row">
               <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
@@ -69,11 +69,12 @@
             }
             <div class="container-auth-form-btn">
               <div style="text-align:center">
-                <button mat-flat-button color="accent" [class.auth-spinner]="loading" [disabled]="loading" class="auth-form-btn" [disabled]="!authForm.valid " type="submit">Login</button>
+                <button mat-flat-button color="accent" [class.auth-spinner]="loading" [disabled]="loading"
+                  class="auth-form-btn" [disabled]="!authForm.valid " type="submit">Login</button>
               </div>
             </div>
           </form>
-          <!-- <h6 class="social-login-title">OR</h6>
+          <h6 class="social-login-title">OR</h6>
           <ul class="list-unstyled social-icon mb-0 mt-3">
             <li class="list-inline-item"><a href="javascript:void(0)" class="rounded">
                 <i class="fab fa-google"></i>
@@ -87,7 +88,7 @@
             <li class="list-inline-item"><a href="javascript:void(0)" class="rounded">
                 <i class="fab fa-linkedin-in"></i>
               </a></li>
-          </ul> -->
+          </ul>
         </div>
       </div>
     </div>

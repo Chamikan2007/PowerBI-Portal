@@ -8,7 +8,7 @@ import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { APP_ROUTE } from './app.routes';
 import { provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { JwtInterceptor } from '@core/interceptor/jwt.interceptor';
 import { ErrorInterceptor } from '@core/interceptor/error.interceptor';
 import { DirectionService, LanguageService } from '@core';
@@ -34,7 +34,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideRouter(APP_ROUTE),
     provideAnimations(),
-    { provide: LocationStrategy, useClass: PathLocationStrategy },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     DirectionService,
     LanguageService,
     importProvidersFrom(

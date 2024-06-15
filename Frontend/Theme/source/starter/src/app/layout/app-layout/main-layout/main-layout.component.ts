@@ -1,6 +1,6 @@
 import { Direction, BidiModule } from '@angular/cdk/bidi';
 import { AfterViewInit, Component, Inject, Renderer2 } from '@angular/core';
-import { AuthService, DirectionService, InConfiguration, RightSidebarService } from '@core';
+import { DirectionService, InConfiguration, RightSidebarService } from '@core';
 import { ConfigService } from '@config';
 import { DOCUMENT } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
@@ -26,24 +26,14 @@ import { UnsubscribeOnDestroyAdapter } from '@shared';
 export class MainLayoutComponent extends UnsubscribeOnDestroyAdapter implements AfterViewInit {
   direction!: Direction;
   public config!: InConfiguration;
-
   constructor(
     private directoryService: DirectionService,
-    private authService: AuthService,
     private configService: ConfigService,
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2
   ) {
     super();
     this.config = this.configService.configData;
-
-    // let isAuthenticated = this.authService.isAuthenticated().subscribe({
-    //   next(value) {
-    //     debugger;
-    //     return value;
-    //   },
-    // });
-
     this.subs.sink = this.directoryService.currentData.subscribe((currentData) => {
       if (currentData) {
         this.direction = currentData === 'ltr' ? 'ltr' : 'rtl';
@@ -68,7 +58,6 @@ export class MainLayoutComponent extends UnsubscribeOnDestroyAdapter implements 
       }
     });
   }
-
   ngAfterViewInit(): void {
     //------------ set varient start----------------
     if (localStorage.getItem('theme')) {
