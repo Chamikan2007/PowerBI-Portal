@@ -6,11 +6,6 @@ import { RequestsListComponent } from './requests-list/requests-list.component';
 export const REQUESTS_ROUTE: Route[] = [
     {
         path: '',
-        pathMatch: 'full',
-        redirectTo: 'list'
-    },
-    {
-        path: 'list',
         component: RequestsListComponent,
     },
     {

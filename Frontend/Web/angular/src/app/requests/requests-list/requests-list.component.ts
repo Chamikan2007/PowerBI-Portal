@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FeatherIconsComponent } from '@shared/components/feather-icons/feather-icons.component';
 
 @Component({
@@ -12,7 +13,15 @@ import { FeatherIconsComponent } from '@shared/components/feather-icons/feather-
 })
 export class RequestsListComponent {
 
-  editClicked($event: any) {
-    debugger;
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router) { }
+
+  goBack() {
+    this.router.navigate(['/', 'admin', 'dashboard']);
+  }
+
+  editClicked(event: any) {
+    this.router.navigate(['0'], { relativeTo: this.activatedRoute.parent });
   }
 }

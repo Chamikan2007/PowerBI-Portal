@@ -1,42 +1,56 @@
 <section class="content">
     <div class="content-block">
-        <p>requests-list works!</p>
-
-        <div class="tableBody">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Requested By</th>
-                            <th>Assigned To</th>
-                            <th>Purpose</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="table-img">
-                                date
-                            </td>
-                            <td>John Doe</td>
-                            <td><a href="mailto:test@gmail.com"> Jacob Ryan </a></td>
-                            <td>
-                                <div class="badge col-red">Cricket</div>
-                            </td>
-                            <td>
-                                <button mat-icon-button class="tbl-action-btn">
-                                    <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'" (onClicked)="editClicked($event)"></app-feather-icons>
-                                </button>
-                                <button mat-icon-button class="tbl-action-btn">
-                                    <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="row clearfix">
+            <div class="col col-12">
+                <div class="card">
+                    <div class="header">
+                        <div class="w-100 d-flex justify-content-between">
+                            <h2>Requests</h2>
+                            <button class="icon-button" (click)="goBack()">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="body">
+                        <p>requests-list works!</p>
+                        <div class="tableBody">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Requested By</th>
+                                            <th>Assigned To</th>
+                                            <th>Purpose</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="table-img">
+                                                date
+                                            </td>
+                                            <td>John Doe</td>
+                                            <td><a href="mailto:test@gmail.com"> Jacob Ryan </a></td>
+                                            <td>
+                                                <div class="badge col-red">Cricket</div>
+                                            </td>
+                                            <td>
+                                                <button mat-icon-button class="tbl-action-btn">
+                                                    <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'" (onClicked)="editClicked($event)"></app-feather-icons>
+                                                </button>
+                                                <button mat-icon-button class="tbl-action-btn">
+                                                    <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
     </div>
 </section>

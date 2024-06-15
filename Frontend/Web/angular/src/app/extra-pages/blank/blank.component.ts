@@ -15,7 +15,6 @@ export class BlankComponent {
       active: 'Blank',
     },
   ];
-  constructor() {
-    // constructor
-  }
+
+  constructor() { }
 }

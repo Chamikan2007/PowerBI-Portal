@@ -2,7 +2,7 @@ import { RouteInfo } from './sidebar.metadata';
 export const ROUTES: RouteInfo[] = [
 
   {
-    path: '/requests/list',
+    path: '/requests',
     title: 'Requests',
     iconType: 'material-icons-outlined',
     icon: 'description',
