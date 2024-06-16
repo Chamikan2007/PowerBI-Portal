@@ -8,6 +8,7 @@ public abstract class ApprovalRequest<TApprovalRequestLevel> : AggregateRoot whe
     {
         ApprovalRequestLevels = new List<TApprovalRequestLevel>();
         Type = approvalRequest;
+        Status = ApprovalStatus.Pending;
     }
 
     public IList<TApprovalRequestLevel> ApprovalRequestLevels { get; init; }
@@ -27,5 +28,10 @@ public abstract class ApprovalRequest<TApprovalRequestLevel> : AggregateRoot whe
     {
         currentApprovalLevel.Rejected(approvalOfficer, comment);
         Status = ApprovalStatus.Rejected;
+    }
+
+    public void Cancelled()
+    {
+        Status = ApprovalStatus.Cancelled;
     }
 }
