@@ -1,8 +1,7 @@
 <nav #navbar class="navbar active">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a href="#" onClick="return false;" class="navbar-toggle collapsed"
-        (click)="isNavbarCollapsed = !isNavbarCollapsed" aria-expanded="false"></a>
+      <a href="#" onClick="return false;" class="navbar-toggle collapsed" (click)="isNavbarCollapsed = !isNavbarCollapsed" aria-expanded="false"></a>
       <a href="#" onClick="return false;" class="bars" (click)="mobileMenuSidebarOpen($event,'overlay-open')"></a>
       <a class="navbar-brand" routerLink={{homePage}}>
         <img src="assets/images/logo.png" alt="" />
@@ -12,25 +11,29 @@
     <div class="collapse navbar-collapse" [ngClass]="isNavbarCollapsed ? '' : 'show'">
       <ul class="float-start collapse-menu-icon">
         <li>
-          <button mat-icon-button (click)="callSidemenuCollapse()" class="sidemenu-collapse nav-notification-icons"> <i
-              class="material-icons-outlined icon-color">
+          <button mat-icon-button (click)="callSidemenuCollapse()" class="sidemenu-collapse nav-notification-icons"> <i class="material-icons-outlined icon-color">
               menu
             </i></button>
         </li>
       </ul>
+      <ul class="mb-0">
+        <li>
+          <div class="mt-2 mb-0">
+            <h1>Altria - PowerBI Portal</h1>
+          </div>
+        </li>
+      </ul>
       <ul class="nav navbar-nav navbar-right">
         <!-- Full Screen Button -->
-        <li class="fullscreen">
-          <button mat-icon-button class="nav-notification-icons" (click)="callFullscreen()"> <i
-              class="material-icons-outlined icon-color">
+        <li class="fullscreen" style="display: none;">
+          <button mat-icon-button class="nav-notification-icons" (click)="callFullscreen()"> <i class="material-icons-outlined icon-color">
               fullscreen
             </i></button>
         </li>
         <!-- #END# Full Screen Button -->
         <!-- #START# Notifications-->
-        <li>
-          <button mat-icon-button [matMenuTriggerFor]="notificationMenu" class="nav-notification-icons"> <i
-              class="material-icons-outlined icon-color">
+        <li style="display: none;">
+          <button mat-icon-button [matMenuTriggerFor]="notificationMenu" class="nav-notification-icons"> <i class="material-icons-outlined icon-color">
               notifications_active
             </i></button>
           <mat-menu #notificationMenu="matMenu" class="nfc-menu">
@@ -46,8 +49,7 @@
                       @for (notification of notifications; track notification) {
                       <button mat-menu-item onClick="return false;" [ngClass]="[notification.status]">
                         <span class="table-img msg-user ">
-                          <i class="material-icons-outlined nfc-type-icon"
-                            [ngClass]="[notification.color]">{{notification.icon}}</i>
+                          <i class="material-icons-outlined nfc-type-icon" [ngClass]="[notification.color]">{{notification.icon}}</i>
                         </span>
                         <span class="menu-info">
                           <span class="menu-title">{{notification.message}}</span>
@@ -72,7 +74,7 @@
           </mat-menu>
         </li>
         <!-- #END# Notifications-->
-        <li class="nav-item">
+        <li class="nav-item" style="display: none;">
           <button mat-icon-button [matMenuTriggerFor]="languagemenu" class="lang-dropdown nav-notification-icons"> @if
             (flagvalue !== undefined) {
             <img src="{{flagvalue}}" height="16">
@@ -83,16 +85,14 @@
           <mat-menu #languagemenu="matMenu">
             @for (item of listLang; track item) {
             <div class="lang-item">
-              <button mat-menu-item class="dropdown-item lang-item-list"
-                (click)="setLanguage(item.text, item.lang, item.flag)"
-                [ngClass]="{'active': langStoreValue === item.lang}">
+              <button mat-menu-item class="dropdown-item lang-item-list" (click)="setLanguage(item.text, item.lang, item.flag)" [ngClass]="{'active': langStoreValue === item.lang}">
                 <img src="{{item.flag}}" class="flag-img" height="12"> <span class="align-middle">{{item.text}}</span>
               </button>
             </div>
             }
           </mat-menu>
         </li>
-        <li class="nav-item user_profile">
+        <li class="nav-item user_profile" style="display: none;">
           <button mat-button [matMenuTriggerFor]="profilemenu">
             <div class="chip dropdown-toggle" ngbDropdownToggle class="pt-0">
               <img src="{{userImg}}" class="user_img" width="32" height="32" alt="User">

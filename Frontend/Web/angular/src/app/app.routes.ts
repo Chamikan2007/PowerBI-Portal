@@ -14,12 +14,12 @@ export const APP_ROUTE: Route[] = [
       { path: '', redirectTo: '/authentication/signin', pathMatch: 'full' },
 
       {
-        path: 'requests',
+        path: 'subscriptions',
         canActivate: [AuthGuard],
         data: {
           role: Role.Admin,
         },
-        loadChildren: () => import('./requests/requests.routes').then((m) => m.REQUESTS_ROUTE),
+        loadChildren: () => import('./subscriptions/subscriptions.routes').then((m) => m.SUBSCRIPTIONS_ROUTE),
       },
 
       {

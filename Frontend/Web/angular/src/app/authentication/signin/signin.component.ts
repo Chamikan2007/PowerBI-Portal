@@ -36,16 +36,14 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private apiService: ApiService,
-    private httpClient: HttpClient
   ) {
     super();
   }
 
   ngOnInit() {
     this.authForm = this.formBuilder.group({
-      username: ['admin@school.org', Validators.required],
-      password: ['admin@123', Validators.required],
+      username: ['hemantha.k', Validators.required],
+      password: ['Alt@202405', Validators.required],
     });
   }
 
@@ -69,53 +67,77 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
   }
 
   onSubmit() {
+    debugger;
     this.submitted = true;
     this.loading = true;
     this.error = '';
     if (this.authForm.invalid) {
-      this.error = 'Username and Password not valid !';
+      this.error = 'Username and Password not valid!';
       return;
     } else {
 
-      // this.httpClient.post('https://api.sampleapis.com/countries/countries',
-      //   {
-      //     userName: this.f['username'].value,
-      //     password: this.f['password'].value
-      //   }).subscribe({
-      //     next(value) {
-      //       debugger;
+      this.authService.signIn(this.f['username'].value, this.f['password'].value).subscribe({
+        next: (resonse1: any) => {
+          debugger;
+          this.authService.isAuthenticated().subscribe({
+            next: (response2: any) => {
+              debugger
+              response2;
+              let role = response2.role;
+
+              if (role === Role.All || role === Role.Admin) {
+                this.router.navigate(['/admin/dashboard/main']);
+              }
+              else {
+                this.router.navigate(['/authentication/signin']);
+              }
+              this.loading = false;
+            },
+            error: (error) => {
+              debugger;
+              this.error = error;
+              this.submitted = false;
+              this.loading = false;
+            },
+          });
+        },
+        error: (error) => {
+          debugger;
+          this.error = error;
+          this.submitted = false;
+          this.loading = false;
+        },
+      });
+
+
+      // this.subs.sink = this.authService
+      //   .login(this.f['username'].value, this.f['password'].value)
+      //   .subscribe({
+      //     next: (res) => {
+      //       if (res) {
+      //         setTimeout(() => {
+      //           const role = this.authService.currentUserValue.role;
+      //           if (role === Role.All || role === Role.Admin) {
+      //             this.router.navigate(['/admin/dashboard/main']);
+      //           } else if (role === Role.Teacher) {
+      //             this.router.navigate(['/teacher/dashboard']);
+      //           } else if (role === Role.Student) {
+      //             this.router.navigate(['/student/dashboard']);
+      //           } else {
+      //             this.router.navigate(['/authentication/signin']);
+      //           }
+      //           this.loading = false;
+      //         }, 1000);
+      //       } else {
+      //         this.error = 'Invalid Login';
+      //       }
+      //     },
+      //     error: (error) => {
+      //       this.error = error;
+      //       this.submitted = false;
+      //       this.loading = false;
       //     },
       //   });
-      // return;
-
-      this.subs.sink = this.authService
-        .login(this.f['username'].value, this.f['password'].value)
-        .subscribe({
-          next: (res) => {
-            if (res) {
-              setTimeout(() => {
-                const role = this.authService.currentUserValue.role;
-                if (role === Role.All || role === Role.Admin) {
-                  this.router.navigate(['/admin/dashboard/main']);
-                } else if (role === Role.Teacher) {
-                  this.router.navigate(['/teacher/dashboard']);
-                } else if (role === Role.Student) {
-                  this.router.navigate(['/student/dashboard']);
-                } else {
-                  this.router.navigate(['/authentication/signin']);
-                }
-                this.loading = false;
-              }, 1000);
-            } else {
-              this.error = 'Invalid Login';
-            }
-          },
-          error: (error) => {
-            this.error = error;
-            this.submitted = false;
-            this.loading = false;
-          },
-        });
     }
   }
 }

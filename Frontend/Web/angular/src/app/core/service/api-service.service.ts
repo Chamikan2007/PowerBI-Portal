@@ -29,7 +29,7 @@ export class ApiService {
   ) {
     // let appSettings = appSettingsService.getSettings();
     // this.apiUrl = appSettings.webApiUrl;
-    // this.apiUrl = environment.apiUrl;
+    this.apiUrl = environment.apiUrl;
   }
 
   public get(controller: string, action: string, parameters: any, displayLoading: boolean = true, contentType: string = ContentTypes.jsonencode, tenantContextKey: string = null as any, tenantContextId: string = null as any): Observable<any> {

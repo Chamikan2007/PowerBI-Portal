@@ -1,0 +1,62 @@
+<section class="content">
+    <div class="content-block">
+        <div class="row clearfix">
+            <div class="col col-12">
+                <div class="card">
+                    <div class="header">
+                        <div class="w-100 d-flex justify-content-between">
+                            <h2>Subscription Details</h2>
+                            <button class="icon-button" (click)="goBack()">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="body">
+                        <form class="validate-form" [formGroup]="subscriptionForm" (ngSubmit)="onSubmit()">
+                            <div class="row">
+                                <div class="col col-4">
+
+                                    <div class="row">
+                                        <div class="col col-12 mb-2">
+                                            <mat-form-field class="example-full-width" appearance="outline">
+                                                <mat-label>Report</mat-label>
+                                                <input matInput formControlName="report" class="form-control" />
+                                                @if (subscriptionForm.get('report')?.hasError('required')) {
+                                                <mat-error>
+                                                    Report is required
+                                                </mat-error>
+                                                }
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col col-12 mb-2">
+                                            <mat-form-field class="example-full-width" appearance="outline">
+                                                <mat-label>Email</mat-label>
+                                                <input matInput [type]="hide ? 'email' : 'text'" formControlName="email" class="form-control">
+                                                <mat-icon class="material-icons-outlined pwd-toggle p-3" matSuffix (click)="hide = !hide">
+                                                    {{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                                @if (subscriptionForm.get('email')?.hasError('required')) {
+                                                <mat-error>
+                                                    Email is required
+                                                </mat-error>
+                                                }
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    @if (error) {
+                                    <div class="alert alert-danger mt-3 mb-0">{{error}}</div>
+                                    }
+                                    <div class="me-4 text-end">
+                                        <button mat-button color="accent" class="btn" type="button" (click)="onCancel()">Cancel</button>
+                                        <button mat-flat-button color="accent" [class.auth-spinner]="loading" [disabled]="loading" class="btn ms-2" [disabled]="!subscriptionForm.valid " type="submit">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

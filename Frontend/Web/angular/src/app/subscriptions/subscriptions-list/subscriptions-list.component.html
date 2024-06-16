@@ -5,14 +5,16 @@
                 <div class="card">
                     <div class="header">
                         <div class="w-100 d-flex justify-content-between">
-                            <h2>Requests</h2>
+                            <h2>Subscriptions</h2>
                             <button class="icon-button" (click)="goBack()">
                                 <i class="fa-solid fa-chevron-left"></i>
                             </button>
                         </div>
                     </div>
                     <div class="body">
-                        <p>requests-list works!</p>
+                        <div class="row">
+                            <button mat-flat-button color="accent" class="btn ms-4 mb-2" type="button" (click)="newSubscriptionClicked()">New Subscription</button>
+                        </div>
                         <div class="tableBody">
                             <div class="table-responsive">
                                 <table class="table table-hover">
@@ -36,11 +38,11 @@
                                                 <div class="badge col-red">Cricket</div>
                                             </td>
                                             <td>
-                                                <button mat-icon-button class="tbl-action-btn">
+                                                <!-- <button mat-icon-button class="tbl-action-btn">
                                                     <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'" (onClicked)="editClicked($event)"></app-feather-icons>
-                                                </button>
+                                                </button> -->
                                                 <button mat-icon-button class="tbl-action-btn">
-                                                    <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
+                                                    <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'" (onClicked)="deleteClicked($event)"></app-feather-icons>
                                                 </button>
                                             </td>
                                         </tr>
