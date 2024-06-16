@@ -3,6 +3,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { User } from '../models/user';
 import { Role } from '@core/models/role';
+import { ApiService } from './api-service.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,16 @@ export class AuthService {
   public currentUser: Observable<User>;
 
   private users = [
+    {
+      id: 1,
+      img: 'assets/images/user/admin.jpg',
+      username: 'hemantha.k',
+      password: 'Alt@202405',
+      firstName: 'Hemantha',
+      lastName: 'K',
+      role: Role.Admin,
+      token: 'admin-token',
+    },
     {
       id: 1,
       img: 'assets/images/user/admin.jpg',
@@ -44,7 +55,10 @@ export class AuthService {
     },
   ];
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private apiService: ApiService
+  ) {
     this.currentUserSubject = new BehaviorSubject<User>(
       JSON.parse(localStorage.getItem('currentUser') || '{}')
     );
@@ -55,10 +69,15 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  // isAuthenticated() {
-  //   return of(true);
-  // }
+  isAuthenticated() {
+    return this.apiService.get('Account', 'signIn', null);
+  }
 
+  signIn(username: string, password: string) {
+    return this.apiService.post('Account', 'signIn', { userName: username, password: password });
+  }
+
+  // template
   login(username: string, password: string) {
 
     const user = this.users.find((u) => u.username === username && u.password === password);
