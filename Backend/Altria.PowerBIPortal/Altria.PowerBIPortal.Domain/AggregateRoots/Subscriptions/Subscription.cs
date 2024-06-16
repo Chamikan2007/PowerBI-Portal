@@ -5,7 +5,7 @@ namespace Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions;
 
 public class Subscription : ApprovalRequest<SubscriptionApprovalLevel>
 {
-    private Subscription() : base(ApprovalRequestType.SubscriptionApproval)
+    private Subscription()
     {
     }
 

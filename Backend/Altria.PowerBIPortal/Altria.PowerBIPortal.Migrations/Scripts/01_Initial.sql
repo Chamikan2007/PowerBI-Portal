@@ -24,9 +24,9 @@ CREATE TABLE [SubscriptionWhiteListEntry] (
     [Id] uniqueidentifier NOT NULL,
     [WhiteListEntry] nvarchar(50) NOT NULL,
     [EntryType] int NOT NULL,
-    [CreatedAt] datetime2 NOT NULL,
+    [CreatedAtUtc] datetime2 NOT NULL,
     [CreatedBy] uniqueidentifier NOT NULL,
-    [UpdatedAt] datetime2 NOT NULL,
+    [UpdatedAtUtc] datetime2 NOT NULL,
     [UpdatedBy] uniqueidentifier NOT NULL,
     CONSTRAINT [PK_SubscriptionWhiteListEntry] PRIMARY KEY ([Id])
 );
@@ -68,9 +68,9 @@ CREATE TABLE [ApprovalOfficer] (
     [ApprovalRequestType] int NOT NULL,
     [ApprovalLevel] int NOT NULL,
     [OfficerId] uniqueidentifier NOT NULL,
-    [CreatedAt] datetime2 NOT NULL,
+    [CreatedAtUtc] datetime2 NOT NULL,
     [CreatedBy] uniqueidentifier NOT NULL,
-    [UpdatedAt] datetime2 NOT NULL,
+    [UpdatedAtUtc] datetime2 NOT NULL,
     [UpdatedBy] uniqueidentifier NOT NULL,
     CONSTRAINT [PK_ApprovalOfficer] PRIMARY KEY ([Id]),
     CONSTRAINT [FK_ApprovalOfficer_Users_OfficerId] FOREIGN KEY ([OfficerId]) REFERENCES [Users] ([Id])
@@ -81,13 +81,12 @@ CREATE TABLE [Subscription] (
     [Id] uniqueidentifier NOT NULL,
     [Report] nvarchar(50) NOT NULL,
     [Email] nvarchar(50) NOT NULL,
-    [CreatedAt] datetime2 NOT NULL,
+    [CreatedAtUtc] datetime2 NOT NULL,
     [CreatedBy] uniqueidentifier NOT NULL,
-    [UpdatedAt] datetime2 NOT NULL,
+    [UpdatedAtUtc] datetime2 NOT NULL,
     [UpdatedBy] uniqueidentifier NOT NULL,
     [Status] int NOT NULL,
     [RequesterId] uniqueidentifier NOT NULL,
-    [Type] int NOT NULL,
     CONSTRAINT [PK_Subscription] PRIMARY KEY ([Id]),
     CONSTRAINT [FK_Subscription_Users_RequesterId] FOREIGN KEY ([RequesterId]) REFERENCES [Users] ([Id])
 );
@@ -135,9 +134,9 @@ GO
 CREATE TABLE [SubscriptionApprovalLevel] (
     [Id] uniqueidentifier NOT NULL,
     [SubscriptionId] uniqueidentifier NOT NULL,
-    [CreatedAt] datetime2 NOT NULL,
+    [CreatedAtUtc] datetime2 NOT NULL,
     [CreatedBy] uniqueidentifier NOT NULL,
-    [UpdatedAt] datetime2 NOT NULL,
+    [UpdatedAtUtc] datetime2 NOT NULL,
     [UpdatedBy] uniqueidentifier NOT NULL,
     [Status] int NOT NULL,
     [ApprovalOfficerId] uniqueidentifier NULL,
@@ -192,7 +191,7 @@ CREATE UNIQUE INDEX [UserNameIndex] ON [Users] ([NormalizedUserName]) WHERE [Nor
 GO
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20240616115907_Initial', N'8.0.6');
+VALUES (N'20240616141239_Initial', N'8.0.6');
 GO
 
 COMMIT;

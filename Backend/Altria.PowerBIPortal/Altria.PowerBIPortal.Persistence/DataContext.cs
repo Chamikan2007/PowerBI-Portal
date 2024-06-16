@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Altria.PowerBIPortal.Domain;
+using Altria.PowerBIPortal.Domain.AggregateRoots.ApprovalConfigs;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
-using Microsoft.EntityFrameworkCore;
+using Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions;
+using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionWhiteList;
 using Altria.PowerBIPortal.Domain.Contracts;
 using Altria.PowerBIPortal.Domain.Infrastructure;
-using Altria.PowerBIPortal.Domain;
-using Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions;
-using Altria.PowerBIPortal.Domain.AggregateRoots.ApprovalConfigs;
-using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionWhiteList;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Altria.PowerBIPortal.Persistence;
 
@@ -94,12 +94,12 @@ public class DataContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRo
                 .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified).ToList()
                 .ForEach(entry =>
                 {
-                    entry.Entity.UpdatedAt = DateTime.UtcNow;
+                    entry.Entity.UpdatedAtUtc = DateTime.UtcNow;
                     entry.Entity.UpdatedBy = _requestContext.UserId;
 
                     if (entry.State == EntityState.Added)
                     {
-                        entry.Entity.CreatedAt = DateTime.UtcNow;
+                        entry.Entity.CreatedAtUtc = DateTime.UtcNow;
                         entry.Entity.CreatedBy = _requestContext.UserId;
                     }
                 });

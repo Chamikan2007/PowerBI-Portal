@@ -24,7 +24,7 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                     return Result.Faliour(ApprovalRequestErrors.InvalidAction);
                 }
 
-                if (approvalAction == ApprovalStatus.Approved || approvalAction != ApprovalStatus.Rejected)
+                if (!(approvalAction == ApprovalStatus.Approved || approvalAction == ApprovalStatus.Rejected))
                 {
                     return Result.Faliour(ApprovalRequestErrors.InvalidAction);
                 }
@@ -40,7 +40,7 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                     return Result.Faliour(IdentityErrors.UserNotFound);
                 }
 
-                var subscription = await subscriptionRepository.GetByIdAsync(subscriptionId);
+                var subscription = await subscriptionRepository.FetchByIdAsync(subscriptionId, true);
                 if (subscription == null || subscription.ApprovalRequestLevels == null || subscription.ApprovalRequestLevels.Count == 0)
                 {
                     return Result.Faliour(ApprovalRequestErrors.InvalidRequest);

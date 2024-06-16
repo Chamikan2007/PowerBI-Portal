@@ -12,7 +12,7 @@ namespace Altria.PowerBIPortal.Application.Endpoints.Subscriptions.Cancel
             app.MapDelete("/{subscriptionId}",
                 async (Guid subscriptionId, ISubscriptionRepository subscriptionRepository, IUnitOfWork unitOfWork) =>
                 {
-                    var subscription = await subscriptionRepository.GetByIdAsync(subscriptionId);
+                    var subscription = await subscriptionRepository.FetchByIdAsync(subscriptionId);
                     if (subscription == null)
                     {
                         return Result.Faliour(SubscriptionErrors.NotFound);

@@ -4,10 +4,9 @@ namespace Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
 
 public abstract class ApprovalRequest<TApprovalRequestLevel> : AggregateRoot where TApprovalRequestLevel : ApprovalRequestLevel
 {
-    protected ApprovalRequest(ApprovalRequestType approvalRequest)
+    protected ApprovalRequest()
     {
         ApprovalRequestLevels = new List<TApprovalRequestLevel>();
-        Type = approvalRequest;
         Status = ApprovalStatus.Pending;
     }
 
@@ -16,8 +15,6 @@ public abstract class ApprovalRequest<TApprovalRequestLevel> : AggregateRoot whe
     public ApprovalStatus Status { get; protected set; }
 
     public required User Requester { get; init; }
-
-    public ApprovalRequestType Type { get; init; }
 
     protected void Approved(User approvalOfficer, TApprovalRequestLevel currentApprovalLevel)
     {

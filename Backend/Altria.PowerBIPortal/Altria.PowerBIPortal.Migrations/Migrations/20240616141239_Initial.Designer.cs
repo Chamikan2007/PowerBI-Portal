@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Altria.PowerBIPortal.Migrations.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240616115907_Initial")]
+    [Migration("20240616141239_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -37,7 +37,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     b.Property<int>("ApprovalRequestType")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("CreatedBy")
@@ -46,7 +46,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     b.Property<Guid>("OfficerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAtUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UpdatedBy")
@@ -284,7 +284,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("CreatedBy")
@@ -293,7 +293,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     b.Property<int>("EntryType")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAtUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UpdatedBy")
@@ -320,7 +320,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("CreatedBy")
@@ -342,10 +342,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAtUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UpdatedBy")
@@ -374,7 +371,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("CreatedBy")
@@ -386,7 +383,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     b.Property<Guid>("SubscriptionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAtUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UpdatedBy")

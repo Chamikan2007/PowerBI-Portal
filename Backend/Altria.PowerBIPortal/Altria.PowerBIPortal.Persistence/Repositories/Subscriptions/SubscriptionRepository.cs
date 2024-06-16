@@ -11,9 +11,19 @@ public class SubscriptionRepository : Repository<Subscription>, ISubscriptionRep
     {
     }
 
+    public Task<Subscription?> FetchByIdAsync(Guid requestId, bool includeApprovalLevels = false)
+    {
+        var store = includeApprovalLevels ? _store.Include(r => r.ApprovalRequestLevels) : _store.Select(s => s);
+        return store.FirstOrDefaultAsync(r => r.Id == requestId);
+    }
+
     public Task<Subscription?> GetByIdAsync(Guid requestId)
     {
-        return _store.Include(r => r.ApprovalRequestLevels).FirstOrDefaultAsync(r => r.Id == requestId);
+        return _readOnlyStore
+            .Include(s => s.Requester)
+            .Include(r => r.ApprovalRequestLevels)
+                .ThenInclude(l => l.ApprovalOfficer)
+            .FirstOrDefaultAsync(r => r.Id == requestId);
     }
 
     public void Create(Subscription subscription)
@@ -27,7 +37,14 @@ public class SubscriptionRepository : Repository<Subscription>, ISubscriptionRep
                 .SelectMany(a => a.ApprovalRequestLevels).Include(l => l.ApprovalOfficer).Include(l => l.Subscription.Requester)
                 .Where(l => (l.Status == ApprovalStatus.Pending && applicableApprovalLevels.Contains(l.ApprovalLevel)) ||
                             (includeAll && l.ApprovalOfficer != null && l.ApprovalOfficer.Id == approvalOfficeId))
-                .Select(l => l.Subscription)
+                .Select(l => l.Subscription).Distinct()
                 .ToListAsync();
+    }
+
+    public Task<List<Subscription>> GeMySubscritionRequestsAsync(Guid requesterId, bool includeAll)
+    {
+        return _readOnlyStore.Include(s => s.Requester)
+            .Where(s => s.Requester.Id == requesterId && (includeAll || s.Status == ApprovalStatus.Pending))
+            .ToListAsync();
     }
 }

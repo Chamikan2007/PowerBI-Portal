@@ -1,6 +1,6 @@
 ﻿using Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
 
-namespace Altria.PowerBIPortal.Application.Endpoints.Subscriptions.GetSubscriptionsForApprovalOfficer;
+namespace Altria.PowerBIPortal.Application.Endpoints.Subscriptions;
 
 public class SubscriptionModel
 {
@@ -15,4 +15,6 @@ public class SubscriptionModel
     public required string RequesterName { get; init; }
 
     public required Guid RequesterId { get; init; }
+
+    public List<ApprovalLevelModel> ApprovalLevels { get; set; } = new();
 }
