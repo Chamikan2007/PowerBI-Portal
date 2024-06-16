@@ -1,4 +1,5 @@
 ﻿using Altria.PowerBIPortal.Persistence;
+using Altria.PowerBIPortal.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +18,7 @@ internal class DataContextContextFactory : IDesignTimeDbContextFactory<DataConte
         builder.UseSqlServer(connectionString, b => b.MigrationsAssembly(typeof(DataContextContextFactory).Assembly.FullName));
 
         var context = new DataContext(builder.Options);
+
         return context;
     }
 }

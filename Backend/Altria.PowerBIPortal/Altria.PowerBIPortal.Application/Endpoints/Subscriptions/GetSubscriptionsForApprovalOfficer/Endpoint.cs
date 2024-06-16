@@ -11,8 +11,8 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
     public void Configure(IEndpointRouteBuilder app)
     {
         app.MapGet("/forApprovalOfficer",
-            async ([FromQuery(Name = "all")] bool includeAll, RequestContext requestContext,
-             IApprovalOfficerRepository approvalOfficerRepository, ISubscriptionRepository subscriptionRepository) =>
+            async (RequestContext requestContext, IApprovalOfficerRepository approvalOfficerRepository,
+            ISubscriptionRepository subscriptionRepository, [FromQuery(Name = "all")] bool includeAll = false) =>
         {
             var approvalLevels = await approvalOfficerRepository.GetApplicableApprovalLevelsAsync(requestContext.UserId, ApprovalRequestType.SubscriptionApproval);
 

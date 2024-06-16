@@ -23,10 +23,10 @@ public class SubscriptionRepository : Repository<Subscription>, ISubscriptionRep
 
     public Task<List<Subscription>> GeSubscritionRequestsToApproveAsync(Guid approvalOfficeId, int[] applicableApprovalLevels, bool includeAll)
     {
-        return _readOnlyStore.Include(s => s.ApprovalRequestLevels).Include(s => s.Requester)
-                .SelectMany(a => a.ApprovalRequestLevels).Include(l => l.ApprovalOfficer)
-                .Where(l => (l.ApprovalOfficer != null && l.ApprovalOfficer.Id == approvalOfficeId) || 
-                            (includeAll && l.Status == ApprovalStatus.Pending && applicableApprovalLevels.Contains(l.ApprovalLevel)))
+        return _readOnlyStore.Include(s => s.ApprovalRequestLevels)
+                .SelectMany(a => a.ApprovalRequestLevels).Include(l => l.ApprovalOfficer).Include(l => l.Subscription.Requester)
+                .Where(l => (l.Status == ApprovalStatus.Pending && applicableApprovalLevels.Contains(l.ApprovalLevel)) ||
+                            (includeAll && l.ApprovalOfficer != null && l.ApprovalOfficer.Id == approvalOfficeId))
                 .Select(l => l.Subscription)
                 .ToListAsync();
     }

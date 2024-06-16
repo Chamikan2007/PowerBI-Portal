@@ -26,7 +26,7 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                 }
 
                 var (isValid, domain) = EmailValidator.IsValidEmail(model.Email);
-                if (isValid)
+                if (!isValid)
                 {
                     return Result.Faliour(SubscriptionErrors.InvalidEmail);
                 }

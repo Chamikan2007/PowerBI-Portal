@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Altria.PowerBIPortal.Migrations.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240615191536_Initial")]
+    [Migration("20240616115907_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -58,7 +58,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
 
                     b.HasIndex("ApprovalRequestType", "ApprovalLevel");
 
-                    b.ToTable("ApprovalOfficers");
+                    b.ToTable("ApprovalOfficer");
                 });
 
             modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities.Role", b =>
@@ -311,7 +311,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     b.HasIndex("WhiteListEntry")
                         .IsUnique();
 
-                    b.ToTable("SubscriptionWhiteList");
+                    b.ToTable("SubscriptionWhiteListEntry");
                 });
 
             modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions.Subscription", b =>
@@ -355,7 +355,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
 
                     b.HasIndex("RequesterId");
 
-                    b.ToTable("Subscriptions");
+                    b.ToTable("Subscription");
                 });
 
             modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions.SubscriptionApprovalLevel", b =>
@@ -383,7 +383,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("SubscriptionId")
+                    b.Property<Guid>("SubscriptionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -481,17 +481,20 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                         .HasForeignKey("ApprovalOfficerId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions.Subscription", null)
-                        .WithMany("ApprovalRequestSteps")
+                    b.HasOne("Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions.Subscription", "Subscription")
+                        .WithMany("ApprovalRequestLevels")
                         .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("ApprovalOfficer");
+
+                    b.Navigation("Subscription");
                 });
 
             modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions.Subscription", b =>
                 {
-                    b.Navigation("ApprovalRequestSteps");
+                    b.Navigation("ApprovalRequestLevels");
                 });
 #pragma warning restore 612, 618
         }

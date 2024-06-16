@@ -36,6 +36,21 @@ public class DataContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRo
 
         #endregion
 
+        #region Generate ids on add
+
+        var entities = builder.Model.GetEntityTypes()
+            .Where(e => typeof(Entity).IsAssignableFrom(e.ClrType));
+
+        foreach (var entity in entities)
+        {
+            var entry = builder.Entity(entity.ClrType);
+
+            entry.HasKey("Id");
+            entry.Property<Guid>("Id").ValueGeneratedOnAdd();
+        }
+
+        #endregion
+
         #region Set delete behaviour of foreign keys
 
         if (IsInDesignTime)
@@ -65,13 +80,13 @@ public class DataContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRo
         builder.ApplyConfigurationsFromAssembly(typeof(DataContext).Assembly);
     }
 
-    public DbSet<Subscription> Subscriptions { get; set; }
-
-    public DbSet<ApprovalOfficer> ApprovalOfficers { get; set; }
-
-    public DbSet<SubscriptionWhiteListEntry> SubscriptionWhiteList { get; set; }
-
     public bool IsInDesignTime { get; }
+
+    public virtual DbSet<Subscription> Subscription { get; set; } = default!;
+
+    public virtual DbSet<ApprovalOfficer> ApprovalOfficer { get; set; } = default!;
+
+    public virtual DbSet<SubscriptionWhiteListEntry> SubscriptionWhiteListEntry { get; set; } = default!;
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

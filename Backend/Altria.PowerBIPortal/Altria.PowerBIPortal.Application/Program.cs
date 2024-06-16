@@ -9,6 +9,7 @@ using Altria.PowerBIPortal.Persistence.Repositories.ApprovalConfigs;
 using Altria.PowerBIPortal.Persistence.Repositories.Subscriptions;
 using Altria.PowerBIPortal.Persistence.Repositories.SubscriptionWhiteList;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,7 @@ builder.Services.AddDbContext<DataContext>(options =>
     .AddIdentity<User, Role>()
     .AddEntityFrameworkStores<DataContext>();
 
-builder.Services.AddScoped<IUnitOfWork, DataContext>();
+builder.Services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<DataContext>());
 
 #endregion
 
@@ -63,7 +64,7 @@ var app = builder.Build();
 app.UseEndpoints();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

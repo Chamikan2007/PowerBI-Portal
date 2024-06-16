@@ -4,15 +4,10 @@ namespace Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions;
 
 public class SubscriptionApprovalLevel : ApprovalRequestLevel
 {
-    public SubscriptionApprovalLevel(Subscription subscription)
-    {
-        Subscription = subscription;
-    }
-
-    public Subscription Subscription { get; }
+    public Subscription Subscription { get; init; }
 
     public static SubscriptionApprovalLevel Create(Subscription subscription, int approvalLevel)
     {
-        return new SubscriptionApprovalLevel(subscription) { ApprovalLevel = approvalLevel };
+        return new SubscriptionApprovalLevel { Subscription = subscription, ApprovalLevel = approvalLevel };
     }
 }
