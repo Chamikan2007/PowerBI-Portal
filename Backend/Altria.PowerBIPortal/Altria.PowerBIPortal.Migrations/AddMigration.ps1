@@ -11,7 +11,7 @@ if($ExistingMigrationCount -gt 0){
 
 Write-Host "Generating migrations." -ForegroundColor Yellow
 
-dotnet ef migrations add $Migration --output-dir Migrations
+dotnet ef migrations add $Migration --output-dir $MigrationsPath
 
 Write-Host "Migration, '${Migration}' generated successfully." -ForegroundColor Yellow
 
@@ -22,11 +22,11 @@ if(!(Test-Path -Path $ScriptPath)){
 
 $Scripts = Get-ChildItem -Path $ScriptPath -Filter *.sql -Recurse -File | Measure-Object
 $Count = $Scripts.Count + 1
-$fileName = $Count.ToString("00") + "_" + $Migration + ".sql"
+$FileName = $Count.ToString("00") + "_" + $Migration + ".sql"
 
 Write-Host "Generating scripts." -ForegroundColor Yellow
 
-$OutputPath = "Scripts/" + $fileName
+$OutputPath = "Scripts/" + $FileName
 
 if ($LastMigration) {
     dotnet-ef migrations script $LastMigration --output $OutputPath

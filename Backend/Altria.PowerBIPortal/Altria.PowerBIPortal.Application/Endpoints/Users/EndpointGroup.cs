@@ -8,6 +8,7 @@ public class EndpointGroup : IEndpointGroup
     {
         return app
             .MapGroup("/users")
+            .RequireAuthorization("AuthenticatedUser")
             .WithTags("Users")
             .WithOpenApi();
     }

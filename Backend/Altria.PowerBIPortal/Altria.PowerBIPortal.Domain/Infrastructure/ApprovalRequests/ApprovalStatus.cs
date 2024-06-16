@@ -6,4 +6,5 @@ public enum ApprovalStatus
     Pending,
     Approved,
     Rejected,
+    Cancelled,
 }
