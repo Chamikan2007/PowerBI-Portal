@@ -20,6 +20,16 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.RegisterEndpoints();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
+
 #region Register dataContext / identity
 
 builder.Services.AddDbContext<DataContext>(options =>
@@ -60,6 +70,8 @@ builder.Services.AddScoped<IApprovalOfficerRepository, ApprovalOfficerRepository
 #endregion
 
 var app = builder.Build();
+
+app.UseCors("AllowAll");
 
 app.UseEndpoints();
 

@@ -14,8 +14,8 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
 {
     public void Configure(IEndpointRouteBuilder app)
     {
-        _ = app.MapPost("/{subscriptionId}/level/{levelId}/action/{action}",
-            async (Guid subscriptionId, Guid levelId, SubscriptionApproveRejectModel request, string action,
+        _ = app.MapPost("/{subscriptionId}/action/{action}",
+            async (Guid subscriptionId, SubscriptionApproveRejectModel request, string action,
             ISubscriptionRepository subscriptionRepository, UserManager<User> userManager,
             IApprovalOfficerRepository approvalOfficerRepository, RequestContext requestContext, IUnitOfWork unitOfWork) =>
             {
@@ -47,11 +47,6 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                 }
 
                 var currentApprovalLevel = subscription.ApprovalRequestLevels.MaxBy(s => s.ApprovalLevel)!;
-                if (currentApprovalLevel.Id != levelId)
-                {
-                    return Result.Faliour(ApprovalRequestErrors.InvalidLevel);
-                }
-
                 if (subscription.Status != ApprovalStatus.Pending || currentApprovalLevel.Status != ApprovalStatus.Pending)
                 {
                     return Result.Faliour(ApprovalRequestErrors.InvalidStatus);
