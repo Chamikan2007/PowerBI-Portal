@@ -9,7 +9,6 @@ using Altria.PowerBIPortal.Persistence.Repositories.ApprovalConfigs;
 using Altria.PowerBIPortal.Persistence.Repositories.Subscriptions;
 using Altria.PowerBIPortal.Persistence.Repositories.SubscriptionWhiteList;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,13 +19,16 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.RegisterEndpoints();
 
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()!;
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>
     {
-        builder.AllowAnyOrigin()
+        builder.WithOrigins(allowedOrigins)
                .AllowAnyMethod()
-               .AllowAnyHeader();
+               .AllowAnyHeader()
+               .AllowCredentials();
     });
 });
 
