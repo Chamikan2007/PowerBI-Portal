@@ -8,7 +8,10 @@ using Altria.PowerBIPortal.Persistence;
 using Altria.PowerBIPortal.Persistence.Repositories.ApprovalConfigs;
 using Altria.PowerBIPortal.Persistence.Repositories.Subscriptions;
 using Altria.PowerBIPortal.Persistence.Repositories.SubscriptionWhiteList;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,20 +50,22 @@ builder.Services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<DataContext>
 
 #region Register authentication services
 
-builder.Services.Configure<LdapOptions>(builder.Configuration.GetSection(LdapOptions.Options));
-builder.Services.AddScoped<IExternalUserAuthenticator, ActiveDirectoryAuthenticator>();
+builder.Services.ConfigureApplicationCookie(options =>
+    {
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SameSite = SameSiteMode.None;
+        options.Cookie.Name = "Altria.PowerBIPortal.Auth";
+    });
 
-builder.Services.AddAuthentication().AddCookie(options =>
-{
-    options.Cookie.HttpOnly = true;
-    options.Cookie.SameSite = SameSiteMode.None;
-});
 builder.Services.AddAuthorization(configure =>
 {
-    configure.AddPolicy("AuthenticatedUser", policy =>  policy.RequireAuthenticatedUser());
+    configure.AddPolicy("AuthenticatedUser", policy => policy.RequireAuthenticatedUser());
 });
 
 builder.Services.AddScoped<RequestContext>();
+
+builder.Services.Configure<LdapOptions>(builder.Configuration.GetSection(LdapOptions.Options));
+builder.Services.AddScoped<IExternalUserAuthenticator, ActiveDirectoryAuthenticator>();
 
 #endregion
 
