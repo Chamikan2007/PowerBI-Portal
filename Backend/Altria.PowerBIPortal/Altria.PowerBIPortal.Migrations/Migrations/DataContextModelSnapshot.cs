@@ -22,6 +22,42 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.ApprovalConfigs.ApprovalOfficer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ApprovalLevel")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ApprovalRequestType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OfficerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OfficerId");
+
+                    b.HasIndex("ApprovalRequestType", "ApprovalLevel");
+
+                    b.ToTable("ApprovalOfficer");
+                });
+
             modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -98,21 +134,16 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(50)
@@ -244,56 +275,49 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     b.ToTable("UserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionApprovals.SubscriptionApprovalStep", b =>
+            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionWhiteList.SubscriptionWhiteListEntry", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ApprovalOfficerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Comment")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Status")
+                    b.Property<int>("EntryType")
                         .HasColumnType("int");
 
-                    b.Property<int>("StepIndex")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("SubscriptionRequestId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAtUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("WhiteListEntry")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ApprovalOfficerId");
+                    b.HasIndex("EntryType");
 
-                    b.HasIndex("SubscriptionRequestId");
+                    b.HasIndex("WhiteListEntry")
+                        .IsUnique();
 
-                    b.ToTable("SubscriptionApprovalStep");
+                    b.ToTable("SubscriptionWhiteListEntry");
                 });
 
-            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionApprovals.SubscriptionRequest", b =>
+            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions.Subscription", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("CreatedBy")
@@ -315,10 +339,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedAt")
+                    b.Property<DateTime>("UpdatedAtUtc")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("UpdatedBy")
@@ -328,7 +349,61 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
 
                     b.HasIndex("RequesterId");
 
-                    b.ToTable("SubscriptionRequests");
+                    b.ToTable("Subscription");
+                });
+
+            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions.SubscriptionApprovalLevel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ApprovalLevel")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("ApprovalOfficerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Comment")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("SubscriptionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApprovalOfficerId");
+
+                    b.HasIndex("SubscriptionId");
+
+                    b.ToTable("SubscriptionApprovalLevel");
+                });
+
+            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.ApprovalConfigs.ApprovalOfficer", b =>
+                {
+                    b.HasOne("Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities.User", "Officer")
+                        .WithMany()
+                        .HasForeignKey("OfficerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Officer");
                 });
 
             modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities.RoleClaim", b =>
@@ -382,22 +457,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionApprovals.SubscriptionApprovalStep", b =>
-                {
-                    b.HasOne("Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities.User", "ApprovalOfficer")
-                        .WithMany()
-                        .HasForeignKey("ApprovalOfficerId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionApprovals.SubscriptionRequest", null)
-                        .WithMany("ApprovalRequestSteps")
-                        .HasForeignKey("SubscriptionRequestId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("ApprovalOfficer");
-                });
-
-            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionApprovals.SubscriptionRequest", b =>
+            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions.Subscription", b =>
                 {
                     b.HasOne("Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities.User", "Requester")
                         .WithMany()
@@ -408,9 +468,27 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     b.Navigation("Requester");
                 });
 
-            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionApprovals.SubscriptionRequest", b =>
+            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions.SubscriptionApprovalLevel", b =>
                 {
-                    b.Navigation("ApprovalRequestSteps");
+                    b.HasOne("Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities.User", "ApprovalOfficer")
+                        .WithMany()
+                        .HasForeignKey("ApprovalOfficerId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions.Subscription", "Subscription")
+                        .WithMany("ApprovalRequestLevels")
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("ApprovalOfficer");
+
+                    b.Navigation("Subscription");
+                });
+
+            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions.Subscription", b =>
+                {
+                    b.Navigation("ApprovalRequestLevels");
                 });
 #pragma warning restore 612, 618
         }

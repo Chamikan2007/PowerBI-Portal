@@ -7,10 +7,12 @@ public abstract class Repository<TAggregateRoot> where TAggregateRoot : Aggregat
 {
     protected readonly DbSet<TAggregateRoot> _store;
     protected readonly IQueryable<TAggregateRoot> _readOnlyStore;
+    protected readonly DataContext _dataContext;
 
     public Repository(DataContext dataContext)
     {
         _store = dataContext.Set<TAggregateRoot>();
         _readOnlyStore = dataContext.Set<TAggregateRoot>().AsNoTracking();
+        _dataContext = dataContext;
     }
 }

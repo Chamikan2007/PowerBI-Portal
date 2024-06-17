@@ -8,5 +8,7 @@ public static class ApprovalRequestErrors
 
     public static Error InvalidRequest => new("ApprovalRequests.InvalidRequest");
 
+    public static Error InvalidLevel => new("ApprovalRequests.InvalidLevel");
+
     public static Error InvalidStatus => new("ApprovalRequests.InvalidStatus");
 }

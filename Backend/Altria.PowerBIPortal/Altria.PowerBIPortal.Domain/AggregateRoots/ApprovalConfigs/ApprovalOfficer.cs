@@ -8,7 +8,7 @@ public class ApprovalOfficer : AggregateRoot
 {
     public ApprovalRequestType ApprovalRequestType { get; set; }
 
-    public int StepIndex { get; init; }
+    public int ApprovalLevel { get; init; }
 
     public required User Officer { get; init; }
 }

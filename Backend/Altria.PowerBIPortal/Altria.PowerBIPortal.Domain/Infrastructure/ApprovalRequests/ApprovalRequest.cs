@@ -2,33 +2,33 @@
 
 namespace Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
 
-public abstract class ApprovalRequest<TApprovalRequestStep> : AggregateRoot where TApprovalRequestStep : ApprovalRequestStep
+public abstract class ApprovalRequest<TApprovalRequestLevel> : AggregateRoot where TApprovalRequestLevel : ApprovalRequestLevel
 {
-    protected ApprovalRequest(ApprovalRequestType approvalRequest)
+    protected ApprovalRequest()
     {
-        ApprovalRequestSteps = new List<TApprovalRequestStep>();
-        Type = approvalRequest;
+        ApprovalRequestLevels = new List<TApprovalRequestLevel>();
+        Status = ApprovalStatus.Pending;
     }
 
-    public IList<TApprovalRequestStep> ApprovalRequestSteps { get; init; }
+    public IList<TApprovalRequestLevel> ApprovalRequestLevels { get; init; }
 
     public ApprovalStatus Status { get; protected set; }
 
     public required User Requester { get; init; }
 
-    public ApprovalRequestType Type { get; init; }
-
-    protected ApprovalRequestStep Approved(User approvalOfficer)
+    protected void Approved(User approvalOfficer, TApprovalRequestLevel currentApprovalLevel)
     {
-        var currentApprovalStep = ApprovalRequestSteps.MaxBy(s => s.StepIndex)!;
-        currentApprovalStep.Approved(approvalOfficer);
-        return currentApprovalStep;
+        currentApprovalLevel.Approved(approvalOfficer);
     }
 
-    public void Rejected(User approvalOfficer, string comment)
+    public void Rejected(User approvalOfficer, TApprovalRequestLevel currentApprovalLevel, string comment)
     {
-        var currentApprovalStep = ApprovalRequestSteps.MaxBy(s => s.StepIndex)!;
-        currentApprovalStep.Rejected(approvalOfficer, comment);
+        currentApprovalLevel.Rejected(approvalOfficer, comment);
         Status = ApprovalStatus.Rejected;
+    }
+
+    public void Cancelled()
+    {
+        Status = ApprovalStatus.Cancelled;
     }
 }

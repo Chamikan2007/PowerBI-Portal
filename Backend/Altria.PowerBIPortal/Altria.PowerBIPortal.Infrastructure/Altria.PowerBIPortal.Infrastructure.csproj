@@ -6,4 +6,12 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.DirectoryServices.Protocols" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Altria.PowerBIPortal.Domain\Altria.PowerBIPortal.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
