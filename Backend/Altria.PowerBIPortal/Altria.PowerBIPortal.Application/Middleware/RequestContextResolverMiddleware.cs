@@ -21,6 +21,7 @@ public class RequestContextResolverMiddleware
             requestContext.UserId = Guid.Parse(claims.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
             requestContext.DisplayName = claims.Claims.First(c => c.Type == ClaimTypes.Name).Value;
             requestContext.Email = claims.Claims.First(c => c.Type == ClaimTypes.Email).Value;
+            requestContext.Roles = claims.Claims.First(c => c.Type == ClaimTypes.Role).Value.Split(',');
         }
 
         await _next(context);

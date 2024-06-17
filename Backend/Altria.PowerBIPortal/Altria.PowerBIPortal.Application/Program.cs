@@ -50,11 +50,13 @@ builder.Services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<DataContext>
 #region Register authentication services
 
 builder.Services.ConfigureApplicationCookie(options =>
-    {
-        options.Cookie.HttpOnly = true;
-        options.Cookie.SameSite = SameSiteMode.None;
-        options.Cookie.Name = "Altria.PowerBIPortal.Auth";
-    });
+{
+    var sameSiteMode = builder.Configuration.GetValue("SameSiteMode", SameSiteMode.Strict);
+
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SameSite = sameSiteMode;
+    options.Cookie.Name = "Altria.PowerBIPortal.Auth";
+});
 
 builder.Services.AddAuthorization(configure =>
 {

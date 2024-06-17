@@ -19,6 +19,7 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                 UserId = requestContext.UserId,
                 DisplayName = requestContext.DisplayName,
                 Email = requestContext.Email,
+                Roles = requestContext.Roles,
             };
             return Result<IsAuthenticatedResponse>.Success(new IsAuthenticatedResponse { IsAuthenticated = true, RequestContext = requestContextModel });
         });
