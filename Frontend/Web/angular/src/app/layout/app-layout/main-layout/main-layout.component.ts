@@ -2,8 +2,8 @@ import { Direction, BidiModule } from '@angular/cdk/bidi';
 import { AfterViewInit, Component, Inject, Renderer2 } from '@angular/core';
 import { AuthService, DirectionService, InConfiguration, RightSidebarService } from '@core';
 import { ConfigService } from '@config';
-import { DOCUMENT } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { CommonModule, DOCUMENT } from '@angular/common';
+import { Router, RouterOutlet } from '@angular/router';
 import { RightSidebarComponent } from '../../right-sidebar/right-sidebar.component';
 import { SidebarComponent } from '../../sidebar/sidebar.component';
 import { HeaderComponent } from '../../header/header.component';
@@ -20,14 +20,18 @@ import { UnsubscribeOnDestroyAdapter } from '@shared';
     RightSidebarComponent,
     BidiModule,
     RouterOutlet,
+    CommonModule
   ],
   providers: [RightSidebarService]
 })
 export class MainLayoutComponent extends UnsubscribeOnDestroyAdapter implements AfterViewInit {
   direction!: Direction;
   public config!: InConfiguration;
+  loadingText: string = 'Loading...';
+  isAuthenticated: boolean = false;
 
   constructor(
+    private router: Router,
     private directoryService: DirectionService,
     private authService: AuthService,
     private configService: ConfigService,
@@ -37,12 +41,18 @@ export class MainLayoutComponent extends UnsubscribeOnDestroyAdapter implements 
     super();
     this.config = this.configService.configData;
 
-    // let isAuthenticated = this.authService.isAuthenticated().subscribe({
-    //   next(value) {
-    //     debugger;
-    //     return value;
-    //   },
-    // });
+    this.authService.isAuthenticated().subscribe({
+      next: (response: any) => {
+        this.isAuthenticated = response.data.isAuthenticated;
+
+        if (!response.data.isAuthenticated) {
+          this.loadingText = "Relogin required... Redirecting to Login page...";
+          setTimeout(() => {
+            this.router.navigate(['/authentication/signin']);
+          }, 2000);
+        }
+      },
+    });
 
     this.subs.sink = this.directoryService.currentData.subscribe((currentData) => {
       if (currentData) {

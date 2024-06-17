@@ -16,6 +16,7 @@ import { RouteInfo } from './sidebar.metadata';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgScrollbar } from 'ngx-scrollbar';
 import { UnsubscribeOnDestroyAdapter } from '@shared';
+import { StorageProvider } from '@core/service/storage-provider.service';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -40,12 +41,14 @@ export class SidebarComponent extends UnsubscribeOnDestroyAdapter implements OnI
   userType?: string;
   headerHeight = 60;
   currentRoute?: string;
+
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
     public elementRef: ElementRef,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private storageProvider: StorageProvider,
   ) {
     super();
     this.elementRef.nativeElement.closest('body');
@@ -142,11 +145,21 @@ export class SidebarComponent extends UnsubscribeOnDestroyAdapter implements OnI
       this.renderer.addClass(this.document.body, 'submenu-closed');
     }
   }
+
   logout() {
-    this.subs.sink = this.authService.logout().subscribe((res) => {
-      if (!res.success) {
-        this.router.navigate(['/authentication/signin']);
-      }
-    });
+    this.authService.signOut().subscribe(
+      {
+        next: (response: any) => {
+          this.storageProvider.clearStorage();
+
+          this.router.navigate(['/authentication/signin']);
+        },
+      });
+
+    // this.subs.sink = this.authService.logout().subscribe((res) => {
+    //   if (!res.success) {
+    //     this.router.navigate(['/authentication/signin']);
+    //   }
+    // });
   }
 }

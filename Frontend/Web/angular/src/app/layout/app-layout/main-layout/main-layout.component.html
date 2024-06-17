@@ -1,6 +1,11 @@
-<app-header></app-header>
-<app-sidebar></app-sidebar>
-<!-- <app-right-sidebar></app-right-sidebar> -->
-<div [dir]="direction">
-  <router-outlet></router-outlet>
+<div *ngIf="isAuthenticated">
+  <app-header></app-header>
+  <app-sidebar></app-sidebar>
+  <!-- <app-right-sidebar></app-right-sidebar> -->
+  <div [dir]="direction">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+<div *ngIf="!isAuthenticated" class="w-100 mt-5 text-center">
+  <h3>{{loadingText}}</h3>
 </div>

@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { ApiService } from '@core/service/api-service.service';
 import { HttpClient } from '@angular/common/http';
+import { StorageProvider } from '@core/service/storage-provider.service';
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -36,6 +37,7 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
+    private storageProvider: StorageProvider
   ) {
     super();
   }
@@ -67,7 +69,6 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
   }
 
   onSubmit() {
-    debugger;
     this.submitted = true;
     this.loading = true;
     this.error = '';
@@ -78,31 +79,47 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
 
       this.authService.signIn(this.f['username'].value, this.f['password'].value).subscribe({
         next: (resonse1: any) => {
-          debugger;
-          this.authService.isAuthenticated().subscribe({
-            next: (response2: any) => {
-              debugger
-              response2;
-              let role = response2.role;
+          if (resonse1.isSuccess) {
+            this.authService.isAuthenticated().subscribe({
+              next: (response2: any) => {
+                if (response2.isSuccess) {
+                  let data = response2.data;
 
-              if (role === Role.All || role === Role.Admin) {
-                this.router.navigate(['/admin/dashboard/main']);
-              }
-              else {
-                this.router.navigate(['/authentication/signin']);
-              }
-              this.loading = false;
-            },
-            error: (error) => {
-              debugger;
-              this.error = error;
-              this.submitted = false;
-              this.loading = false;
-            },
-          });
+                  if (data.isAuthenticated) {
+                    this.storageProvider.setStorage(true, 'authData', data);
+                  }
+                  else {
+                    this.storageProvider.clearStorage();
+                  }
+
+                  // if (role === Role.All || role === Role.Admin) {
+                  this.router.navigate(['/admin/dashboard/main']);
+                  // }
+                  // else {
+                  //   this.router.navigate(['/authentication/signin']);
+                  // }
+                  this.loading = false;
+                }
+                else {
+                  this.submitted = false;
+                  this.loading = false;
+                }
+              },
+              error: (error) => {
+                debugger;
+                this.error = error;
+                this.submitted = false;
+                this.loading = false;
+              },
+            });
+
+          }
+          else {
+            this.submitted = false;
+            this.loading = false;
+          }
         },
         error: (error) => {
-          debugger;
           this.error = error;
           this.submitted = false;
           this.loading = false;

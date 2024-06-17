@@ -70,7 +70,7 @@ export class AuthService {
   }
 
   isAuthenticated() {
-    return this.apiService.get('Account', 'signIn', null);
+    return this.apiService.get('Account', 'isAuthenticated', null);
   }
 
   signIn(username: string, password: string) {
@@ -109,6 +109,10 @@ export class AuthService {
   }
   error(message: string) {
     return throwError(message);
+  }
+
+  signOut() {
+    return this.apiService.post('Account', 'signout', null);
   }
 
   logout() {

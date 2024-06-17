@@ -16,18 +16,18 @@ export const APP_ROUTE: Route[] = [
       {
         path: 'subscriptions',
         canActivate: [AuthGuard],
-        data: {
-          role: Role.Admin,
-        },
+        // data: {
+        //   role: Role.Admin,
+        // },
         loadChildren: () => import('./subscriptions/subscriptions.routes').then((m) => m.SUBSCRIPTIONS_ROUTE),
       },
 
       {
         path: 'admin',
         canActivate: [AuthGuard],
-        data: {
-          role: Role.Admin,
-        },
+        // data: {
+        //   role: Role.Admin,
+        // },
         loadChildren: () =>
           import('./admin/admin.routes').then((m) => m.ADMIN_ROUTE),
       },
