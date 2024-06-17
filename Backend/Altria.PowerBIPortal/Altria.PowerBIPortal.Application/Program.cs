@@ -2,16 +2,14 @@ using Altria.PowerBIPortal.Application.Infrastructure;
 using Altria.PowerBIPortal.Application.Middleware;
 using Altria.PowerBIPortal.Domain;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
+using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Managers;
 using Altria.PowerBIPortal.Domain.Contracts;
 using Altria.PowerBIPortal.Infrastructure.WindowsActiveDirectory;
 using Altria.PowerBIPortal.Persistence;
 using Altria.PowerBIPortal.Persistence.Repositories.ApprovalConfigs;
 using Altria.PowerBIPortal.Persistence.Repositories.Subscriptions;
 using Altria.PowerBIPortal.Persistence.Repositories.SubscriptionWhiteList;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,7 +40,8 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("defaultDb"));
 })
     .AddIdentity<User, Role>()
-    .AddEntityFrameworkStores<DataContext>();
+    .AddEntityFrameworkStores<DataContext>()
+    .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory>();
 
 builder.Services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<DataContext>());
 
