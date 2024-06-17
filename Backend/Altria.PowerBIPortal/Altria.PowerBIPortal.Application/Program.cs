@@ -51,11 +51,17 @@ builder.Services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<DataContext>
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    var sameSiteMode = builder.Configuration.GetValue("SameSiteMode", SameSiteMode.Strict);
+    var cookieSettings =builder.Configuration.GetSection("CookieSettings");
+    var sameSiteMode = SameSiteMode.Strict;
+    if (cookieSettings != null)
+    {
+        sameSiteMode = cookieSettings.GetValue("SameSiteMode", sameSiteMode);
+    }
 
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = sameSiteMode;
     options.Cookie.Name = "Altria.PowerBIPortal.Auth";
+    options.Cookie.Path = "/";
 });
 
 builder.Services.AddAuthorization(configure =>
