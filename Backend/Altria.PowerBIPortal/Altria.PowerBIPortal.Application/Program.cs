@@ -19,11 +19,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.RegisterEndpoints();
 
-var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()!;
-
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", builder =>
+    var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()!;
+
+    options.AddPolicy("AllowFrontends", builder =>
     {
         builder.WithOrigins(allowedOrigins)
                .AllowAnyMethod()
@@ -53,6 +53,7 @@ builder.Services.AddScoped<IExternalUserAuthenticator, ActiveDirectoryAuthentica
 builder.Services.AddAuthentication().AddCookie(options =>
 {
     options.Cookie.HttpOnly = true;
+    options.Cookie.SameSite = SameSiteMode.None;
 });
 builder.Services.AddAuthorization(configure =>
 {
@@ -73,7 +74,7 @@ builder.Services.AddScoped<IApprovalOfficerRepository, ApprovalOfficerRepository
 
 var app = builder.Build();
 
-app.UseCors("AllowAll");
+app.UseCors("AllowFrontends");
 
 app.UseEndpoints();
 
