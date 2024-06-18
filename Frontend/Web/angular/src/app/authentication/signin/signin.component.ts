@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthService, Role } from '@core';
+import { AuthService, User } from '@core';
 import { UnsubscribeOnDestroyAdapter } from '@shared';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { ApiService } from '@core/service/api-service.service';
-import { HttpClient } from '@angular/common/http';
 import { StorageProvider } from '@core/service/storage-provider.service';
+import { ResponseDto } from '@core/models/dto/response-dto';
+
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
@@ -78,26 +78,22 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
     } else {
 
       this.authService.signIn(this.f['username'].value, this.f['password'].value).subscribe({
-        next: (resonse1: any) => {
+        next: (resonse1: ResponseDto) => {
           if (resonse1.isSuccess) {
             this.authService.isAuthenticated().subscribe({
-              next: (response2: any) => {
+              next: (response2: ResponseDto) => {
                 if (response2.isSuccess) {
-                  let data = response2.data;
+                  let data = response2.data as User;
 
                   if (data.isAuthenticated) {
                     this.storageProvider.setStorage(true, 'authData', data);
+                    this.router.navigate(['/subscriptions']);
                   }
                   else {
                     this.storageProvider.clearStorage();
+                    this.router.navigate(['/authentication/signin']);
                   }
 
-                  // if (role === Role.All || role === Role.Admin) {
-                  this.router.navigate(['/admin/dashboard/main']);
-                  // }
-                  // else {
-                  //   this.router.navigate(['/authentication/signin']);
-                  // }
                   this.loading = false;
                 }
                 else {
@@ -106,7 +102,6 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
                 }
               },
               error: (error) => {
-                debugger;
                 this.error = error;
                 this.submitted = false;
                 this.loading = false;

@@ -16,6 +16,7 @@ import { UnsubscribeOnDestroyAdapter } from '@shared';
 export class AuthLayoutComponent extends UnsubscribeOnDestroyAdapter {
   direction!: Direction;
   public config!: InConfiguration;
+
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private directoryService: DirectionService,

@@ -1,12 +1,11 @@
-import { Role } from './role';
-
 export class User {
-  id!: number;
-  img!: string;
-  username!: string;
-  password!: string;
-  firstName!: string;
-  lastName!: string;
-  role!: Role;
-  token!: string;
+  isAuthenticated: boolean = false;
+  requestContext: RequestContext = new RequestContext();
+}
+
+export class RequestContext {
+  userId: string = '';
+  displayName: string = '';
+  email: string = '';
+  roles: string[] = [];
 }

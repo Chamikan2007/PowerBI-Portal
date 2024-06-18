@@ -23,7 +23,7 @@
                                                 <input matInput formControlName="report" class="form-control" />
                                                 @if (subscriptionForm.get('report')?.hasError('required')) {
                                                 <mat-error>
-                                                    Report is required
+                                                    Report is required.
                                                 </mat-error>
                                                 }
                                             </mat-form-field>
@@ -34,11 +34,9 @@
                                             <mat-form-field class="example-full-width" appearance="outline">
                                                 <mat-label>Email</mat-label>
                                                 <input matInput [type]="hide ? 'email' : 'text'" formControlName="email" class="form-control">
-                                                <mat-icon class="material-icons-outlined pwd-toggle p-3" matSuffix (click)="hide = !hide">
-                                                    {{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                                                 @if (subscriptionForm.get('email')?.hasError('required')) {
                                                 <mat-error>
-                                                    Email is required
+                                                    Email is required.
                                                 </mat-error>
                                                 }
                                             </mat-form-field>

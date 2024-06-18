@@ -49,8 +49,7 @@ interface Notifications {
 })
 export class HeaderComponent
   extends UnsubscribeOnDestroyAdapter
-  implements OnInit
-{
+  implements OnInit {
   public config!: InConfiguration;
   userImg?: string;
   homePage?: string;
@@ -134,18 +133,22 @@ export class HeaderComponent
   ngOnInit() {
     this.config = this.configService.configData;
 
-    const userRole = this.authService.currentUserValue.role;
-    this.userImg = this.authService.currentUserValue.img;
+    const userRoles = this.authService.currentUserValue.requestContext.roles;
+    // this.userImg = this.authService.currentUserValue.img;
     this.docElement = document.documentElement;
 
-    if (userRole === Role.Admin) {
-      this.homePage = 'admin/dashboard/main';
-    } else if (userRole === Role.Teacher) {
-      this.homePage = 'teacher/dashboard';
-    } else if (userRole === Role.Student) {
-      this.homePage = 'student/dashboard';
-    } else {
-      this.homePage = 'admin/dashboard/main';
+    // if (userRole === Role.Admin) {
+    //   this.homePage = 'admin/dashboard/main';
+    // } else if (userRole === Role.Teacher) {
+    //   this.homePage = 'teacher/dashboard';
+    // } else if (userRole === Role.Student) {
+    //   this.homePage = 'student/dashboard';
+    // } else {
+    //   this.homePage = 'admin/dashboard/main';
+    // }
+
+    if (userRoles.length === 0 || userRoles[0] === Role.Approver) {
+      this.homePage = 'subscription';
     }
 
     this.langStoreValue = localStorage.getItem('lang') as string;

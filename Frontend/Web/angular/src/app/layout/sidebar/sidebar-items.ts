@@ -10,7 +10,7 @@ export const ROUTES: RouteInfo[] = [
     groupTitle: false,
     badge: '',
     badgeClass: '',
-    role: ['All'],
+    role: [],
     submenu: [],
   },
 

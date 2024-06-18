@@ -8,6 +8,7 @@ import { RightSidebarComponent } from '../../right-sidebar/right-sidebar.compone
 import { SidebarComponent } from '../../sidebar/sidebar.component';
 import { HeaderComponent } from '../../header/header.component';
 import { UnsubscribeOnDestroyAdapter } from '@shared';
+import { ResponseDto } from '@core/models/dto/response-dto';
 
 @Component({
   selector: 'app-main-layout',
@@ -42,7 +43,7 @@ export class MainLayoutComponent extends UnsubscribeOnDestroyAdapter implements 
     this.config = this.configService.configData;
 
     this.authService.isAuthenticated().subscribe({
-      next: (response: any) => {
+      next: (response: ResponseDto) => {
         this.isAuthenticated = response.data.isAuthenticated;
 
         if (!response.data.isAuthenticated) {

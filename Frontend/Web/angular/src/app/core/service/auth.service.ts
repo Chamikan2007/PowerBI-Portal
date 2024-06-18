@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { User } from '../models/user';
 import { Role } from '@core/models/role';
 import { ApiService } from './api-service.service';
+import { ResponseDto } from '@core/models/dto/response-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -20,39 +21,39 @@ export class AuthService {
       password: 'Alt@202405',
       firstName: 'Hemantha',
       lastName: 'K',
-      role: Role.Admin,
+      role: Role.Approver,
       token: 'admin-token',
     },
-    {
-      id: 1,
-      img: 'assets/images/user/admin.jpg',
-      username: 'admin@school.org',
-      password: 'admin@123',
-      firstName: 'Sarah',
-      lastName: 'Smith',
-      role: Role.Admin,
-      token: 'admin-token',
-    },
-    {
-      id: 2,
-      img: 'assets/images/user/teacher.jpg',
-      username: 'teacher@school.org',
-      password: 'teacher@123',
-      firstName: 'Ashton',
-      lastName: 'Cox',
-      role: Role.Teacher,
-      token: 'teacher-token',
-    },
-    {
-      id: 3,
-      img: 'assets/images/user/student.jpg',
-      username: 'student@school.org',
-      password: 'student@123',
-      firstName: 'Ashton',
-      lastName: 'Cox',
-      role: Role.Student,
-      token: 'student-token',
-    },
+    // {
+    //   id: 1,
+    //   img: 'assets/images/user/admin.jpg',
+    //   username: 'admin@school.org',
+    //   password: 'admin@123',
+    //   firstName: 'Sarah',
+    //   lastName: 'Smith',
+    //   role: Role.Admin,
+    //   token: 'admin-token',
+    // },
+    // {
+    //   id: 2,
+    //   img: 'assets/images/user/teacher.jpg',
+    //   username: 'teacher@school.org',
+    //   password: 'teacher@123',
+    //   firstName: 'Ashton',
+    //   lastName: 'Cox',
+    //   role: Role.Teacher,
+    //   token: 'teacher-token',
+    // },
+    // {
+    //   id: 3,
+    //   img: 'assets/images/user/student.jpg',
+    //   username: 'student@school.org',
+    //   password: 'student@123',
+    //   firstName: 'Ashton',
+    //   lastName: 'Cox',
+    //   role: Role.Student,
+    //   token: 'student-token',
+    // },
   ];
 
   constructor(
@@ -60,7 +61,7 @@ export class AuthService {
     private apiService: ApiService
   ) {
     this.currentUserSubject = new BehaviorSubject<User>(
-      JSON.parse(localStorage.getItem('currentUser') || '{}')
+      JSON.parse(localStorage.getItem('authData') || '{}')
     );
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -69,34 +70,34 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  isAuthenticated() {
+  isAuthenticated(): Observable<ResponseDto> {
     return this.apiService.get('Account', 'isAuthenticated', null);
   }
 
-  signIn(username: string, password: string) {
+  signIn(username: string, password: string): Observable<ResponseDto> {
     return this.apiService.post('Account', 'signIn', { userName: username, password: password });
   }
 
   // template
-  login(username: string, password: string) {
+  // login(username: string, password: string) {
 
-    const user = this.users.find((u) => u.username === username && u.password === password);
+  //   const user = this.users.find((u) => u.username === username && u.password === password);
 
-    if (!user) {
-      return this.error('Username or password is incorrect');
-    } else {
-      localStorage.setItem('currentUser', JSON.stringify(user));
-      this.currentUserSubject.next(user);
-      return this.ok({
-        id: user.id,
-        img: user.img,
-        username: user.username,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        token: user.token,
-      });
-    }
-  }
+  //   if (!user) {
+  //     return this.error('Username or password is incorrect');
+  //   } else {
+  //     localStorage.setItem('currentUser', JSON.stringify(user));
+  //     this.currentUserSubject.next(user);
+  //     return this.ok({
+  //       id: user.id,
+  //       img: user.img,
+  //       username: user.username,
+  //       firstName: user.firstName,
+  //       lastName: user.lastName,
+  //       token: user.token,
+  //     });
+  //   }
+  // }
   ok(body?: {
     id: number;
     img: string;
@@ -111,7 +112,7 @@ export class AuthService {
     return throwError(message);
   }
 
-  signOut() {
+  signOut(): Observable<ResponseDto> {
     return this.apiService.post('Account', 'signout', null);
   }
 

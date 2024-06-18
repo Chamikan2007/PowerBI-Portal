@@ -7,69 +7,72 @@ import { Role } from '@core';
 
 export const APP_ROUTE: Route[] = [
   {
+    path: 'authentication',
+    component: AuthLayoutComponent,
+    loadChildren: () => import('./authentication/auth.routes').then((m) => m.AUTH_ROUTE),
+  },
+  {
     path: '',
     component: MainLayoutComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: '', redirectTo: '/authentication/signin', pathMatch: 'full' },
-
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: '/authentication/signin'
+      },
       {
         path: 'subscriptions',
         canActivate: [AuthGuard],
-        // data: {
-        //   role: Role.Admin,
-        // },
+        data: {
+          role: Role.Approver,
+        },
         loadChildren: () => import('./subscriptions/subscriptions.routes').then((m) => m.SUBSCRIPTIONS_ROUTE),
       },
-
       {
         path: 'admin',
         canActivate: [AuthGuard],
-        // data: {
-        //   role: Role.Admin,
-        // },
+        data: {
+          role: Role.Approver,
+        },
         loadChildren: () =>
           import('./admin/admin.routes').then((m) => m.ADMIN_ROUTE),
       },
-      {
-        path: 'teacher',
-        canActivate: [AuthGuard],
-        data: {
-          role: Role.Teacher,
-        },
-        loadChildren: () =>
-          import('./teacher/teacher.routes').then((m) => m.TEACHER_ROUTE),
-      },
-      {
-        path: 'student',
-        canActivate: [AuthGuard],
-        data: {
-          role: Role.Student,
-        },
-        loadChildren: () =>
-          import('./student/student.routes').then((m) => m.STUDENT_ROUTE),
-      },
-      {
-        path: 'extra-pages',
-        loadChildren: () =>
-          import('./extra-pages/extra-pages.routes').then(
-            (m) => m.EXTRA_PAGES_ROUTE
-          ),
-      },
-      {
-        path: 'multilevel',
-        loadChildren: () =>
-          import('./multilevel/multilevel.routes').then(
-            (m) => m.MULTILEVEL_ROUTE
-          ),
-      },
-    ],
-  },
-  {
-    path: 'authentication',
-    component: AuthLayoutComponent,
-    loadChildren: () =>
-      import('./authentication/auth.routes').then((m) => m.AUTH_ROUTE),
-  },
-  { path: '**', component: Page404Component },
+      // {
+      //   path: 'teacher',
+      //   canActivate: [AuthGuard],
+      //   data: {
+      //     role: Role.Teacher,
+      //   },
+      //   loadChildren: () =>
+      //     import('./teacher/teacher.routes').then((m) => m.TEACHER_ROUTE),
+      // },
+      // {
+      //   path: 'student',
+      //   canActivate: [AuthGuard],
+      //   data: {
+      //     role: Role.Student,
+      //   },
+      //   loadChildren: () =>
+      //     import('./student/student.routes').then((m) => m.STUDENT_ROUTE),
+      // },
+      // {
+      //   path: 'extra-pages',
+      //   loadChildren: () =>
+      //     import('./extra-pages/extra-pages.routes').then(
+      //       (m) => m.EXTRA_PAGES_ROUTE
+      //     ),
+      // },
+      // {
+      //   path: 'multilevel',
+      //   loadChildren: () =>
+      //     import('./multilevel/multilevel.routes').then(
+      //       (m) => m.MULTILEVEL_ROUTE
+      //     ),
+      // },
+      // ],
+      // },
+      { path: '**', component: Page404Component },
+    ]
+  }
 ];

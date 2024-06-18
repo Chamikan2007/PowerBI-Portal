@@ -20,23 +20,26 @@
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Date</th>
+                                            <th>Report</th>
+                                            <th>Email</th>
+                                            <th>Status</th>
                                             <th>Requested By</th>
-                                            <th>Assigned To</th>
-                                            <th>Purpose</th>
+                                            <th>Approved By</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="table-img">
-                                                date
+                                        <tr *ngIf="subscriptionList.length === 0">
+                                            <td colspan="6" class="text-center font-italic">
+                                                No records found.
                                             </td>
-                                            <td>John Doe</td>
-                                            <td><a href="mailto:test@gmail.com"> Jacob Ryan </a></td>
-                                            <td>
-                                                <div class="badge col-red">Cricket</div>
-                                            </td>
+                                        </tr>
+                                        <tr *ngFor="let subscription of subscriptionList;">
+                                            <td class="table-img">{{subscription.report}}</td>
+                                            <td><a href="mailto:{{subscription.report}}">{{subscription.email}}</a></td>
+                                            <td>{{subscription.status}}</td>
+                                            <td>{{subscription.requesterName}}</td>
+                                            <td>{{subscription.approvalLevels.length}}</td>
                                             <td>
                                                 <!-- <button mat-icon-button class="tbl-action-btn">
                                                     <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'" (onClicked)="editClicked($event)"></app-feather-icons>

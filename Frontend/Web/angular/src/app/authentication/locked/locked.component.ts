@@ -37,11 +37,8 @@ export class LockedComponent implements OnInit {
     this.authForm = this.formBuilder.group({
       password: ['', Validators.required],
     });
-    this.userImg = this.authService.currentUserValue.img;
-    this.userFullName =
-      this.authService.currentUserValue.firstName +
-      ' ' +
-      this.authService.currentUserValue.lastName;
+    // this.userImg = this.authService.currentUserValue.img;
+    this.userFullName = this.authService.currentUserValue.requestContext.displayName;
   }
   get f() {
     return this.authForm.controls;
@@ -52,16 +49,16 @@ export class LockedComponent implements OnInit {
     if (this.authForm.invalid) {
       return;
     } else {
-      const role = this.authService.currentUserValue.role;
-      if (role === Role.All || role === Role.Admin) {
-        this.router.navigate(['/admin/dashboard/main']);
-      } else if (role === Role.Teacher) {
-        this.router.navigate(['/teacher/dashboard']);
-      } else if (role === Role.Student) {
-        this.router.navigate(['/student/dashboard']);
-      } else {
-        this.router.navigate(['/authentication/signin']);
-      }
+      const role = this.authService.currentUserValue.requestContext.roles;
+      // if (role === Role.All || role === Role.Admin) {
+      //   this.router.navigate(['/admin/dashboard/main']);
+      // } else if (role === Role.Teacher) {
+      //   this.router.navigate(['/teacher/dashboard']);
+      // } else if (role === Role.Student) {
+      //   this.router.navigate(['/student/dashboard']);
+      // } else {
+      //   this.router.navigate(['/authentication/signin']);
+      // }
     }
   }
 }

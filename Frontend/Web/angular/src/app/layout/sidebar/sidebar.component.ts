@@ -37,6 +37,7 @@ export class SidebarComponent extends UnsubscribeOnDestroyAdapter implements OnI
   listMaxHeight?: string;
   listMaxWidth?: string;
   userFullName?: string;
+  userEmail?: string;
   userImg?: string;
   userType?: string;
   headerHeight = 60;
@@ -84,24 +85,27 @@ export class SidebarComponent extends UnsubscribeOnDestroyAdapter implements OnI
   }
   ngOnInit() {
     if (this.authService.currentUserValue) {
-      const userRole = this.authService.currentUserValue.role;
-      this.userFullName =
-        this.authService.currentUserValue.firstName +
-        ' ' +
-        this.authService.currentUserValue.lastName;
-      this.userImg = this.authService.currentUserValue.img;
+      const userRoles = this.authService.currentUserValue.requestContext.roles;
+      this.userFullName = this.authService.currentUserValue.requestContext.displayName;
+      this.userEmail = this.authService.currentUserValue.requestContext.email;
+      // this.userImg = this.authService.currentUserValue.img;
 
       this.sidebarItems = ROUTES.filter(
-        (x) => x.role.indexOf(userRole) !== -1 || x.role.indexOf('All') !== -1
+        (x) => (x.role.length === 0 || userRoles.length === 0 || userRoles.indexOf(x.role[0]) > -1)
       );
-      if (userRole === Role.Admin) {
-        this.userType = Role.Admin;
-      } else if (userRole === Role.Teacher) {
-        this.userType = Role.Teacher;
-      } else if (userRole === Role.Student) {
-        this.userType = Role.Student;
-      } else {
-        this.userType = Role.Admin;
+
+      // if (userRole === Role.Admin) {
+      //   this.userType = Role.Admin;
+      // } else if (userRole === Role.Teacher) {
+      //   this.userType = Role.Teacher;
+      // } else if (userRole === Role.Student) {
+      //   this.userType = Role.Student;
+      // } else {
+      //   this.userType = Role.Admin;
+      // }
+
+      if (userRoles.indexOf(Role.Approver) > -1) {
+        this.userType = Role.Approver;
       }
     }
 
