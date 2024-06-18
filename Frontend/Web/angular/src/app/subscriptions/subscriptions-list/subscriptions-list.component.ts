@@ -15,7 +15,7 @@ import { SubscriptionService } from '@core/service/subscription.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ResponseDto } from '@core/models/dto/response-dto';
-import { SubscriptionDto } from '@core/models/dto/subscription-dto';
+import { ApprovalStatus, SubscriptionDto } from '@core/models/dto/subscription-dto';
 
 @Component({
   selector: 'app-subscriptions-list',
@@ -32,6 +32,7 @@ import { SubscriptionDto } from '@core/models/dto/subscription-dto';
 export class SubscriptionsListComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   subscriptionList: any[] = [];
+  approvalStatus = ApprovalStatus;
 
   constructor(
     private activatedRoute: ActivatedRoute,

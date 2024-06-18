@@ -36,9 +36,12 @@ export class SubscriptionService {
     return this.apiService.delete('Subscriptions', subscriptionId, null);
   }
 
+  /**
+   * Approved, Rejected
+   */
   sendSubscriptionAction(subscriptionId: string, action: string, comment: string): Observable<ResponseDto> {
     return this.apiService.post('Subscriptions', `${subscriptionId}/action/${action}`, {
-      comment: comment
+      comment: comment.length === 0 ? null : comment
     });
   }
 }

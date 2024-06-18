@@ -12,8 +12,8 @@
                         </div>
                     </div>
                     <div class="body">
-                        <div class="row">
-                            <button mat-flat-button color="accent" class="btn ms-4 mb-2" type="button" (click)="newSubscriptionClicked()">New Subscription</button>
+                        <div class="row d-flex justify-content-end me-3">
+                            <button mat-flat-button color="accent" class="btn ms-4 mb-4" type="button" (click)="newSubscriptionClicked()">New Subscription</button>
                         </div>
                         <div class="tableBody">
                             <div class="table-responsive">
@@ -24,7 +24,6 @@
                                             <th>Email</th>
                                             <th>Status</th>
                                             <th>Requested By</th>
-                                            <th>Approved By</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -36,16 +35,15 @@
                                         </tr>
                                         <tr *ngFor="let subscription of subscriptionList;">
                                             <td class="table-img">{{subscription.report}}</td>
-                                            <td><a href="mailto:{{subscription.report}}">{{subscription.email}}</a></td>
-                                            <td>{{subscription.status}}</td>
+                                            <td><a href="mailto:{{subscription.email}}">{{subscription.email}}</a></td>
+                                            <td>{{ approvalStatus[subscription.status]}}</td>
                                             <td>{{subscription.requesterName}}</td>
-                                            <td>{{subscription.approvalLevels.length}}</td>
                                             <td>
                                                 <!-- <button mat-icon-button class="tbl-action-btn">
                                                     <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'" (onClicked)="editClicked($event)"></app-feather-icons>
                                                 </button> -->
                                                 <button mat-icon-button class="tbl-action-btn">
-                                                    <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'" (onClicked)="deleteClicked($event)"></app-feather-icons>
+                                                    <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'" (onClicked)="deleteClicked(subscription)"></app-feather-icons>
                                                 </button>
                                             </td>
                                         </tr>

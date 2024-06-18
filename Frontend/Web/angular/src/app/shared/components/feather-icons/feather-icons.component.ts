@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FeatherModule } from 'angular-feather';
 
@@ -6,7 +7,10 @@ import { FeatherModule } from 'angular-feather';
   templateUrl: './feather-icons.component.html',
   styleUrls: ['./feather-icons.component.scss'],
   standalone: true,
-  imports: [FeatherModule],
+  imports: [
+    CommonModule,
+    FeatherModule
+  ],
 })
 export class FeatherIconsComponent {
   @Input() public icon?: string;
@@ -14,9 +18,7 @@ export class FeatherIconsComponent {
 
   @Output() onClicked: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor() {
-    // constructor
-  }
+  constructor() { }
 
   onClick() {
     this.onClicked.emit();

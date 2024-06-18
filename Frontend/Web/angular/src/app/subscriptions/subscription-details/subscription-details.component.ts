@@ -60,6 +60,9 @@ export class SubscriptionDetailsComponent implements OnInit {
       return;
     }
     else {
+      this.model.report = this.f['report'].value;
+      this.model.email = this.f['email'].value;
+
       this.subscriptionService.createSubscription(this.model).subscribe({
         next: (response: ResponseDto) => {
           if (response.isSuccess) {
