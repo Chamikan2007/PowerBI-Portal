@@ -21,10 +21,14 @@ export class SubscriptionService {
     return this.apiService.get('Subscriptions', 'forApprovalOfficer', { all: getAll });
   }
 
-  createSubscription(subscriptionDto: SubscriptionDto): Observable<ResponseDto> {
+  getReportsList(): Observable<ResponseDto> {
+    return this.apiService.get('Subscriptions', 'reports', null);
+  }
+
+  createSubscription(reportPath: string, email: string): Observable<ResponseDto> {
     return this.apiService.post('Subscriptions', '', {
-      report: subscriptionDto.report,
-      email: subscriptionDto.email
+      reportPath: reportPath,
+      email: email
     });
   }
 
@@ -39,9 +43,11 @@ export class SubscriptionService {
   /**
    * Approved, Rejected
    */
-  sendSubscriptionAction(subscriptionId: string, action: string, comment: string): Observable<ResponseDto> {
+  sendSubscriptionAction(subscriptionId: string, action: ActionType, comment: string): Observable<ResponseDto> {
     return this.apiService.post('Subscriptions', `${subscriptionId}/action/${action}`, {
       comment: comment.length === 0 ? null : comment
     });
   }
 }
+
+type ActionType = 'Approve' | 'Reject'; 

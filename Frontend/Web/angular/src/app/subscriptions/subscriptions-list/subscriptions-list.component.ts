@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ResponseDto } from '@core/models/dto/response-dto';
 import { ApprovalStatus, SubscriptionDto } from '@core/models/dto/subscription-dto';
+import { AuthService, Role } from '@core';
 
 @Component({
   selector: 'app-subscriptions-list',
@@ -34,13 +35,20 @@ export class SubscriptionsListComponent implements OnInit {
   subscriptionList: any[] = [];
   approvalStatus = ApprovalStatus;
 
+  currentUserId: string = '';
+  userRoles: Role[] = [];
+  approverRole = Role.Approver;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private authService: AuthService,
     private subscriptionService: SubscriptionService
   ) { }
 
   ngOnInit(): void {
+    this.currentUserId = this.authService.currentUserValue.requestContext.userId;
+    this.userRoles = this.authService.currentUserValue.requestContext.roles
     this.loadData();
   }
 
@@ -60,8 +68,9 @@ export class SubscriptionsListComponent implements OnInit {
     this.router.navigate(['0'], { relativeTo: this.activatedRoute.parent });
   }
 
-  openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+  openRejectCommentDialog(subscriptionId: string, enterAnimationDuration: string, exitAnimationDuration: string): void {
     this.dialog.open(SubscriptionRejectReasonComponent, {
+      data: { subscriptionId: subscriptionId },
       width: '600px',
       disableClose: true,
       enterAnimationDuration,
@@ -79,7 +88,25 @@ export class SubscriptionsListComponent implements OnInit {
   }
 
   deleteClicked(event: any) {
-    this.openDialog('100ms', '100ms');
-    // this.router.navigate(['0'], { relativeTo: this.activatedRoute.parent });
+    if (confirm('Are you sure you want to Delete this subscription?')) {
+      this.subscriptionService.deleteSubscription(event.subscriptionId).subscribe({
+        next: (response: ResponseDto) => {
+          if (response.isSuccess) {
+            this.loadData();
+          }
+        }
+      });
+    }
+  }
+
+  approveClicked(event: any) {
+
+  }
+
+  rejectClicked(event: any) {
+    if (confirm('Are you sure you want to Reject this subscription?')) {
+      this.openRejectCommentDialog(event.subscriptionId, '100ms', '100ms');
+      // this.router.navigate(['0'], { relativeTo: this.activatedRoute.parent });
+    }
   }
 }

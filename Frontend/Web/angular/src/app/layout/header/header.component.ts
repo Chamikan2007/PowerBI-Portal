@@ -148,7 +148,7 @@ export class HeaderComponent
     // }
 
     if (userRoles.length === 0 || userRoles[0] === Role.Approver) {
-      this.homePage = 'subscription';
+      this.homePage = 'subscriptions';
     }
 
     this.langStoreValue = localStorage.getItem('lang') as string;

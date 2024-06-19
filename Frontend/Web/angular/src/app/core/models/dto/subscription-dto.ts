@@ -1,11 +1,16 @@
 export class SubscriptionDto {
     subscriptionId: string = '';
-    report: string = '';
+    report: ReportDto = new ReportDto();
     email: string = '';
     status: ApprovalStatus = ApprovalStatus.None;
     requesterName: string = '';
     requesterId: string = '';
     approvalLevels: ApproverLevelDto[] = [];
+}
+
+export class ReportDto {
+    name: string = '';
+    path: string = ''
 }
 
 export class ApproverLevelDto {

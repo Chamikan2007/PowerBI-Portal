@@ -2,7 +2,7 @@
 <mat-dialog-content>
     <form class="validate-form" [formGroup]="rejectionForm" (ngSubmit)="onSubmitRejection()">
         <div class="row">
-            <div class="col col-12">
+            <div class="col col-12 mt-3">
                 <mat-form-field class="example-full-width" appearance="outline">
                     <mat-label>Reason</mat-label>
                     <textarea matInput formControlName="reason" class="reason"></textarea>
@@ -17,9 +17,9 @@
         @if (error) {
         <div class="alert alert-danger mt-3 mb-0">{{error}}</div>
         }
+        <mat-dialog-actions align="end">
+            <button mat-button mat-dialog-close>Cancel</button>
+            <button mat-flat-button color="accent" [class.auth-spinner]="loading" [disabled]="loading" class="btn" [disabled]="!rejectionForm.valid " type="submit">Submit</button>
+        </mat-dialog-actions>
     </form>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-flat-button color="accent" [class.auth-spinner]="loading" [disabled]="loading" class="btn" [disabled]="!rejectionForm.valid " type="submit">Submit</button>
-</mat-dialog-actions>

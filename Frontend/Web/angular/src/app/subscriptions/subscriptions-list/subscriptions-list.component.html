@@ -34,17 +34,22 @@
                                             </td>
                                         </tr>
                                         <tr *ngFor="let subscription of subscriptionList;">
-                                            <td class="table-img">{{subscription.report}}</td>
+                                            <td class="table-img" [title]="subscription.report.path">{{subscription.report.name}}</td>
                                             <td><a href="mailto:{{subscription.email}}">{{subscription.email}}</a></td>
                                             <td>{{ approvalStatus[subscription.status]}}</td>
                                             <td>{{subscription.requesterName}}</td>
-                                            <td>
-                                                <!-- <button mat-icon-button class="tbl-action-btn">
-                                                    <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'" (onClicked)="editClicked($event)"></app-feather-icons>
-                                                </button> -->
-                                                <button mat-icon-button class="tbl-action-btn">
-                                                    <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'" (onClicked)="deleteClicked(subscription)"></app-feather-icons>
+                                            <td class="d-flex justify-content-start">
+                                                <button *ngIf="currentUserId === subscription.requesterId" type="button" class="tbl-action-btn" title="Delete Subscription" (click)="deleteClicked(subscription)">
+                                                    <i class="fa fa-trash tbl-fav-delete"></i>
                                                 </button>
+                                                <div *ngIf="currentUserId === subscription.requesterId && userRoles.length > 0 && userRoles[0] === approverRole">
+                                                    <button type="button" class="tbl-action-btn" title="Aprove Subscription" (click)="approveClicked(subscription)">
+                                                        <i class="fas fa-tick fs-5 tbl-fav-approve"></i>
+                                                    </button>
+                                                    <button type="button" class="tbl-action-btn" title="Reject Subscription" (click)="rejectClicked(subscription)">
+                                                        <i class="fas fa-times fs-5 tbl-fav-delete"></i>
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     </tbody>
