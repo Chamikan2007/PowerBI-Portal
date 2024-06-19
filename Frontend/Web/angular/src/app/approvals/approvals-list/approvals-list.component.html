@@ -5,16 +5,13 @@
                 <div class="card">
                     <div class="header">
                         <div class="w-100 d-flex justify-content-between">
-                            <h2 class="ms-3">Subscriptions</h2>
+                            <h2 class="ms-3">Approval Pending Subscriptions</h2>
                             <button class="icon-button" (click)="goBack()">
                                 <i class="fa-solid fa-chevron-left"></i>
                             </button>
                         </div>
                     </div>
                     <div class="body">
-                        <div class="row d-flex justify-content-end me-3">
-                            <button mat-flat-button color="accent" class="btn ms-4 mb-4" type="button" (click)="newSubscriptionClicked()">New Subscription</button>
-                        </div>
                         <div class="tableBody">
                             <div class="table-responsive">
                                 <table class="table table-hover">
@@ -39,8 +36,11 @@
                                             <td>{{ approvalStatus[subscription.status]}}</td>
                                             <td>{{subscription.requesterName}}</td>
                                             <td>
-                                                <button *ngIf="currentUserId === subscription.requesterId" type="button" class="tbl-action-btn" title="Delete Subscription" (click)="deleteClicked(subscription)">
-                                                    <i class="fa fa-trash tbl-fav-delete"></i>
+                                                <button type="button" class="tbl-action-btn" title="Approve Subscription" (click)="approveClicked(subscription)">
+                                                    <i class="fas fa-check fs-5 tbl-fav-approve"></i>
+                                                </button>
+                                                <button type="button" class="tbl-action-btn" title="Reject Subscription" (click)="rejectClicked(subscription)">
+                                                    <i class="fas fa-times fs-5 tbl-fav-delete"></i>
                                                 </button>
                                             </td>
                                         </tr>

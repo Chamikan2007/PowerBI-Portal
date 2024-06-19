@@ -155,7 +155,6 @@ export class SidebarComponent extends UnsubscribeOnDestroyAdapter implements OnI
       {
         next: (response: any) => {
           this.storageProvider.clearStorage();
-
           this.router.navigate(['/authentication/signin']);
         },
       });

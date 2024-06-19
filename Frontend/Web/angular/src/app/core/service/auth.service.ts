@@ -5,13 +5,12 @@ import { User } from '../models/user';
 import { Role } from '@core/models/role';
 import { ApiService } from './api-service.service';
 import { ResponseDto } from '@core/models/dto/response-dto';
+import { StorageProvider } from './storage-provider.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private currentUserSubject: BehaviorSubject<User>;
-  public currentUser: Observable<User>;
 
   private users = [
     {
@@ -58,17 +57,20 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
+    private storageProvider: StorageProvider,
     private apiService: ApiService
   ) {
-    this.currentUserSubject = new BehaviorSubject<User>(
-      JSON.parse(localStorage.getItem('authData') || '{}')
-    );
-    this.currentUser = this.currentUserSubject.asObservable();
+    // this.currentUserSubject = new BehaviorSubject<User>(
+    //   JSON.parse(localStorage.getItem('authData') || '{}')
+    // );
+    // this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  public get currentUserValue(): User {
-    return this.currentUserSubject.value;
+  public get currentUserValue() {
+    let data = this.storageProvider.getStorage('authData');
+    return data ? data as User : data;
   }
+
 
   isAuthenticated(): Observable<ResponseDto> {
     return this.apiService.get('Account', 'isAuthenticated', null);
@@ -119,7 +121,7 @@ export class AuthService {
   logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(this.currentUserValue);
+    // this.currentUserSubject.next(this.currentUserValue);
     return of({ success: false });
   }
 }

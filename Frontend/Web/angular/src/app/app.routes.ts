@@ -24,10 +24,15 @@ export const APP_ROUTE: Route[] = [
       {
         path: 'subscriptions',
         canActivate: [AuthGuard],
+        loadChildren: () => import('./subscriptions/subscriptions.routes').then((m) => m.SUBSCRIPTIONS_ROUTE),
+      },
+      {
+        path: 'approvals',
+        canActivate: [AuthGuard],
         data: {
           role: Role.Approver,
         },
-        loadChildren: () => import('./subscriptions/subscriptions.routes').then((m) => m.SUBSCRIPTIONS_ROUTE),
+        loadChildren: () => import('./approvals/approvals.routes').then((m) => m.APPROVALS_ROUTE),
       },
       {
         path: 'admin',

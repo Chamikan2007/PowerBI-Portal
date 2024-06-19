@@ -1,3 +1,4 @@
+import { Role } from '@core';
 import { RouteInfo } from './sidebar.metadata';
 export const ROUTES: RouteInfo[] = [
 
@@ -11,6 +12,18 @@ export const ROUTES: RouteInfo[] = [
     badge: '',
     badgeClass: '',
     role: [],
+    submenu: [],
+  },
+  {
+    path: '/approvals',
+    title: 'Approvals',
+    iconType: 'material-icons-outlined',
+    icon: 'check',
+    class: '',
+    groupTitle: false,
+    badge: '',
+    badgeClass: '',
+    role: [Role.Approver],
     submenu: [],
   },
 

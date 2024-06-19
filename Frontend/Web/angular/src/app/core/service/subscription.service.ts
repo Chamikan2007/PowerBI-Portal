@@ -50,4 +50,4 @@ export class SubscriptionService {
   }
 }
 
-type ActionType = 'Approve' | 'Reject'; 
+type ActionType = 'Approved' | 'Rejected'; 

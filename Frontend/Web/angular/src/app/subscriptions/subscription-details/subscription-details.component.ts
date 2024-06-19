@@ -115,7 +115,6 @@ export class SubscriptionDetailsComponent implements OnInit {
       return;
     }
     else {
-      debugger;
       this.model.email = this.f['email'].value;
 
       this.subscriptionService.createSubscription(this.model.report.path, this.model.email).subscribe({

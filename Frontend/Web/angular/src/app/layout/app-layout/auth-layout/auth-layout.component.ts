@@ -1,9 +1,9 @@
 import { Direction, BidiModule } from '@angular/cdk/bidi';
-import { Component, Inject, Renderer2 } from '@angular/core';
-import { DirectionService, InConfiguration } from '@core';
+import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
+import { AuthService, DirectionService, InConfiguration } from '@core';
 import { ConfigService } from '@config';
 import { DOCUMENT } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { UnsubscribeOnDestroyAdapter } from '@shared';
 
 @Component({
@@ -13,7 +13,7 @@ import { UnsubscribeOnDestroyAdapter } from '@shared';
   standalone: true,
   imports: [BidiModule, RouterOutlet],
 })
-export class AuthLayoutComponent extends UnsubscribeOnDestroyAdapter {
+export class AuthLayoutComponent extends UnsubscribeOnDestroyAdapter implements OnInit {
   direction!: Direction;
   public config!: InConfiguration;
 
@@ -21,7 +21,9 @@ export class AuthLayoutComponent extends UnsubscribeOnDestroyAdapter {
     @Inject(DOCUMENT) private document: Document,
     private directoryService: DirectionService,
     private configService: ConfigService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private router: Router,
+    private authService: AuthService
   ) {
     super();
     this.config = this.configService.configData;
@@ -58,6 +60,12 @@ export class AuthLayoutComponent extends UnsubscribeOnDestroyAdapter {
       );
     } else {
       this.renderer.addClass(this.document.body, this.config.layout.variant);
+    }
+  }
+
+  ngOnInit(): void {
+    if (this.authService.currentUserValue) {
+      this.router.navigate(['/', 'subscriptions']);
     }
   }
 }

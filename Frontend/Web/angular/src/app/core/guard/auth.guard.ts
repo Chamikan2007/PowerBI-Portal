@@ -12,7 +12,7 @@ export class AuthGuard {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     let authData = this.authService.currentUserValue;
-    if (authData) {
+    if (authData && authData.requestContext) {
       const userRole = authData.requestContext.roles;
 
       if (route.data['role'] && route.data['role'].indexOf(userRole) === -1) {

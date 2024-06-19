@@ -9,7 +9,6 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
-import { SubscriptionRejectReasonComponent } from './subscription-reject-reason/subscription-reject-reason.component';
 import { MatButtonModule } from '@angular/material/button';
 import { SubscriptionService } from '@core/service/subscription.service';
 import { CommonModule } from '@angular/common';
@@ -68,16 +67,6 @@ export class SubscriptionsListComponent implements OnInit {
     this.router.navigate(['0'], { relativeTo: this.activatedRoute.parent });
   }
 
-  openRejectCommentDialog(subscriptionId: string, enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(SubscriptionRejectReasonComponent, {
-      data: { subscriptionId: subscriptionId },
-      width: '600px',
-      disableClose: true,
-      enterAnimationDuration,
-      exitAnimationDuration,
-    });
-  }
-
   goBack() {
     this.router.navigate(['/', 'admin', 'dashboard']);
   }
@@ -96,17 +85,6 @@ export class SubscriptionsListComponent implements OnInit {
           }
         }
       });
-    }
-  }
-
-  approveClicked(event: any) {
-
-  }
-
-  rejectClicked(event: any) {
-    if (confirm('Are you sure you want to Reject this subscription?')) {
-      this.openRejectCommentDialog(event.subscriptionId, '100ms', '100ms');
-      // this.router.navigate(['0'], { relativeTo: this.activatedRoute.parent });
     }
   }
 }

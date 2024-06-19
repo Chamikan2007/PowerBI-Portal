@@ -17,10 +17,10 @@
               <div class="profile-usertitle-job ">{{userEmail}} </div>
             </div>
           </li>
+          <hr>
           <!-- Top Most level menu -->
           @for (sidebarItem of sidebarItems; track sidebarItem) {
           <li [routerLinkActive]="sidebarItem.submenu.length !== 0 ? 'active' : 'active-top'">
-            <hr>
             @if (sidebarItem.groupTitle === true) {
             <div class="header">{{sidebarItem.title | translate}}</div>
             }
@@ -72,6 +72,7 @@
             }
           </li>
           }
+          <hr>
           <li>
             <a class="" (click)="logout()" class="menu-top">
               <i class="material-icons-outlined">power_settings_new</i>

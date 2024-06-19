@@ -1,14 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogRef, MatDialogTitle, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ResponseDto } from '@core/models/dto/response-dto';
-import { AuthService } from '@core/service/auth.service';
 import { SubscriptionService } from '@core/service/subscription.service';
 import { UnsubscribeOnDestroyAdapter } from '@shared/UnsubscribeOnDestroyAdapter';
 
@@ -21,7 +19,6 @@ import { UnsubscribeOnDestroyAdapter } from '@shared/UnsubscribeOnDestroyAdapter
     MatDialogActions,
     MatDialogClose,
 
-    RouterLink,
     MatButtonModule,
     CommonModule,
     FormsModule,
@@ -41,12 +38,12 @@ export class SubscriptionRejectReasonComponent extends UnsubscribeOnDestroyAdapt
   error = '';
   // hide = true;
 
+  isRejectSuccess: boolean = false;
+
   constructor(
+    public matDialogRef: MatDialogRef<SubscriptionRejectReasonComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: UntypedFormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private authService: AuthService,
     private subscriptionService: SubscriptionService,
   ) {
     super();
@@ -55,6 +52,10 @@ export class SubscriptionRejectReasonComponent extends UnsubscribeOnDestroyAdapt
   ngOnInit(): void {
     this.rejectionForm = this.formBuilder.group({
       reason: ['', Validators.required,],
+    });
+
+    this.matDialogRef.afterClosed().subscribe(result => {
+      this.matDialogRef.close({ isSuccess: this.isRejectSuccess });
     });
   }
 
@@ -68,16 +69,10 @@ export class SubscriptionRejectReasonComponent extends UnsubscribeOnDestroyAdapt
       return;
     }
     else {
-      debugger;
-      this.subscriptionService.sendSubscriptionAction(this.data.subscriptionId, 'Reject', this.f['reason'].value).subscribe({
+      this.subscriptionService.sendSubscriptionAction(this.data.subscriptionId, 'Rejected', this.f['reason'].value).subscribe({
         next: (response: ResponseDto) => {
-          debugger;
-          if (response.isSuccess) {
-
-          }
-        },
-        error: (error: any) => {
-          debugger;
+          this.isRejectSuccess = response.isSuccess
+          this.matDialogRef.close({ isSuccess: this.isRejectSuccess });
         }
       });
     }
