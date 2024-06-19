@@ -9,6 +9,7 @@ import { SidebarComponent } from '../../sidebar/sidebar.component';
 import { HeaderComponent } from '../../header/header.component';
 import { UnsubscribeOnDestroyAdapter } from '@shared';
 import { ResponseDto } from '@core/models/dto/response-dto';
+import { StorageProvider } from '@core/service/storage-provider.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -35,6 +36,7 @@ export class MainLayoutComponent extends UnsubscribeOnDestroyAdapter implements 
     private router: Router,
     private directoryService: DirectionService,
     private authService: AuthService,
+    private storageProvider: StorageProvider,
     private configService: ConfigService,
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2
@@ -49,6 +51,7 @@ export class MainLayoutComponent extends UnsubscribeOnDestroyAdapter implements 
         if (!response.data.isAuthenticated) {
           this.loadingText = "Relogin required... Redirecting to Login page...";
           setTimeout(() => {
+            storageProvider.clearStorage();
             this.router.navigate(['/authentication/signin']);
           }, 2000);
         }
