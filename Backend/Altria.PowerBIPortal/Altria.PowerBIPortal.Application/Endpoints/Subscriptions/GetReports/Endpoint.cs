@@ -13,7 +13,6 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
 
             var result = reports?.Select(r => new ReportModel
             {
-                Id = r.Id,
                 Name = r.Name,
                 Path= r.Path,
             });

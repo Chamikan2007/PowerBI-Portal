@@ -9,13 +9,13 @@ public class Subscription : ApprovalRequest<SubscriptionApprovalLevel>
     {
     }
 
-    public required string Report { get; set; }
+    public required string ReportPath { get; set; }
 
     public required string Email { get; set; }
 
-    public static Subscription Create(string report, string email, User requester)
+    public static Subscription Create(string reportPath, string email, User requester)
     {
-        var subscription =  new Subscription() { Report = report, Email = email, Requester = requester };
+        var subscription =  new Subscription() { ReportPath = reportPath, Email = email, Requester = requester };
         subscription.ApprovalRequestLevels.Add(SubscriptionApprovalLevel.Create(subscription, 1));
 
         return subscription;

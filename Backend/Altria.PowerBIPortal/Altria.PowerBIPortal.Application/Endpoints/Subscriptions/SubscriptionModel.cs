@@ -6,7 +6,7 @@ public class SubscriptionModel
 {
     public Guid SubscriptionId { get; init; }
 
-    public required string Report { get; init; }
+    public required ReportModel Report { get; init; }
 
     public required string Email { get; init; }
 

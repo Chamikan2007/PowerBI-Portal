@@ -22,7 +22,7 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
             {
                 SubscriptionId = s.Id,
                 Email = s.Email,
-                Report = s.Report,
+                Report = ReportModel.FromPath(s.ReportPath),
                 Status = s.Status,
                 RequesterId = s.Requester.Id,
                 RequesterName = s.Requester.Name,

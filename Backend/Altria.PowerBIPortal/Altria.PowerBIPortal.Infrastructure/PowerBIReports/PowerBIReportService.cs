@@ -18,4 +18,10 @@ public class PowerBIReportService : IPowerBIReportService
         var response = await _powerBIClient.GetFromJsonAsync<ReportsResponse<List<Report>>>("reports");
         return response?.Value;
     }
+
+    public async Task<Report?> GetReportsByIdAsync(string reportId)
+    {
+        var response = await _powerBIClient.GetFromJsonAsync<Report>($"Reports(path='{reportId}')");
+        return response;
+    }
 }
