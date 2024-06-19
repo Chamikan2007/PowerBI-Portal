@@ -1,6 +1,6 @@
 ﻿using Altria.PowerBIPortal.Application.Infrastructure;
 using Altria.PowerBIPortal.Domain;
-using Altria.PowerBIPortal.Domain.Contracts;
+using Altria.PowerBIPortal.Domain.Contracts.Repositories;
 using Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
 using Microsoft.AspNetCore.Mvc;
 

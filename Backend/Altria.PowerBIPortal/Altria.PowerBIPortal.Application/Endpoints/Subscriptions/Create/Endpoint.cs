@@ -5,6 +5,7 @@ using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions;
 using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionWhiteList;
 using Altria.PowerBIPortal.Domain.Contracts;
+using Altria.PowerBIPortal.Domain.Contracts.Repositories;
 using Altria.PowerBIPortal.Domain.Validators;
 using Microsoft.AspNetCore.Identity;
 

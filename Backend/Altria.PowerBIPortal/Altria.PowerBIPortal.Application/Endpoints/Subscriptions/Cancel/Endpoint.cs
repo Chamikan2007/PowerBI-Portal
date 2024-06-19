@@ -1,6 +1,7 @@
 ﻿using Altria.PowerBIPortal.Application.Infrastructure;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions;
 using Altria.PowerBIPortal.Domain.Contracts;
+using Altria.PowerBIPortal.Domain.Contracts.Repositories;
 using Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
 
 namespace Altria.PowerBIPortal.Application.Endpoints.Subscriptions.Cancel

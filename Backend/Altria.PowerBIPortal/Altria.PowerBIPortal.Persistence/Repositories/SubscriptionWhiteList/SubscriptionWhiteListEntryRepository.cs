@@ -1,5 +1,5 @@
 ﻿using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionWhiteList;
-using Altria.PowerBIPortal.Domain.Contracts;
+using Altria.PowerBIPortal.Domain.Contracts.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace Altria.PowerBIPortal.Persistence.Repositories.SubscriptionWhiteList;

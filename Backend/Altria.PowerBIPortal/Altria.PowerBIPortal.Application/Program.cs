@@ -4,12 +4,17 @@ using Altria.PowerBIPortal.Domain;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Managers;
 using Altria.PowerBIPortal.Domain.Contracts;
+using Altria.PowerBIPortal.Domain.Contracts.IPowerBIService;
+using Altria.PowerBIPortal.Domain.Contracts.Repositories;
+using Altria.PowerBIPortal.Infrastructure.PowerBIReports;
 using Altria.PowerBIPortal.Infrastructure.WindowsActiveDirectory;
 using Altria.PowerBIPortal.Persistence;
 using Altria.PowerBIPortal.Persistence.Repositories.ApprovalConfigs;
 using Altria.PowerBIPortal.Persistence.Repositories.Subscriptions;
 using Altria.PowerBIPortal.Persistence.Repositories.SubscriptionWhiteList;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using System.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +24,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.RegisterEndpoints();
+
+#region Add CORS policies
 
 builder.Services.AddCors(options =>
 {
@@ -32,6 +39,8 @@ builder.Services.AddCors(options =>
                .AllowCredentials();
     });
 });
+
+#endregion
 
 #region Register dataContext / identity
 
@@ -51,7 +60,7 @@ builder.Services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<DataContext>
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    var cookieSettings =builder.Configuration.GetSection("CookieSettings");
+    var cookieSettings = builder.Configuration.GetSection("CookieSettings");
     var sameSiteMode = SameSiteMode.Strict;
     if (cookieSettings != null)
     {
@@ -81,6 +90,33 @@ builder.Services.AddScoped<IExternalUserAuthenticator, ActiveDirectoryAuthentica
 builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 builder.Services.AddScoped<ISubscriptionWhiteListEntryRepository, SubscriptionWhiteListEntryRepository>();
 builder.Services.AddScoped<IApprovalOfficerRepository, ApprovalOfficerRepository>();
+
+#endregion
+
+#region Power BI report service
+
+var reportConfig = builder.Configuration.GetRequiredSection("ReportServiceConfiguration");
+
+builder.Services.AddHttpClient<IPowerBIReportService, PowerBIReportService>((services, client) =>
+    {
+        client.BaseAddress = reportConfig.GetValue<Uri>("BaseUrl");
+
+        client.DefaultRequestHeaders.Accept.Clear();
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+    })
+    .ConfigurePrimaryHttpMessageHandler(() =>
+    {
+        var userName = reportConfig.GetValue<string>("UserName");
+        var password = reportConfig.GetValue<string>("Password");
+
+        var handler = new SocketsHttpHandler()
+        {
+            Credentials = new NetworkCredential(userName, password),
+            PooledConnectionLifetime = TimeSpan.FromMinutes(5),
+        };
+        return handler;
+    })
+    .SetHandlerLifetime(Timeout.InfiniteTimeSpan);
 
 #endregion
 

@@ -1,5 +1,5 @@
 ﻿using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities.External;
-using Altria.PowerBIPortal.Domain.Contracts;
+using Altria.PowerBIPortal.Domain.Contracts.Repositories;
 using Microsoft.Extensions.Options;
 using System.DirectoryServices.Protocols;
 using System.Net;

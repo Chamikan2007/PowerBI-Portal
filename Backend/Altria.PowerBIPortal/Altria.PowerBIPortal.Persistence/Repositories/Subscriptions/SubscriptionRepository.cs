@@ -1,5 +1,5 @@
 ﻿using Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions;
-using Altria.PowerBIPortal.Domain.Contracts;
+using Altria.PowerBIPortal.Domain.Contracts.Repositories;
 using Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
 using Microsoft.EntityFrameworkCore;
 

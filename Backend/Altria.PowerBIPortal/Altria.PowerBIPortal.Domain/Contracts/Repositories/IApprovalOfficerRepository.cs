@@ -1,6 +1,6 @@
 ﻿using Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
 
-namespace Altria.PowerBIPortal.Domain.Contracts;
+namespace Altria.PowerBIPortal.Domain.Contracts.Repositories;
 
 public interface IApprovalOfficerRepository
 {

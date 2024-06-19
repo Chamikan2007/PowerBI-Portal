@@ -4,6 +4,7 @@ using Altria.PowerBIPortal.Domain.AggregateRoots.ApprovalConfigs;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
 using Altria.PowerBIPortal.Domain.Contracts;
+using Altria.PowerBIPortal.Domain.Contracts.Repositories;
 using Altria.PowerBIPortal.Domain.Helpers;
 using Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
 using Microsoft.AspNetCore.Identity;

@@ -1,6 +1,6 @@
 ﻿using Altria.PowerBIPortal.Application.Infrastructure;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions;
-using Altria.PowerBIPortal.Domain.Contracts;
+using Altria.PowerBIPortal.Domain.Contracts.Repositories;
 
 namespace Altria.PowerBIPortal.Application.Endpoints.Subscriptions.GetById;
 
