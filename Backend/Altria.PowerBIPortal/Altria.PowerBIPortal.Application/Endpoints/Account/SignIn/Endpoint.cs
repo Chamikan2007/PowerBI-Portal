@@ -3,7 +3,6 @@ using Altria.PowerBIPortal.Domain.AggregateRoots.Identity;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
 using Altria.PowerBIPortal.Domain.Contracts.Repositories;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace Altria.PowerBIPortal.Application.Endpoints.Account.SignIn;
 

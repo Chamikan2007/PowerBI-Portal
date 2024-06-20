@@ -30,8 +30,4 @@
     <EmbeddedResource Include="Scripts\*sql" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Scripts\" />
-  </ItemGroup>
-
 </Project>

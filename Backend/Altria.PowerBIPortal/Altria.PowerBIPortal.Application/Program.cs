@@ -1,17 +1,21 @@
+using Altria.PowerBIPortal.Application.BackgroundServices;
 using Altria.PowerBIPortal.Application.Infrastructure;
 using Altria.PowerBIPortal.Application.Middleware;
 using Altria.PowerBIPortal.Domain;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Managers;
+using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests;
+using Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions;
 using Altria.PowerBIPortal.Domain.Contracts;
+using Altria.PowerBIPortal.Domain.Contracts.DomainServices;
 using Altria.PowerBIPortal.Domain.Contracts.IPowerBIService;
 using Altria.PowerBIPortal.Domain.Contracts.Repositories;
 using Altria.PowerBIPortal.Infrastructure.PowerBIReports;
 using Altria.PowerBIPortal.Infrastructure.WindowsActiveDirectory;
 using Altria.PowerBIPortal.Persistence;
 using Altria.PowerBIPortal.Persistence.Repositories.ApprovalConfigs;
-using Altria.PowerBIPortal.Persistence.Repositories.Subscriptions;
-using Altria.PowerBIPortal.Persistence.Repositories.SubscriptionWhiteList;
+using Altria.PowerBIPortal.Persistence.Repositories.SubscriberWhiteListEntries;
+using Altria.PowerBIPortal.Persistence.Repositories.SubscriptionRequests;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Net.Http.Headers;
@@ -87,9 +91,15 @@ builder.Services.AddScoped<IExternalUserAuthenticator, ActiveDirectoryAuthentica
 
 #region Register repositories
 
-builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
-builder.Services.AddScoped<ISubscriptionWhiteListEntryRepository, SubscriptionWhiteListEntryRepository>();
+builder.Services.AddScoped<ISubscriptionRequestRepository, SubscriptionRequestRepository>();
+builder.Services.AddScoped<ISubscriberWhiteListEntryRepository, SubscriberWhiteListRepository>();
 builder.Services.AddScoped<IApprovalOfficerRepository, ApprovalOfficerRepository>();
+
+#endregion
+
+#region Register domain services
+
+builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 
 #endregion
 
@@ -117,6 +127,12 @@ builder.Services.AddHttpClient<IPowerBIReportService, PowerBIReportService>((ser
         return handler;
     })
     .SetHandlerLifetime(Timeout.InfiniteTimeSpan);
+
+#endregion
+
+#region Register hosted services
+
+builder.Services.AddHostedService<SubscripionsProcessor>();
 
 #endregion
 

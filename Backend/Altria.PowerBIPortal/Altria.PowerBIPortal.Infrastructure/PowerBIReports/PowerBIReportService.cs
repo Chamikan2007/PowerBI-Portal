@@ -1,4 +1,5 @@
-﻿using Altria.PowerBIPortal.Domain.Contracts.IPowerBIService;
+﻿using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests;
+using Altria.PowerBIPortal.Domain.Contracts.IPowerBIService;
 using Altria.PowerBIPortal.Domain.Contracts.IPowerBIService.Entities;
 using System.Net.Http.Json;
 
@@ -19,9 +20,14 @@ public class PowerBIReportService : IPowerBIReportService
         return response?.Value;
     }
 
-    public async Task<Report?> GetReportsByIdAsync(string reportId)
+    public async Task<Report?> GetReportsByIdAsync(string reportPath)
     {
-        var response = await _powerBIClient.GetFromJsonAsync<Report>($"Reports(path='{reportId}')");
+        var response = await _powerBIClient.GetFromJsonAsync<Report>($"Reports(path='{reportPath}')");
         return response;
+    }
+
+    public Task<Guid> ProcessSubscriptionAsync(SubscriptionRequest subscriptions)
+    {
+        throw new NotImplementedException();
     }
 }

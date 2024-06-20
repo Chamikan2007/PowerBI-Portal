@@ -1,12 +1,13 @@
 ﻿using Altria.PowerBIPortal.Domain;
 using Altria.PowerBIPortal.Domain.AggregateRoots.ApprovalConfigs;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
-using Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions;
-using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionWhiteList;
+using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriberWhiteListEntries;
+using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests;
 using Altria.PowerBIPortal.Domain.Contracts;
 using Altria.PowerBIPortal.Domain.Infrastructure;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Pluralize.NET.Core;
 
 namespace Altria.PowerBIPortal.Persistence;
 
@@ -33,6 +34,18 @@ public class DataContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRo
         builder.Entity<UserLogin>().ToTable("UserLogins");
         builder.Entity<RoleClaim>().ToTable("RoleClaims");
         builder.Entity<UserToken>().ToTable("UserTokens");
+
+        #endregion
+
+        #region Pluralize table names
+
+        var pluralizer = new Pluralizer();
+        foreach (var entity in builder.Model.GetEntityTypes())
+        {
+            var pluralizedName = pluralizer.Pluralize(entity.ClrType.Name);
+            var entry = builder.Entity(entity.ClrType);
+            entry.ToTable(pluralizedName);
+        }
 
         #endregion
 
@@ -82,11 +95,11 @@ public class DataContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRo
 
     public bool IsInDesignTime { get; }
 
-    public virtual DbSet<Subscription> Subscription { get; set; } = default!;
+    public virtual DbSet<SubscriptionRequest> SubscriptionRequests { get; set; } = default!;
 
-    public virtual DbSet<ApprovalOfficer> ApprovalOfficer { get; set; } = default!;
+    public virtual DbSet<ApprovalOfficer> ApprovalOfficers { get; set; } = default!;
 
-    public virtual DbSet<SubscriptionWhiteListEntry> SubscriptionWhiteListEntry { get; set; } = default!;
+    public virtual DbSet<SubscriberWhiteList> SubscriberWhiteList { get; set; } = default!;
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
