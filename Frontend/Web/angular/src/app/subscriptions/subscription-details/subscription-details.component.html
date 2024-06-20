@@ -13,9 +13,8 @@
                     </div>
                     <div class="body">
                         <form class="validate-form" [formGroup]="subscriptionForm" (ngSubmit)="onSubmit()">
-                            <div class="row">
-                                <div class="col col-4">
-
+                            <div class="row mb-5">
+                                <div class="col col-4 border rounded p-5">
                                     <div class="row">
                                         <mat-form-field class="example-full-width" appearance="outline">
                                             <mat-label>Report</mat-label>
@@ -33,42 +32,212 @@
                                         </mat-form-field>
                                     </div>
 
-                                    <!-- <div class="row">
+                                    <div class="row">
                                         <div class="col col-12 mb-2">
                                             <mat-form-field class="example-full-width" appearance="outline">
-                                                <mat-label>Report Path</mat-label>
-                                                <input matInput formControlName="reportPath" class="form-control" />
-                                                @if (subscriptionForm.get('reportPath')?.hasError('required')) {
+                                                <mat-label>Description</mat-label>
+                                                <input matInput type="text" formControlName="description" class="form-control">
+                                                @if (subscriptionForm.get('description')?.hasError('required')) {
                                                 <mat-error>
-                                                    Report Path is required.
+                                                    Description is required.
                                                 </mat-error>
                                                 }
                                             </mat-form-field>
                                         </div>
-                                    </div> -->
+                                    </div>
 
                                     <div class="row">
                                         <div class="col col-12 mb-2">
                                             <mat-form-field class="example-full-width" appearance="outline">
-                                                <mat-label>Email</mat-label>
-                                                <input matInput [type]="hide ? 'email' : 'text'" formControlName="email" class="form-control">
-                                                @if (subscriptionForm.get('email')?.hasError('required')) {
+                                                <mat-label>Owner</mat-label>
+                                                <input matInput type="text" formControlName="owner" class="form-control" [disabled]="true" value="SampathBnakHema\Hemantha">
+                                                @if (subscriptionForm.get('owner')?.hasError('required')) {
                                                 <mat-error>
-                                                    Email is required.
+                                                    Owner is required.
                                                 </mat-error>
                                                 }
                                             </mat-form-field>
                                         </div>
                                     </div>
-                                    @if (error) {
-                                    <div class="alert alert-danger mt-3 mb-0">{{error}}</div>
-                                    }
-                                    <div class="me-4 text-end">
-                                        <button mat-button color="accent" class="btn" type="button" (click)="onCancel()">Cancel</button>
-                                        <button mat-flat-button color="accent" [class.auth-spinner]="loading" [disabled]="loading" class="btn ms-2" [disabled]="!subscriptionForm.valid " type="submit">Submit</button>
+
+                                    <div class="row">
+                                        <h5>Subscription type</h5>
                                     </div>
+                                    <div class="row">
+                                        <div class="col col-12 mb-5">
+                                            <mat-radio-group class="vertical-radio-group" formControlName="subscriptionType" [(ngModel)]="selectedSubscriptionType">
+                                                <mat-radio-button value="1" checked>Standard subscription</mat-radio-button>
+                                                <mat-radio-button value="2" [disabled]="true">Data-driven subscription</mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <h5>Destination</h5>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col col-12 mb-5">
+                                            <mat-form-field>
+                                                <mat-select [(value)]="selectedDestination">
+                                                    <mat-option *ngFor="let opt of destinationItems; index as i;" [value]="opt.value" [disabled]="i===0">{{opt.label}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="selectedDestination === '2'" class="row">
+                                        <h5>Delivery options (Email)</h5>
+
+                                        <div class="row">
+                                            <div class="col col-12 mb-2">
+                                                <mat-form-field class="example-full-width" appearance="outline">
+                                                    <mat-label>To</mat-label>
+                                                    <input matInput type="email" formControlName="email_to" class="form-control">
+                                                    @if (subscriptionForm.get('email_to')?.hasError('required, email')) {
+                                                    <mat-error>
+                                                        To email is required.
+                                                    </mat-error>
+                                                    }
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col col-12 mb-2">
+                                                <mat-form-field class="example-full-width" appearance="outline">
+                                                    <mat-label>Cc</mat-label>
+                                                    <input matInput type="email" formControlName="email_cc" class="form-control">
+                                                    @if (subscriptionForm.get('email_cc')?.hasError('email')) {
+                                                    <mat-error>
+                                                        Cc email is invalid.
+                                                    </mat-error>
+                                                    }
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col col-12 mb-2">
+                                                <mat-form-field class="example-full-width" appearance="outline">
+                                                    <mat-label>Bcc</mat-label>
+                                                    <input matInput type="email" formControlName="email_bcc" class="form-control">
+                                                    @if (subscriptionForm.get('email_bcc')?.hasError('email')) {
+                                                    <mat-error>
+                                                        Bcc email is invalid.
+                                                    </mat-error>
+                                                    }
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col col-12 mb-2">
+                                                <mat-form-field class="example-full-width" appearance="outline">
+                                                    <mat-label>Reply To</mat-label>
+                                                    <input matInput type="email" formControlName="email_replyto" class="form-control">
+                                                    @if (subscriptionForm.get('email_replyto')?.hasError('email')) {
+                                                    <mat-error>
+                                                        Reply To email is invalid.
+                                                    </mat-error>
+                                                    }
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col col-12 mb-2">
+                                                <mat-form-field class="example-full-width" appearance="outline">
+                                                    <mat-label>Subject</mat-label>
+                                                    <input matInput type="text" formControlName="email_subject" class="form-control">
+                                                    @if (subscriptionForm.get('email_subject')?.hasError('required')) {
+                                                    <mat-error>
+                                                        Subject is required.
+                                                    </mat-error>
+                                                    }
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col col-6">
+                                                <mat-checkbox value="1" checked>Include Report</mat-checkbox>
+                                                <mat-checkbox value="2" checked>Include Link</mat-checkbox>
+                                            </div>
+                                            <div class="col col-6">
+                                                <mat-form-field>
+                                                    <mat-label>Render Format</mat-label>
+                                                    <mat-select [(value)]="selectedRenderFormat">
+                                                        <mat-option *ngFor="let opt of renderFormatItems;" [value]="opt.value">{{opt.label}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col col-6">
+                                                <mat-form-field>
+                                                    <mat-label>Priority</mat-label>
+                                                    <mat-select [(value)]="selectedPriority">
+                                                        <mat-option *ngFor="let opt of priorityItems;" [value]="opt.value">{{opt.label}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <mat-form-field>
+                                                <mat-label>Comment</mat-label>
+                                                <textarea matInput formControlName="comment" class="form-control"></textarea>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col col-auto"></div>
+                                <div class="col col-5  border rounded p-5">
+                                    <div class="row">
+                                        <h5>Schedule details</h5>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col col-12 mb-5">
+                                            <mat-radio-group class="vertical-radio-group" formControlName="scheduleDetailType" [(ngModel)]="selectedScheduleDetailType">
+                                                <mat-radio-button value="1" [disabled]="true">Shared schedule</mat-radio-button>
+                                                <mat-radio-button value="2" checked>Report-specific schedule</mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div *ngIf="selectedScheduleDetailType === '2'" class="row">
+                                        <div class="col col-12 mb-5">
+                                            <mat-radio-group (change)="scheduleTypeChange($event)">
+                                                <mat-radio-button *ngFor="let opt of scheduleTypeItems; index as i" [value]="opt.value" [checked]="i===0">{{opt.label}}</mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+                                        <div [ngSwitch]="selectedScheduleType">
+                                            <div *ngSwitchCase="'1'" class="row">
+                                                Hour
+                                            </div>
+                                            <div *ngSwitchCase="'2'" class="row">
+                                                Day
+                                            </div>
+                                            <div *ngSwitchCase="'3'" class="row">
+                                                Week
+                                            </div>
+                                            <div *ngSwitchCase="'4'" class="row">
+                                                Month
+                                            </div>
+                                            <div *ngSwitchCase="'5'" class="row">
+                                                Once
+                                            </div>
+                                        </div>
+
+                                    </div>
+
                                 </div>
                             </div>
+                            <hr>
+                            @if (error) {
+                            <div class="alert alert-danger mt-3 mb-0">{{error}}</div>
+                            }
+                            <div class="me-4 text-end">
+                                <button mat-button color="accent" class="btn" type="button" (click)="onCancel()">Cancel</button>
+                                <button mat-flat-button color="accent" [class.auth-spinner]="loading" [disabled]="loading" class="btn ms-2" [disabled]="!subscriptionForm.valid " type="submit">Submit</button>
+                            </div>
+
                         </form>
                     </div>
                 </div>

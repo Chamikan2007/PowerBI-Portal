@@ -31,8 +31,9 @@ textarea {
   font-size: 14px !important;
 }
 
-.row {
-  margin-bottom: 0px !important;
+.row,
+.col {
+  margin: 0px !important;
 }
 
 ol,

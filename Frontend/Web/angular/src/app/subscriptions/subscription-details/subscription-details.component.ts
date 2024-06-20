@@ -3,6 +3,9 @@ import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule, Untyped
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatAutocompleteModule, MatOption } from '@angular/material/autocomplete';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ResponseDto } from '@core/models/dto/response-dto';
@@ -10,12 +13,13 @@ import { ReportDto, SubscriptionDto } from '@core/models/dto/subscription-dto';
 import { SubscriptionService } from '@core/service/subscription.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { map, startWith } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-subscription-details',
   standalone: true,
   imports: [
+    CommonModule,
     RouterLink,
     MatButtonModule,
     FormsModule,
@@ -25,7 +29,10 @@ import { AsyncPipe } from '@angular/common';
     MatOption,
     AsyncPipe,
     MatInputModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatCheckbox
   ],
   templateUrl: './subscription-details.component.html',
   styleUrl: './subscription-details.component.scss'
@@ -41,6 +48,45 @@ export class SubscriptionDetailsComponent implements OnInit {
   reportsList: ReportDto[] = [];
   reportPicker = new FormControl('');
   filteredReports: Observable<ReportDto[]> | undefined;
+
+  destinationItems: any[] = [
+    { label: 'Windows File Share', value: '1' },
+    { label: 'Email', value: '2' },
+  ];
+
+  renderFormatItems: any[] = [
+    { label: 'Word', value: '1' },
+    { label: 'Excel', value: '2' },
+    { label: 'PowerPoint', value: '3' },
+    { label: 'PDF', value: '4' },
+    { label: 'Accessible PDF', value: '5' },
+    { label: 'Tiff file', value: '6' },
+    { label: 'MHTML(web archive)', value: '7' },
+    { label: 'CSV(comma delimited)', value: '8' },
+    { label: 'XML file with report data', value: '9' },
+    { label: 'Data Feed', value: '10' },
+  ];
+
+  priorityItems: any[] = [
+    { label: 'Normal', value: '1' },
+    { label: 'Low', value: '2' },
+    { label: 'High', value: '3' },
+  ];
+
+  scheduleTypeItems: any[] = [
+    { label: 'Hour', value: '1' },
+    { label: 'Day', value: '2' },
+    { label: 'Week', value: '3' },
+    { label: 'Month', value: '4' },
+    { label: 'Once', value: '5' }
+  ];
+
+  selectedSubscriptionType: string = '1';
+  selectedDestination: string = '2';
+  selectedRenderFormat: string = '1';
+  selectedPriority: string = '1';
+  selectedScheduleDetailType: string = '2';
+  selectedScheduleType: string = '1';
 
   model: SubscriptionDto = new SubscriptionDto();
 
@@ -108,6 +154,17 @@ export class SubscriptionDetailsComponent implements OnInit {
       this.model.report = new ReportDto();
     }
   }
+
+
+
+  scheduleTypeChange(event: any) {
+    this.selectedScheduleType = event.value;
+  }
+
+
+
+
+
 
   onSubmit() {
     if (this.subscriptionForm.invalid) {

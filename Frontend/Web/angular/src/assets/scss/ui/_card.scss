@@ -104,7 +104,7 @@
     h2 {
       margin: 0;
       color: #5b626b;
-      font-size: 17px;
+      font-size: 24px;
       line-height: 28px;
       padding-right: 10px;
       font-weight: 500;
@@ -136,6 +136,7 @@
     padding: 15px;
 
     @for $i from 1 through 12 {
+
       .col-xs-#{$i},
       .col-sm-#{$i},
       .col-md-#{$i},
@@ -144,9 +145,11 @@
       }
     }
   }
+
   .list-body {
     padding: 0px 10px;
   }
+
   &.card-statistic-1 .card-header,
   &.card-statistic-2 .card-header {
     border-color: transparent;
@@ -228,6 +231,7 @@
     border-radius: 10px;
     background: #6777ef;
   }
+
   &.card-statistic-2 .card-icon-only {
     font-size: 35px;
     margin: 20px;
@@ -239,8 +243,8 @@
     padding-top: 25px;
   }
 
-  &.card-statistic-2 .card-header + .card-body,
-  &.card-statistic-2 .card-body + .card-header {
+  &.card-statistic-2 .card-header+.card-body,
+  &.card-statistic-2 .card-body+.card-header {
     padding-top: 0;
   }
 
@@ -274,12 +278,14 @@
         height: 70px !important;
       }
     }
+
     .card-right {
       float: right;
       margin: 15px 15px 15px 0px;
     }
   }
 }
+
 .plain-card {
   box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
   padding: 20px;
@@ -288,36 +294,44 @@
   overflow: hidden;
   margin: 0.5rem 0 1rem 0;
 }
+
 .card-inner .progress {
   height: 10px;
   margin: 0px;
 }
+
 .col-block {
   margin-left: 5px;
 }
+
 .card-height-100 {
   height: 100px;
 }
+
 .doc-card-title {
   color: #00bdf2;
   font-size: 16px;
 }
+
 .doc-card-image {
   background: #fff;
   position: inherit;
   padding: 2px;
   box-shadow: 0 5px 25px 0 rgba(0, 0, 0, 0.2);
 }
+
 .card-spacing {
   padding-right: 0px;
 }
 
 .course-card-blog {
   margin-top: 30px;
+
   .course-card-caption {
     margin-top: 5px;
   }
 }
+
 .course-card {
   display: inline-block;
   position: relative;
@@ -328,6 +342,7 @@
   background: #fff;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2),
     0 1px 5px 0 rgba(0, 0, 0, 0.12);
+
   .course-card-image {
     height: 60%;
     position: relative;
@@ -338,6 +353,7 @@
     border-radius: 6px;
     box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56),
       0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+
     img {
       width: 100%;
       height: 100%;
@@ -345,17 +361,22 @@
       pointer-events: none;
     }
   }
+
   .blog-table {
     padding: 15px 30px;
   }
+
   .ftr {
     margin-top: 15px;
+
     .author {
       color: #888;
     }
+
     div {
       display: inline-block;
     }
+
     .stats {
       position: relative;
       top: 1px;
@@ -364,6 +385,7 @@
       line-height: 30px;
     }
   }
+
   .author {
     .avatar {
       width: 36px;
@@ -374,25 +396,31 @@
     }
   }
 }
+
 .blog-table {
   margin-bottom: 0px;
 }
+
 .blog-category {
   position: relative;
   line-height: 0;
   margin: 15px 0;
 }
+
 .blog-text-success {
   color: #28a745 !important;
 }
+
 .course-card-caption {
   font-weight: 700;
 }
+
 .course-card-caption,
 .course-card-caption a {
   color: #333;
   text-decoration: none;
 }
+
 .about-course-img img {
   width: 100%;
   height: 100%;
