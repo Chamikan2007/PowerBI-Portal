@@ -95,6 +95,29 @@ export class SubscriptionDetailsComponent implements OnInit {
     { label: 'Sat', value: '7' },
   ];
 
+  monthsOfYearItems: any[] = [
+    { label: 'Jan', value: '1' },
+    { label: 'Feb', value: '2' },
+    { label: 'Mar', value: '3' },
+    { label: 'Apr', value: '4' },
+    { label: 'May', value: '5' },
+    { label: 'Jun', value: '6' },
+    { label: 'Jul', value: '7' },
+    { label: 'Aug', value: '8' },
+    { label: 'Sep', value: '9' },
+    { label: 'Oct', value: '10' },
+    { label: 'Nov', value: '11' },
+    { label: 'Dec', value: '12' },
+  ];
+
+  weekOfMonthItems: any[] = [
+    { label: '1st', value: '1' },
+    { label: '2nd', value: '2' },
+    { label: '3rd', value: '3' },
+    { label: '4th', value: '4' },
+    { label: 'Last', value: '5' }
+  ];
+
   selectedSubscriptionType: string = '1';
   selectedDestination: string = '2';
   selectedRenderFormat: string = '1';
@@ -102,6 +125,8 @@ export class SubscriptionDetailsComponent implements OnInit {
   selectedScheduleDetailType: string = '2';
   selectedScheduleType: string = '1';
   selectedDailyScheduleType: string = '1';
+  selectedMonthlyScheduleType: string = '1';
+  selectedWeekOfMonth_WeeklyScheduleType = '1';
 
   model: SubscriptionDto = new SubscriptionDto();
 
@@ -150,7 +175,18 @@ export class SubscriptionDetailsComponent implements OnInit {
       weekly_start_meridiem: ['1', [Validators.required]],
       weekly_start_date: [new Date(), [Validators.required]],
       weekly_end_date: [null, []],
+      monthly_hour: ['00', [Validators.required, Validators.min(0), Validators.max(23)]],
+      monthly_minute: ['00', [Validators.required, Validators.min(0), Validators.max(59)]],
+      monthly_start_hour: ['00', [Validators.required, Validators.min(0), Validators.max(23)]],
+      monthly_start_minute: ['00', [Validators.required, Validators.min(0), Validators.max(59)]],
+      monthly_start_meridiem: ['1', [Validators.required]],
+      monthly_start_date: [new Date(), [Validators.required]],
+      monthly_end_date: [null, []],
+      onetime_start_hour: ['00', [Validators.required, Validators.min(0), Validators.max(23)]],
+      onetime_start_minute: ['00', [Validators.required, Validators.min(0), Validators.max(59)]],
+      onetime_start_meridiem: ['1', [Validators.required]],
       dailyScheduleType: ['1', []],
+      monthlyScheduleType: ['1', []],
       // daily_after_days_count: [0, []],
     });
 
@@ -219,6 +255,12 @@ export class SubscriptionDetailsComponent implements OnInit {
   selectedDailyScheduleTypeChange(event: any) {
     if (event.value) {
       this.selectedDailyScheduleType = event.value;
+    }
+  }
+
+  selectedMonthlyScheduleTypeChange(event: any) {
+    if (event.value) {
+      this.selectedMonthlyScheduleType = event.value;
     }
   }
 

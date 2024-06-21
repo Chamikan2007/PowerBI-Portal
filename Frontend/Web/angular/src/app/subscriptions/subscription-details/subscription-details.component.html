@@ -343,9 +343,87 @@
                                             </div>
                                             <div *ngSwitchCase="'4'" class="row">
                                                 <h5>Monthly schedule</h5>
+                                                <div class="row">
+                                                    <label>Months:</label>
+                                                    <div class="ms-3">
+                                                        <mat-checkbox *ngFor="let opt of monthsOfYearItems;" [value]="opt.value" [checked]="true" class="mb-2">{{opt.label}}</mat-checkbox>
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-3">
+                                                    <mat-radio-group class="vertical-radio-group" formControlName="monthlyScheduleType" (change)="selectedMonthlyScheduleTypeChange($event)">
+                                                        <mat-radio-button value="1" checked>On week of month:</mat-radio-button>
+                                                        <div class="ms-3">
+                                                            <mat-form-field>
+                                                                <mat-select [(value)]="selectedWeekOfMonth_WeeklyScheduleType" [disabled]="selectedMonthlyScheduleType !== '1'">
+                                                                    <mat-option *ngFor="let opt of weekOfMonthItems;" [value]="opt.value">{{opt.label}}</mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
+                                                            <div class="mt-3">
+                                                                <div class="row">
+                                                                    <label>On days of week:</label>
+                                                                </div>
+                                                                <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.value" [checked]="true" class="mb-2" [disabled]="selectedMonthlyScheduleType !== '1'">{{opt.label}}</mat-checkbox>
+                                                            </div>
+                                                        </div>
+                                                        <mat-radio-button value="2">
+                                                            <div class="row d-flex">
+                                                                <div class="col col-auto ms-0 ps-0">
+                                                                    <label class="mt-4">On calendar day(s):</label>
+                                                                </div>
+                                                                <div class="col col-auto">
+                                                                    <mat-form-field class="example-full-width" appearance="outline">
+                                                                        <input type="text" class="form-control" matInput [disabled]="selectedMonthlyScheduleType !== '2'">
+                                                                    </mat-form-field>
+                                                                </div>
+                                                            </div>
+                                                        </mat-radio-button>
+                                                    </mat-radio-group>
+                                                </div>
+                                                <div class="row d-flex mt-4">
+                                                    <div class="col col-auto">
+                                                        <label class="time-label">Start time</label>
+                                                    </div>
+                                                    <div class="col col-auto">
+                                                        <mat-form-field class="example-full-width number-input" appearance="outline">
+                                                            <input type="number" class="form-control" matInput formControlName="monthly_start_hour">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col col-auto">
+                                                        <mat-form-field class="example-full-width number-input" appearance="outline">
+                                                            <input type="number" class="form-control" matInput formControlName="monthly_start_minute">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col col-auto ps-1">
+                                                        <mat-button-toggle-group name="meridiem" class="mt-4" formControlName="monthly_start_meridiem">
+                                                            <mat-button-toggle value="1">AM</mat-button-toggle>
+                                                            <mat-button-toggle value="2">PM</mat-button-toggle>
+                                                        </mat-button-toggle-group>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div *ngSwitchCase="'5'" class="row">
                                                 <h5>Once-time schedule</h5>
+                                                <div class="row d-flex mt-4">
+                                                    <div class="col col-auto">
+                                                        <label class="time-label">Start time</label>
+                                                    </div>
+                                                    <div class="col col-auto">
+                                                        <mat-form-field class="example-full-width number-input" appearance="outline">
+                                                            <input type="number" class="form-control" matInput formControlName="onetime_start_hour">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col col-auto">
+                                                        <mat-form-field class="example-full-width number-input" appearance="outline">
+                                                            <input type="number" class="form-control" matInput formControlName="onetime_start_minute">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col col-auto ps-1">
+                                                        <mat-button-toggle-group name="meridiem" class="mt-4" formControlName="onetime_start_meridiem">
+                                                            <mat-button-toggle value="1">AM</mat-button-toggle>
+                                                            <mat-button-toggle value="2">PM</mat-button-toggle>
+                                                        </mat-button-toggle-group>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <hr class="mt-5">
