@@ -254,35 +254,53 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="mt-4">
-                                                    <h5 class="">Start and end dates</h5>
-                                                    <label>Begin running this schedule on:</label>
-                                                    <div class="row ">
-                                                        <div class="col col-5">
-                                                            <mat-form-field class="example-full-width">
-                                                                <input matInput [matDatepicker]="hourly_picker_start" formControlName="hourly_start_date" />
-                                                                <mat-hint>YYYY/MM/DD</mat-hint>
-                                                                <mat-datepicker-toggle matIconSuffix [for]="hourly_picker_start"></mat-datepicker-toggle>
-                                                                <mat-datepicker #hourly_picker_start></mat-datepicker>
-                                                            </mat-form-field>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row ">
-                                                        <div class="col col-5">
-                                                            <mat-checkbox value="1" [disabled]="true" class="mt-4">Stop this schedule on:</mat-checkbox>
-                                                            <mat-form-field class="example-full-width mt-0">
-                                                                <!-- formControlName="hourly_end_date" -->
-                                                                <input matInput [matDatepicker]="hourly_picker_end" [disabled]="true" />
-                                                                <mat-hint>YYYY/MM/DD</mat-hint>
-                                                                <mat-datepicker-toggle matIconSuffix [for]="hourly_picker_end"></mat-datepicker-toggle>
-                                                                <mat-datepicker #hourly_picker_end></mat-datepicker>
-                                                            </mat-form-field>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
                                             <div *ngSwitchCase="'2'" class="row">
                                                 <h5>Daily schedule</h5>
+                                                <div class="row">
+                                                    <mat-radio-group class="vertical-radio-group" formControlName="dailyScheduleType" (change)="selectedDailyScheduleTypeChange($event)">
+                                                        <mat-radio-button value="1" checked>On the following days:</mat-radio-button>
+                                                        <div class="ms-3">
+                                                            <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.value" [checked]="true" [disabled]="selectedDailyScheduleType !== '1'" class="mb-2">{{opt.label}}</mat-checkbox>
+                                                        </div>
+                                                        <mat-radio-button value="2">Every weekday</mat-radio-button>
+                                                        <mat-radio-button value="3">
+                                                            <div class="row d-flex">
+                                                                <div class="col col-auto ms-0 ps-0">
+                                                                    <label class="mt-4">Repeat after this number of days:</label>
+                                                                </div>
+                                                                <div class="col col-auto">
+                                                                    <mat-form-field class="example-full-width number-input" appearance="outline">
+                                                                        <!-- formControlName="daily_after_days_count" -->
+                                                                        <input type="number" class="form-control" matInput [disabled]="selectedDailyScheduleType !== '3'">
+                                                                    </mat-form-field>
+                                                                </div>
+                                                            </div>
+                                                        </mat-radio-button>
+                                                    </mat-radio-group>
+                                                </div>
+                                                <div class="row d-flex mt-4">
+                                                    <div class="col col-auto">
+                                                        <label class="time-label">Start time</label>
+                                                    </div>
+                                                    <div class="col col-auto">
+                                                        <mat-form-field class="example-full-width number-input" appearance="outline">
+                                                            <input type="number" class="form-control" matInput formControlName="hourly_start_hour">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col col-auto">
+                                                        <mat-form-field class="example-full-width number-input" appearance="outline">
+                                                            <input type="number" class="form-control" matInput formControlName="hourly_start_minute">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col col-auto ps-1">
+                                                        <mat-button-toggle-group name="meridiem" class="mt-4" formControlName="hourly_start_meridiem">
+                                                            <mat-button-toggle value="1">AM</mat-button-toggle>
+                                                            <mat-button-toggle value="2">PM</mat-button-toggle>
+                                                        </mat-button-toggle-group>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                             <div *ngSwitchCase="'3'" class="row">
                                                 <h5>Weekly schedule</h5>
@@ -294,9 +312,34 @@
                                                 <h5>Once-time schedule</h5>
                                             </div>
                                         </div>
-
+                                        <hr class="mt-5">
+                                        <div class="row">
+                                            <h5 class="mt-5">Start and end dates</h5>
+                                            <label>Begin running this schedule on:</label>
+                                            <div class="row ">
+                                                <div class="col col-5">
+                                                    <mat-form-field class="example-full-width">
+                                                        <input matInput [matDatepicker]="hourly_picker_start" formControlName="hourly_start_date" />
+                                                        <mat-hint>YYYY/MM/DD</mat-hint>
+                                                        <mat-datepicker-toggle matIconSuffix [for]="hourly_picker_start"></mat-datepicker-toggle>
+                                                        <mat-datepicker #hourly_picker_start></mat-datepicker>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="row ">
+                                                <div class="col col-5">
+                                                    <mat-checkbox value="1" [disabled]="true" class="mt-4">Stop this schedule on:</mat-checkbox>
+                                                    <mat-form-field class="example-full-width mt-0">
+                                                        <!-- formControlName="hourly_end_date" -->
+                                                        <input matInput [matDatepicker]="hourly_picker_end" [disabled]="true" />
+                                                        <mat-hint>YYYY/MM/DD</mat-hint>
+                                                        <mat-datepicker-toggle matIconSuffix [for]="hourly_picker_end"></mat-datepicker-toggle>
+                                                        <mat-datepicker #hourly_picker_end></mat-datepicker>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-
                                 </div>
                             </div>
                             <hr>

@@ -85,12 +85,23 @@ export class SubscriptionDetailsComponent implements OnInit {
     { label: 'Once', value: '5' }
   ];
 
+  daysOfWeekItems: any[] = [
+    { label: 'Sun', value: '1' },
+    { label: 'Mon', value: '2' },
+    { label: 'Tue', value: '3' },
+    { label: 'Wed', value: '4' },
+    { label: 'Thu', value: '5' },
+    { label: 'Fri', value: '6' },
+    { label: 'Sat', value: '7' },
+  ];
+
   selectedSubscriptionType: string = '1';
   selectedDestination: string = '2';
   selectedRenderFormat: string = '1';
   selectedPriority: string = '1';
   selectedScheduleDetailType: string = '2';
   selectedScheduleType: string = '1';
+  selectedDailyScheduleType: string = '1';
 
   model: SubscriptionDto = new SubscriptionDto();
 
@@ -116,8 +127,8 @@ export class SubscriptionDetailsComponent implements OnInit {
       email_bcc: ['', [Validators.required, Validators.email]],
       email_replyto: ['', [Validators.required, Validators.email]],
       email_subject: ['', [Validators.required]],
-      scheduleDetailType: ['', [Validators.required]],
-      scheduleType: ['', [Validators.required]],
+      scheduleDetailType: ['2', [Validators.required]],
+      scheduleType: ['1', [Validators.required]],
       hourly_hour: ['00', [Validators.required, Validators.min(0), Validators.max(23)]],
       hourly_minute: ['00', [Validators.required, Validators.min(0), Validators.max(59)]],
       hourly_start_hour: ['00', [Validators.required, Validators.min(0), Validators.max(23)]],
@@ -125,6 +136,8 @@ export class SubscriptionDetailsComponent implements OnInit {
       hourly_start_meridiem: ['1', [Validators.required]],
       hourly_start_date: [new Date(), [Validators.required]],
       hourly_end_date: [null, []],
+      dailyScheduleType: ['1', []],
+      // daily_after_days_count: [0, []],
     });
 
     this.filteredReports = this.reportPicker.valueChanges.pipe(
@@ -189,6 +202,11 @@ export class SubscriptionDetailsComponent implements OnInit {
     this.selectedScheduleType = event.value;
   }
 
+  selectedDailyScheduleTypeChange(event: any) {
+    if (event.value) {
+      this.selectedDailyScheduleType = event.value;
+    }
+  }
 
 
 
