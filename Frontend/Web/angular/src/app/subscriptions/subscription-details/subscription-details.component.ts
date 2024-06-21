@@ -5,7 +5,9 @@ import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatAutocompleteModule, MatOption } from '@angular/material/autocomplete';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ResponseDto } from '@core/models/dto/response-dto';
@@ -32,7 +34,9 @@ import { AsyncPipe, CommonModule } from '@angular/common';
     MatAutocompleteModule,
     MatRadioModule,
     MatSelectModule,
-    MatCheckbox
+    MatCheckbox,
+    MatButtonToggleModule,
+    MatDatepickerModule
   ],
   templateUrl: './subscription-details.component.html',
   styleUrl: './subscription-details.component.scss'
@@ -101,8 +105,26 @@ export class SubscriptionDetailsComponent implements OnInit {
     this.loadData();
 
     this.subscriptionForm = this.formBuilder.group({
-      reportPath: [this.autocompleteStringValidator(this.reportsList), Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      reportPath: ['', [this.autocompleteStringValidator(this.reportsList), Validators.required]],
+      description: ['', [Validators.required]],
+      owner: [{ value: 'SampathBnakHema\Hemantha', disabled: true }, [Validators.required]],
+      subscriptionType: ['', Validators.required],
+      destinationType: ['', Validators.required],
+      comment: [''],
+      email_to: ['', [Validators.required, Validators.email]],
+      email_cc: ['', [Validators.required, Validators.email]],
+      email_bcc: ['', [Validators.required, Validators.email]],
+      email_replyto: ['', [Validators.required, Validators.email]],
+      email_subject: ['', [Validators.required]],
+      scheduleDetailType: ['', [Validators.required]],
+      scheduleType: ['', [Validators.required]],
+      hourly_hour: ['00', [Validators.required, Validators.min(0), Validators.max(23)]],
+      hourly_minute: ['00', [Validators.required, Validators.min(0), Validators.max(59)]],
+      hourly_start_hour: ['00', [Validators.required, Validators.min(0), Validators.max(23)]],
+      hourly_start_minute: ['00', [Validators.required, Validators.min(0), Validators.max(59)]],
+      hourly_start_meridiem: ['1', [Validators.required]],
+      hourly_start_date: [new Date(), [Validators.required]],
+      hourly_end_date: [null, []],
     });
 
     this.filteredReports = this.reportPicker.valueChanges.pipe(
@@ -155,7 +177,13 @@ export class SubscriptionDetailsComponent implements OnInit {
     }
   }
 
+  selectedSubscriptionTypeChange(event: any) {
+    this.selectedSubscriptionType = event.returnValue;
+  }
 
+  selectedScheduleDetailTypeChange(event: any) {
+    this.selectedScheduleDetailType = event.value;
+  }
 
   scheduleTypeChange(event: any) {
     this.selectedScheduleType = event.value;

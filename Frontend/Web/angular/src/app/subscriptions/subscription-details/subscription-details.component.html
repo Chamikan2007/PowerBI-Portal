@@ -50,7 +50,7 @@
                                         <div class="col col-12 mb-2">
                                             <mat-form-field class="example-full-width" appearance="outline">
                                                 <mat-label>Owner</mat-label>
-                                                <input matInput type="text" formControlName="owner" class="form-control" [disabled]="true" value="SampathBnakHema\Hemantha">
+                                                <input matInput type="text" formControlName="owner" class="form-control">
                                                 @if (subscriptionForm.get('owner')?.hasError('required')) {
                                                 <mat-error>
                                                     Owner is required.
@@ -61,11 +61,11 @@
                                     </div>
 
                                     <div class="row">
-                                        <h5>Subscription type</h5>
+                                        <h5 class="mt-5">Subscription type</h5>
                                     </div>
                                     <div class="row">
                                         <div class="col col-12 mb-5">
-                                            <mat-radio-group class="vertical-radio-group" formControlName="subscriptionType" [(ngModel)]="selectedSubscriptionType">
+                                            <mat-radio-group class="vertical-radio-group" formControlName="subscriptionType" (change)="selectedSubscriptionTypeChange($event)">
                                                 <mat-radio-button value="1" checked>Standard subscription</mat-radio-button>
                                                 <mat-radio-button value="2" [disabled]="true">Data-driven subscription</mat-radio-button>
                                             </mat-radio-group>
@@ -78,7 +78,7 @@
                                     <div class="row">
                                         <div class="col col-12 mb-5">
                                             <mat-form-field>
-                                                <mat-select [(value)]="selectedDestination">
+                                                <mat-select formControlName="destinationType" [(value)]="selectedDestination">
                                                     <mat-option *ngFor="let opt of destinationItems; index as i;" [value]="opt.value" [disabled]="i===0">{{opt.label}}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
@@ -187,14 +187,16 @@
                                     </div>
 
                                 </div>
+
                                 <div class="col col-auto"></div>
+
                                 <div class="col col-5  border rounded p-5">
                                     <div class="row">
                                         <h5>Schedule details</h5>
                                     </div>
                                     <div class="row">
                                         <div class="col col-12 mb-5">
-                                            <mat-radio-group class="vertical-radio-group" formControlName="scheduleDetailType" [(ngModel)]="selectedScheduleDetailType">
+                                            <mat-radio-group class="vertical-radio-group" formControlName="scheduleDetailType" (change)="selectedScheduleDetailTypeChange($event)">
                                                 <mat-radio-button value="1" [disabled]="true">Shared schedule</mat-radio-button>
                                                 <mat-radio-button value="2" checked>Report-specific schedule</mat-radio-button>
                                             </mat-radio-group>
@@ -203,25 +205,93 @@
                                     <hr>
                                     <div *ngIf="selectedScheduleDetailType === '2'" class="row">
                                         <div class="col col-12 mb-5">
-                                            <mat-radio-group (change)="scheduleTypeChange($event)">
+                                            <mat-radio-group formControlName="scheduleType" (change)="scheduleTypeChange($event)">
                                                 <mat-radio-button *ngFor="let opt of scheduleTypeItems; index as i" [value]="opt.value" [checked]="i===0">{{opt.label}}</mat-radio-button>
                                             </mat-radio-group>
                                         </div>
-                                        <div [ngSwitch]="selectedScheduleType">
+                                        <div [ngSwitch]="selectedScheduleType" class="mt-5">
                                             <div *ngSwitchCase="'1'" class="row">
-                                                Hour
+                                                <div>
+                                                    <h5>Hourly schedule</h5>
+                                                    <label>Run the schedule every:</label>
+                                                    <div class="row d-flex">
+                                                        <div class="col col-auto pe-1">
+                                                            <mat-form-field class="example-full-width number-input" appearance="outline">
+                                                                <input type="number" class="form-control" matInput formControlName="hourly_hour">
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="col col-auto ps-1">
+                                                            <label class="time-label">hours</label>
+                                                        </div>
+                                                        <div class="col col-auto pe-1">
+                                                            <mat-form-field class="example-full-width number-input" appearance="outline">
+                                                                <input type="number" class="form-control" matInput formControlName="hourly_minute">
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="col col-auto ps-1">
+                                                            <label class="time-label">minutes</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row d-flex mt-4">
+                                                        <div class="col col-auto">
+                                                            <label class="time-label">Start time</label>
+                                                        </div>
+                                                        <div class="col col-auto">
+                                                            <mat-form-field class="example-full-width number-input" appearance="outline">
+                                                                <input type="number" class="form-control" matInput formControlName="hourly_start_hour">
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="col col-auto">
+                                                            <mat-form-field class="example-full-width number-input" appearance="outline">
+                                                                <input type="number" class="form-control" matInput formControlName="hourly_start_minute">
+                                                            </mat-form-field>
+                                                        </div>
+                                                        <div class="col col-auto ps-1">
+                                                            <mat-button-toggle-group name="meridiem" class="mt-4" formControlName="hourly_start_meridiem">
+                                                                <mat-button-toggle value="1">AM</mat-button-toggle>
+                                                                <mat-button-toggle value="2">PM</mat-button-toggle>
+                                                            </mat-button-toggle-group>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-4">
+                                                    <h5 class="">Start and end dates</h5>
+                                                    <label>Begin running this schedule on:</label>
+                                                    <div class="row ">
+                                                        <div class="col col-5">
+                                                            <mat-form-field class="example-full-width">
+                                                                <input matInput [matDatepicker]="hourly_picker_start" formControlName="hourly_start_date" />
+                                                                <mat-hint>YYYY/MM/DD</mat-hint>
+                                                                <mat-datepicker-toggle matIconSuffix [for]="hourly_picker_start"></mat-datepicker-toggle>
+                                                                <mat-datepicker #hourly_picker_start></mat-datepicker>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row ">
+                                                        <div class="col col-5">
+                                                            <mat-checkbox value="1" [disabled]="true" class="mt-4">Stop this schedule on:</mat-checkbox>
+                                                            <mat-form-field class="example-full-width mt-0">
+                                                                <!-- formControlName="hourly_end_date" -->
+                                                                <input matInput [matDatepicker]="hourly_picker_end" [disabled]="true" />
+                                                                <mat-hint>YYYY/MM/DD</mat-hint>
+                                                                <mat-datepicker-toggle matIconSuffix [for]="hourly_picker_end"></mat-datepicker-toggle>
+                                                                <mat-datepicker #hourly_picker_end></mat-datepicker>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div *ngSwitchCase="'2'" class="row">
-                                                Day
+                                                <h5>Daily schedule</h5>
                                             </div>
                                             <div *ngSwitchCase="'3'" class="row">
-                                                Week
+                                                <h5>Weekly schedule</h5>
                                             </div>
                                             <div *ngSwitchCase="'4'" class="row">
-                                                Month
+                                                <h5>Monthly schedule</h5>
                                             </div>
                                             <div *ngSwitchCase="'5'" class="row">
-                                                Once
+                                                <h5>Once-time schedule</h5>
                                             </div>
                                         </div>
 
