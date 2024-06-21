@@ -206,7 +206,7 @@
                                     <div *ngIf="selectedScheduleDetailType === '2'" class="row">
                                         <div class="col col-12 mb-5">
                                             <mat-radio-group formControlName="scheduleType" (change)="scheduleTypeChange($event)">
-                                                <mat-radio-button *ngFor="let opt of scheduleTypeItems; index as i" [value]="opt.value" [checked]="i===0">{{opt.label}}</mat-radio-button>
+                                                <mat-radio-button *ngFor="let opt of scheduleTypeItems; index as i" [value]="opt.value" [checked]="i===0" class="me-4">{{opt.label}}</mat-radio-button>
                                             </mat-radio-group>
                                         </div>
                                         <div [ngSwitch]="selectedScheduleType" class="mt-5">
@@ -267,7 +267,7 @@
                                                         <mat-radio-button value="3">
                                                             <div class="row d-flex">
                                                                 <div class="col col-auto ms-0 ps-0">
-                                                                    <label class="mt-4">Repeat after this number of days:</label>
+                                                                    <label class="time-label">Repeat after this number of days:</label>
                                                                 </div>
                                                                 <div class="col col-auto">
                                                                     <mat-form-field class="example-full-width number-input" appearance="outline">
@@ -285,25 +285,61 @@
                                                     </div>
                                                     <div class="col col-auto">
                                                         <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                            <input type="number" class="form-control" matInput formControlName="hourly_start_hour">
+                                                            <input type="number" class="form-control" matInput formControlName="daily_start_hour">
                                                         </mat-form-field>
                                                     </div>
                                                     <div class="col col-auto">
                                                         <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                            <input type="number" class="form-control" matInput formControlName="hourly_start_minute">
+                                                            <input type="number" class="form-control" matInput formControlName="daily_start_minute">
                                                         </mat-form-field>
                                                     </div>
                                                     <div class="col col-auto ps-1">
-                                                        <mat-button-toggle-group name="meridiem" class="mt-4" formControlName="hourly_start_meridiem">
+                                                        <mat-button-toggle-group name="meridiem" class="mt-4" formControlName="daily_start_meridiem">
                                                             <mat-button-toggle value="1">AM</mat-button-toggle>
                                                             <mat-button-toggle value="2">PM</mat-button-toggle>
                                                         </mat-button-toggle-group>
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div *ngSwitchCase="'3'" class="row">
                                                 <h5>Weekly schedule</h5>
+                                                <div class="row d-flex">
+                                                    <div class="col col-auto ms-0 ps-0">
+                                                        <label class="time-label">Repeat after this number of days:</label>
+                                                    </div>
+                                                    <div class="col col-auto">
+                                                        <mat-form-field class="example-full-width number-input" appearance="outline">
+                                                            <!-- formControlName="weekly_after_days_count" -->
+                                                            <input type="number" class="form-control" matInput>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-3">
+                                                    <div class="ms-3">
+                                                        <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.value" [checked]="true" class="mb-2">{{opt.label}}</mat-checkbox>
+                                                    </div>
+                                                </div>
+                                                <div class="row d-flex mt-4">
+                                                    <div class="col col-auto">
+                                                        <label class="time-label">Start time</label>
+                                                    </div>
+                                                    <div class="col col-auto">
+                                                        <mat-form-field class="example-full-width number-input" appearance="outline">
+                                                            <input type="number" class="form-control" matInput formControlName="weekly_start_hour">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col col-auto">
+                                                        <mat-form-field class="example-full-width number-input" appearance="outline">
+                                                            <input type="number" class="form-control" matInput formControlName="weekly_start_minute">
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col col-auto ps-1">
+                                                        <mat-button-toggle-group name="meridiem" class="mt-4" formControlName="weekly_start_meridiem">
+                                                            <mat-button-toggle value="1">AM</mat-button-toggle>
+                                                            <mat-button-toggle value="2">PM</mat-button-toggle>
+                                                        </mat-button-toggle-group>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div *ngSwitchCase="'4'" class="row">
                                                 <h5>Monthly schedule</h5>
