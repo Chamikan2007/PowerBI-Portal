@@ -1,35 +1,36 @@
-import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { AsyncPipe, CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { map, startWith } from 'rxjs';
+import { MatAutocompleteModule, MatOption } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { MatCheckbox } from '@angular/material/checkbox';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatAutocompleteModule, MatOption } from '@angular/material/autocomplete';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { ResponseDto } from '@core/models/dto/response-dto';
-import { ReportDto, SubscriptionDto } from '@core/models/dto/subscription-dto';
-import { SubscriptionService } from '@core/service/subscription.service';
 import { Observable } from 'rxjs/internal/Observable';
-import { map, startWith } from 'rxjs';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { ReportDto, SubscriptionDto } from '@core/models/dto/subscription-dto';
+import { ResponseDto } from '@core/models/dto/response-dto';
+import { SubscriptionDetailsMeta } from './subscription-details.meta';
+import { SubscriptionService } from '@core/service/subscription.service';
 
 @Component({
   selector: 'app-subscription-details',
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink,
-    MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
+    AsyncPipe,
+    RouterLink,
+    MatButtonModule,
     MatFormFieldModule,
     MatLabel,
     MatOption,
-    AsyncPipe,
     MatInputModule,
     MatAutocompleteModule,
     MatRadioModule,
@@ -53,70 +54,13 @@ export class SubscriptionDetailsComponent implements OnInit {
   reportPicker = new FormControl('');
   filteredReports: Observable<ReportDto[]> | undefined;
 
-  destinationItems: any[] = [
-    { label: 'Windows File Share', value: '1' },
-    { label: 'Email', value: '2' },
-  ];
-
-  renderFormatItems: any[] = [
-    { label: 'Word', value: '1' },
-    { label: 'Excel', value: '2' },
-    { label: 'PowerPoint', value: '3' },
-    { label: 'PDF', value: '4' },
-    { label: 'Accessible PDF', value: '5' },
-    { label: 'Tiff file', value: '6' },
-    { label: 'MHTML(web archive)', value: '7' },
-    { label: 'CSV(comma delimited)', value: '8' },
-    { label: 'XML file with report data', value: '9' },
-    { label: 'Data Feed', value: '10' },
-  ];
-
-  priorityItems: any[] = [
-    { label: 'Normal', value: '1' },
-    { label: 'Low', value: '2' },
-    { label: 'High', value: '3' },
-  ];
-
-  scheduleTypeItems: any[] = [
-    { label: 'Hour', value: '1' },
-    { label: 'Day', value: '2' },
-    { label: 'Week', value: '3' },
-    { label: 'Month', value: '4' },
-    { label: 'Once', value: '5' }
-  ];
-
-  daysOfWeekItems: any[] = [
-    { label: 'Sun', value: '1' },
-    { label: 'Mon', value: '2' },
-    { label: 'Tue', value: '3' },
-    { label: 'Wed', value: '4' },
-    { label: 'Thu', value: '5' },
-    { label: 'Fri', value: '6' },
-    { label: 'Sat', value: '7' },
-  ];
-
-  monthsOfYearItems: any[] = [
-    { label: 'Jan', value: '1' },
-    { label: 'Feb', value: '2' },
-    { label: 'Mar', value: '3' },
-    { label: 'Apr', value: '4' },
-    { label: 'May', value: '5' },
-    { label: 'Jun', value: '6' },
-    { label: 'Jul', value: '7' },
-    { label: 'Aug', value: '8' },
-    { label: 'Sep', value: '9' },
-    { label: 'Oct', value: '10' },
-    { label: 'Nov', value: '11' },
-    { label: 'Dec', value: '12' },
-  ];
-
-  weekOfMonthItems: any[] = [
-    { label: '1st', value: '1' },
-    { label: '2nd', value: '2' },
-    { label: '3rd', value: '3' },
-    { label: '4th', value: '4' },
-    { label: 'Last', value: '5' }
-  ];
+  destinationItems = SubscriptionDetailsMeta.destinationItems;
+  renderFormatItems = SubscriptionDetailsMeta.renderFormatItems;
+  priorityItems = SubscriptionDetailsMeta.priorityItems;
+  scheduleTypeItems = SubscriptionDetailsMeta.scheduleTypeItems;
+  daysOfWeekItems = SubscriptionDetailsMeta.daysOfWeekItems;
+  monthsOfYearItems = SubscriptionDetailsMeta.monthsOfYearItems;
+  weekOfMonthItems = SubscriptionDetailsMeta.weekOfMonthItems;
 
   selectedSubscriptionType: string = '1';
   selectedDestination: string = '2';
@@ -152,6 +96,10 @@ export class SubscriptionDetailsComponent implements OnInit {
       email_bcc: ['', [Validators.required, Validators.email]],
       email_replyto: ['', [Validators.required, Validators.email]],
       email_subject: ['', [Validators.required]],
+      includeReportCheckbox: [true, []],
+      includeLinkCheckbox: [true, []],
+      renderFormat: ['1', [Validators.required]],
+      priority: ['1', [Validators.required]],
       scheduleDetailType: ['2', [Validators.required]],
       scheduleType: ['1', [Validators.required]],
       hourly_hour: ['00', [Validators.required, Validators.min(0), Validators.max(23)]],
@@ -240,8 +188,36 @@ export class SubscriptionDetailsComponent implements OnInit {
     }
   }
 
+  onDescriptionChange(event: any) {
+    event.target.value;
+  }
+
   selectedSubscriptionTypeChange(event: any) {
     this.selectedSubscriptionType = event.returnValue;
+  }
+
+  onDeliveryOptionEmailToChange(event: any) {
+    event.target.value;
+  }
+
+  onDeliveryOptionEmailCcChange(event: any) {
+    event.target.value;
+  }
+
+  onDeliveryOptionEmailBccChange(event: any) {
+    event.target.value;
+  }
+
+  onDeliveryOptionEmailReplyToChange(event: any) {
+    event.target.value;
+  }
+
+  onDeliveryOptionEmailSubjectChange(event: any) {
+    event.target.value;
+  }
+
+  onCommentTextChange(event: any) {
+    event.target.value;
   }
 
   selectedScheduleDetailTypeChange(event: any) {
@@ -264,11 +240,43 @@ export class SubscriptionDetailsComponent implements OnInit {
     }
   }
 
+  onHourlyMeridiemChange(event: any) {
+    event.value;
+  }
 
+  onHourlyRunScheduleEveryHourChange(event: any) {
+    event.target.value;
+  }
 
+  onHourlyRunScheduleEveryMinuteChange(event: any) {
+    event.target.value;
+  }
 
+  onDailyMeridiemChange(event: any) {
+    event.value;
+  }
+
+  onWeeklyMeridiemChange(event: any) {
+    event.value;
+  }
+
+  onMonthlyMeridiemChange(event: any) {
+    event.value;
+  }
+
+  onOneTimeMeridiemChange(event: any) {
+    event.value;
+  }
+
+  validateFormInputs() {
+    let isValid = true;
+
+    return isValid;
+  }
 
   onSubmit() {
+    let isValid = this.validateFormInputs();
+
     if (this.subscriptionForm.invalid) {
       this.error = 'Input values are not valid!';
       return;
