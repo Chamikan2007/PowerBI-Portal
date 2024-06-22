@@ -14,37 +14,34 @@ export class SubscriptionService {
   ) { }
 
   getMySubscriptionsList(getAll: boolean = false): Observable<ResponseDto> {
-    return this.apiService.get('Subscriptions', 'mySubscriptions', { all: getAll });
+    return this.apiService.get('subscriptionRequests', 'mySubscriptions', { all: getAll });
   }
 
   getSubscriptionsListForApproval(getAll: boolean = false): Observable<ResponseDto> {
-    return this.apiService.get('Subscriptions', 'forApprovalOfficer', { all: getAll });
+    return this.apiService.get('subscriptionRequests', 'forApprovalOfficer', { all: getAll });
   }
 
   getReportsList(): Observable<ResponseDto> {
-    return this.apiService.get('Subscriptions', 'reports', null);
+    return this.apiService.get('subscriptionRequests', 'reports', null);
   }
 
-  createSubscription(reportPath: string, email: string): Observable<ResponseDto> {
-    return this.apiService.post('Subscriptions', '', {
-      reportPath: reportPath,
-      email: email
-    });
+  createSubscription(model: SubscriptionDto): Observable<ResponseDto> {
+    return this.apiService.post('subscriptionRequests', '', model);
   }
 
   getSubscriptionById(subscriptionId: string): Observable<ResponseDto> {
-    return this.apiService.get('Subscriptions', subscriptionId, null);
+    return this.apiService.get('subscriptionRequests', `${subscriptionId}`, null);
   }
 
   deleteSubscription(subscriptionId: string): Observable<ResponseDto> {
-    return this.apiService.delete('Subscriptions', subscriptionId, null);
+    return this.apiService.delete('subscriptionRequests', `${subscriptionId}`, null);
   }
 
   /**
    * Approved, Rejected
    */
   sendSubscriptionAction(subscriptionId: string, action: ActionType, comment: string): Observable<ResponseDto> {
-    return this.apiService.post('Subscriptions', `${subscriptionId}/action/${action}`, {
+    return this.apiService.post('subscriptionRequests', `${subscriptionId}/action/${action}`, {
       comment: comment.length === 0 ? null : comment
     });
   }

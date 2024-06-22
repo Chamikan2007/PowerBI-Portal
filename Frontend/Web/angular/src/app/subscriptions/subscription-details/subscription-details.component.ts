@@ -1,6 +1,6 @@
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule, KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { map, startWith } from 'rxjs';
 import { MatAutocompleteModule, MatOption } from '@angular/material/autocomplete';
@@ -13,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { Observable } from 'rxjs/internal/Observable';
-import { ReportDto, SubscriptionDto } from '@core/models/dto/subscription-dto';
+import { ReportDto, ScheduleTypeDailyDto, ScheduleTypeHourlyDto, ScheduleTypeMonthlyDto, ScheduleTypeOneTimeDto, ScheduleTypeWeeklyDto, SubscriptionDto } from '@core/models/dto/subscription-dto';
 import { ResponseDto } from '@core/models/dto/response-dto';
 import { SubscriptionDetailsMeta } from './subscription-details.meta';
 import { SubscriptionService } from '@core/service/subscription.service';
@@ -62,15 +62,15 @@ export class SubscriptionDetailsComponent implements OnInit {
   monthsOfYearItems = SubscriptionDetailsMeta.monthsOfYearItems;
   weekOfMonthItems = SubscriptionDetailsMeta.weekOfMonthItems;
 
-  selectedSubscriptionType: string = '1';
-  selectedDestination: string = '2';
-  selectedRenderFormat: string = '1';
-  selectedPriority: string = '1';
-  selectedScheduleDetailType: string = '2';
-  selectedScheduleType: string = '1';
-  selectedDailyScheduleType: string = '1';
-  selectedMonthlyScheduleType: string = '1';
-  selectedWeekOfMonth_WeeklyScheduleType = '1';
+  // selectedSubscriptionType: string = '1';
+  // selectedDestination: string = '2';
+  // selectedRenderFormat: string = '1';
+  // selectedPriority: string = '1';
+  // selectedScheduleDetailType: string = '2';
+  // selectedScheduleType: string = '1';
+  // selectedDailyScheduleType: string = '1';
+  // selectedMonthlyScheduleType: string = '1';
+  // selectedWeekOfMonth_WeeklyScheduleType = '1';
 
   model: SubscriptionDto = new SubscriptionDto();
 
@@ -87,14 +87,14 @@ export class SubscriptionDetailsComponent implements OnInit {
     this.subscriptionForm = this.formBuilder.group({
       reportPath: ['', [this.autocompleteStringValidator(this.reportsList), Validators.required]],
       description: ['', [Validators.required]],
-      owner: [{ value: 'SampathBnakHema\Hemantha', disabled: true }, [Validators.required]],
+      owner: [{ value: 'SampathBnakHema\\Hemantha', disabled: true }, [Validators.required]],
       subscriptionType: ['', Validators.required],
       destinationType: ['', Validators.required],
       comment: [''],
       email_to: ['', [Validators.required, Validators.email]],
-      email_cc: ['', [Validators.required, Validators.email]],
-      email_bcc: ['', [Validators.required, Validators.email]],
-      email_replyto: ['', [Validators.required, Validators.email]],
+      email_cc: ['', [Validators.email]],
+      email_bcc: ['', [Validators.email]],
+      email_replyto: ['', [Validators.email]],
       email_subject: ['', [Validators.required]],
       includeReportCheckbox: [true, []],
       includeLinkCheckbox: [true, []],
@@ -189,83 +189,202 @@ export class SubscriptionDetailsComponent implements OnInit {
   }
 
   onDescriptionChange(event: any) {
-    event.target.value;
+    this.model.description = event.target.value;
   }
 
-  selectedSubscriptionTypeChange(event: any) {
-    this.selectedSubscriptionType = event.returnValue;
+  onSubscriptionTypeChange(event: any) {
+    this.model.subscriptionType = +event.returnValue;
   }
 
+  onDestinationChange(event: any) {
+    this.model.destination = +event.value;
+  }
+
+  // email options
   onDeliveryOptionEmailToChange(event: any) {
-    event.target.value;
+    this.model.deliveryOptionEmail.to = event.target.value;
   }
 
   onDeliveryOptionEmailCcChange(event: any) {
-    event.target.value;
+    this.model.deliveryOptionEmail.cc = event.target.value;
   }
 
   onDeliveryOptionEmailBccChange(event: any) {
-    event.target.value;
+    this.model.deliveryOptionEmail.bcc = event.target.value;
   }
 
   onDeliveryOptionEmailReplyToChange(event: any) {
-    event.target.value;
+    this.model.deliveryOptionEmail.replyTo = event.target.value;
   }
 
   onDeliveryOptionEmailSubjectChange(event: any) {
-    event.target.value;
+    this.model.deliveryOptionEmail.subject = event.target.value;
+  }
+
+  onIncludeReportChange(event: boolean) {
+    this.model.deliveryOptionEmail.includeReport = event;
+  }
+
+  onIncludeLinkChange(event: boolean) {
+    this.model.deliveryOptionEmail.inlcudeLink = event;
+  }
+
+  onRenderFormatChange(event: any) {
+    this.model.deliveryOptionEmail.renderFormat = +event.value;
+  }
+
+  onPriorityChange(event: any) {
+    this.model.deliveryOptionEmail.priority = +event.value;
   }
 
   onCommentTextChange(event: any) {
-    event.target.value;
+    this.model.deliveryOptionEmail.comment = event.target.value;
   }
 
-  selectedScheduleDetailTypeChange(event: any) {
-    this.selectedScheduleDetailType = event.value;
+  // schedule detail type
+  onScheduleDetailTypeChange(event: any) {
+    this.model.scheduleDetailType = +event.value;
   }
 
-  scheduleTypeChange(event: any) {
-    this.selectedScheduleType = event.value;
-  }
+  // schedule types
+  onScheduleTypeChange(event: any) {
+    this.model.scheduleType = +event.value;
 
-  selectedDailyScheduleTypeChange(event: any) {
-    if (event.value) {
-      this.selectedDailyScheduleType = event.value;
+    switch (this.model.scheduleType) {
+      case 1:
+        this.model.scheduleDetail = new ScheduleTypeHourlyDto();
+        break;
+      case 2:
+        this.model.scheduleDetail = new ScheduleTypeDailyDto();
+        break;
+      case 3:
+        this.model.scheduleDetail = new ScheduleTypeWeeklyDto();
+        break;
+      case 4:
+        this.model.scheduleDetail = new ScheduleTypeMonthlyDto();
+        break;
+      case 5:
+        this.model.scheduleDetail = new ScheduleTypeOneTimeDto();
+        break;
     }
   }
 
-  selectedMonthlyScheduleTypeChange(event: any) {
-    if (event.value) {
-      this.selectedMonthlyScheduleType = event.value;
-    }
-  }
-
+  // hourly
   onHourlyMeridiemChange(event: any) {
-    event.value;
+    this.model.scheduleDetail.meridiem = +event.value;
   }
 
   onHourlyRunScheduleEveryHourChange(event: any) {
-    event.target.value;
+    this.model.scheduleDetail.hour = +event.target.value;
   }
 
   onHourlyRunScheduleEveryMinuteChange(event: any) {
-    event.target.value;
+    this.model.scheduleDetail.minute = +event.target.value;
+  }
+
+  // daily 
+  onDailyScheduleTypeChange(event: any) {
+    if (event.value) {
+      this.model.scheduleDetail.dailyScheduleType = +event.value;
+    }
+  }
+
+  onDailyScheduleDayStatusChange(event: boolean, opt: KeyValue<string, string>) {
+    let day = this.model.scheduleDetail.selectedDays.find((d: KeyValue<string, string>) => d.key === opt.value);
+    day.value = event;
+  }
+
+  onDailyRunScheduleRepeatAfterDayCountChange(event: any) {
+    this.model.scheduleDetail.repeatAfterDaysCount = +event.target.value;
+  }
+
+  onDailyRunScheduleStartHourChange(event: any) {
+    this.model.scheduleDetail.startHour = +event.target.value;
+  }
+
+  onDailyRunScheduleStartMinuteChange(event: any) {
+    this.model.scheduleDetail.startMinute = +event.target.value;
   }
 
   onDailyMeridiemChange(event: any) {
-    event.value;
+    this.model.scheduleDetail.meridiem = +event.value;
+  }
+
+  // weekly
+  onWeeklyRunScheduleRepeatAfterDayCountChange(event: any) {
+    this.model.scheduleDetail.repeatAfterDaysCount = +event.target.value;
+  }
+
+  onWeeklyScheduleDayStatusChange(event: boolean, opt: KeyValue<string, string>) {
+    let day = this.model.scheduleDetail.selectedDays.find((d: KeyValue<string, string>) => d.key === opt.value);
+    day.value = event;
+  }
+
+  onWeeklyRunScheduleStartHourChange(event: any) {
+    this.model.scheduleDetail.startHour = +event.target.value;
+  }
+
+  onWeeklyRunScheduleStartMinuteChange(event: any) {
+    this.model.scheduleDetail.startMinute = +event.target.value;
   }
 
   onWeeklyMeridiemChange(event: any) {
-    event.value;
+    this.model.scheduleDetail.meridiem = +event.value;
+  }
+
+  // monthly
+  onMonthlyScheduleMonthStatusChange(event: boolean, opt: KeyValue<string, string>) {
+    let month = this.model.scheduleDetail.selectedMonths.find((d: KeyValue<string, string>) => d.key === opt.value);
+    month.value = event;
+  }
+
+  onMonthlyScheduleTypeChange(event: any) {
+    if (event.value) {
+      this.model.scheduleDetail.monthlyScheduleType = +event.value;
+    }
+  }
+
+  onMonthlyScheduleWeekOfMonthChange(event: any) {
+    this.model.scheduleDetail.onWeekOfMonth = +event.value;
+  }
+
+  onMonthlyScheduleOnDayOfWeekChange(event: boolean, opt: KeyValue<string, string>) {
+    let day = this.model.scheduleDetail.onDaysOfWeek.find((d: KeyValue<string, string>) => d.key === opt.value);
+    day.value = event;
+  }
+
+  onMonthlyScheduleOnCalendarDaysChange(event: any) {
+    this.model.scheduleDetail.onCalendarDays = event.target.value;
+  }
+
+  onMonthlyRunScheduleStartHourChange(event: any) {
+    this.model.scheduleDetail.startHour = +event.target.value;
+  }
+
+  onMonthlyRunScheduleStartMinuteChange(event: any) {
+    this.model.scheduleDetail.startMinute = +event.target.value;
   }
 
   onMonthlyMeridiemChange(event: any) {
-    event.value;
+    this.model.scheduleDetail.meridiem = +event.value;
+  }
+
+  // one-time
+  onOneTimeRunScheduleStartHourChange(event: any) {
+    this.model.scheduleDetail.startHour = +event.target.value;
+  }
+
+  onOneTimeRunScheduleStartMinuteChange(event: any) {
+    this.model.scheduleDetail.startMinute = +event.target.value;
   }
 
   onOneTimeMeridiemChange(event: any) {
-    event.value;
+    this.model.scheduleDetail.meridiem = +event.value;
+  }
+
+  // start and end date
+  onStartDateChange(event: any) {
+    this.model.startEndDates.startDate = event.value._d;
   }
 
   validateFormInputs() {
@@ -277,30 +396,22 @@ export class SubscriptionDetailsComponent implements OnInit {
   onSubmit() {
     let isValid = this.validateFormInputs();
 
-    if (this.subscriptionForm.invalid) {
-      this.error = 'Input values are not valid!';
-      return;
-    }
-    else {
-      this.model.email = this.f['email'].value;
-
-      this.subscriptionService.createSubscription(this.model.report.path, this.model.email).subscribe({
-        next: (response: ResponseDto) => {
-          if (response.isSuccess) {
-            this.router.navigate(['../'], { relativeTo: this.activatedRoute });
-          }
-          else {
-            this.error = response.error.errorCode;
-          }
-        },
-        error: (error: any) => {
-          this.error = 'Something went wrong.';
+    this.subscriptionService.createSubscription(this.model).subscribe({
+      next: (response: ResponseDto) => {
+        if (response.isSuccess) {
+          this.router.navigate(['../'], { relativeTo: this.activatedRoute });
         }
-      });
-    }
+        else {
+          this.error = response.error.errorCode;
+        }
+      },
+      error: (error: any) => {
+        this.error = 'Something went wrong.';
+      }
+    });
   }
 
   onCancel() {
     this.router.navigate(['/', 'subscriptions']);
   }
-}
+} 
