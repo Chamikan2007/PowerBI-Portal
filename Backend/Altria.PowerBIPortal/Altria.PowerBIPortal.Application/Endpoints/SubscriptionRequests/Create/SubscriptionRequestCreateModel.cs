@@ -1,5 +1,5 @@
-﻿using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules.Abstractions;
-using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionInfos.Abstractions;
+﻿using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules;
+using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionInfos;
 
 namespace Altria.PowerBIPortal.Application.Endpoints.SubscriptionRequests.Create;
 

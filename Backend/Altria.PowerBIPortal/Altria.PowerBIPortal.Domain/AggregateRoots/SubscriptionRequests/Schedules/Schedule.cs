@@ -2,9 +2,9 @@
 using JsonSubTypes;
 using Newtonsoft.Json;
 
-namespace Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules.Abstractions;
+namespace Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules;
 
-public class Schedule 
+public class Schedule
 {
     public HourlySchedule? HourlySchedule { get; set; }
 

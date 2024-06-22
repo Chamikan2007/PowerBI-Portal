@@ -2,7 +2,7 @@
 using JsonSubTypes;
 using Newtonsoft.Json;
 
-namespace Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionInfos.Abstractions;
+namespace Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionInfos;
 
 public class DeliveryOption
 {
