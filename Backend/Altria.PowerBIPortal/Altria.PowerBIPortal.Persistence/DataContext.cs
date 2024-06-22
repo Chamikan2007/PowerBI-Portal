@@ -3,15 +3,11 @@ using Altria.PowerBIPortal.Domain.AggregateRoots.ApprovalConfigs;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
 using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriberWhiteListEntries;
 using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests;
-using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules;
-using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionInfos;
 using Altria.PowerBIPortal.Domain.Contracts;
 using Altria.PowerBIPortal.Domain.Infrastructure;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Pluralize.NET.Core;
-using System.Net;
-using System.Reflection.Emit;
 
 namespace Altria.PowerBIPortal.Persistence;
 
@@ -94,18 +90,15 @@ public class DataContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRo
 
         #endregion
 
-        builder.Ignore<SubscrptionInfo>();
-        builder.Ignore<StandardSubscription>();
-        builder.Ignore<DataDrivenSubscription>();
-        builder.Ignore<DeliveryOption>();
-        builder.Ignore<EmailDeliveryOption>();
-        builder.Ignore<FileShareDeliveryOption>();
-        builder.Ignore<Schedule>();
-        builder.Ignore<HourlySchedule>();
-        builder.Ignore<DailySchedule>();
-        builder.Ignore<WeeklySchedule>();
-        builder.Ignore<MonthlySchedule>();
-        builder.Ignore<OneTimeSchedule>();
+        #region Ignore JSON entities
+
+        var jsonEntities = builder.Model.GetEntityTypes().Where(e => typeof(IJsonEntity).IsAssignableFrom(e.ClrType)).ToList();
+        foreach (var entity in jsonEntities)
+        {
+            builder.Ignore(entity.ClrType);
+        }
+
+        #endregion
 
         builder.ApplyConfigurationsFromAssembly(typeof(DataContext).Assembly);
     }

@@ -1,8 +1,9 @@
 ﻿using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionInfos.Enums;
+using Altria.PowerBIPortal.Domain.Infrastructure;
 
 namespace Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionInfos;
 
-public class FileShareDeliveryOption
+public class FileShareDeliveryOption : IJsonEntity
 {
     public RenderFormat RenderFormat { get; set; }
 

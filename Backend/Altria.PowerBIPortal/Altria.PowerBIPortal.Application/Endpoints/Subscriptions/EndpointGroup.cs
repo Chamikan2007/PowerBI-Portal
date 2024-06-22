@@ -8,7 +8,7 @@ public class EndpointGroup : IEndpointGroup
     {
         return app
             .MapGroup("/subscriptions")
-            .WithTags("Subscriptions")
+            .WithTags("Subscription Requests")
             .WithOpenApi();
     }
 }

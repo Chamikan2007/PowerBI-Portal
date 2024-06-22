@@ -2,6 +2,8 @@
 using Altria.PowerBIPortal.Domain;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
 using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests;
+using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules;
+using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionInfos;
 using Altria.PowerBIPortal.Domain.Contracts;
 using Altria.PowerBIPortal.Domain.Contracts.Repositories;
 using Azure.Core;
@@ -18,12 +20,37 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
         {
             var requester = await userManager.FindByIdAsync(requestContext.UserId.ToString());
 
-            //var subscription = SubscriptionRequest.Create("", "", requester!);
-            //subscriptionRequestRepository.Create(subscription);
+            var subinfo = new SubscrptionInfo
+            {
+                StandardSubscription = new StandardSubscription
+                {
+                    Description = "Test Sub",
+                    DeliveryOption = new DeliveryOption
+                    {
+                        EmailDeliveryOption = new EmailDeliveryOption
+                        {
+                            Subject = "Test Sub",
+                            To = "chamika@gmail.com",
+                        }
+                    }
+                }
+            };
 
-            var x = await subscriptionRequestRepository.GetByIdAsync(Guid.Parse("587895BD-28C7-40F3-32EC-08DC92D897DB"));
+            var sch = new Schedule
+            {
+                WeeklySchedule = new WeeklySchedule
+                {
+                    StartDate = new DateOnly(2024, 3, 30),
+                    RepeatIn = 2,
+                }
+            };
 
-            //await unitOfWork.SaveChangesAsync();
+            var subscription = SubscriptionRequest.Create("/Countries", subinfo, sch, requester!);
+            subscriptionRequestRepository.Create(subscription);
+
+            //var x = await subscriptionRequestRepository.GetByIdAsync(Guid.Parse("587895BD-28C7-40F3-32EC-08DC92D897DB"));
+
+            await unitOfWork.SaveChangesAsync();
         });
     }
 }

@@ -7,8 +7,6 @@ public class SubscriptionRequestCreateModel
 {
     public required string ReportPath { get; set; }
 
-    public required string Email { get; set; }
-
     public required SubscrptionInfo SubscrptionInfo { get; set; }
 
     public required Schedule Schedule { get; set; }
