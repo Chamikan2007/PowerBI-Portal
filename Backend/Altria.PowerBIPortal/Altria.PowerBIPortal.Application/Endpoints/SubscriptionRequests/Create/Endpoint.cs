@@ -38,7 +38,7 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                     return Result.Faliour(SubscriberWhiteListErrors.NotAllowed);
                 }
 
-                var subscription = SubscriptionRequest.Create(model.ReportPath, model.Email, requester);
+                var subscription = SubscriptionRequest.Create(model.ReportPath, model.SubscrptionInfo, model.Schedule, requester);
                 subscriptionRequestRepository.Create(subscription);
 
                 await unitOfWork.SaveChangesAsync();

@@ -18,7 +18,7 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                 var results = subscriptions.Select(s => new SubscriptionRequestModel
                 {
                     SubscriptionId = s.Id,
-                    Email = s.Email,
+                    Email = "",
                     Report = ReportModel.FromPath(s.ReportPath),
                     Status = s.Status,
                     RequesterId = s.Requester.Id,

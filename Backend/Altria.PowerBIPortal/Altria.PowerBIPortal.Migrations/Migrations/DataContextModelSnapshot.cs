@@ -323,11 +323,6 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<bool>("IsProcessed")
                         .HasColumnType("bit");
 
@@ -339,10 +334,13 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     b.Property<Guid>("RequesterId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("SharedScheduleReference")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("SubscriptionId")
+                    b.Property<Guid?>("SubscriptionReference")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAtUtc")
@@ -471,7 +469,55 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.OwnsOne("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules.Abstractions.Schedule", "Schedule", b1 =>
+                        {
+                            b1.Property<Guid>("SubscriptionRequestId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateOnly>("StartDate")
+                                .HasColumnType("date");
+
+                            b1.Property<TimeOnly>("StartTime")
+                                .HasColumnType("time");
+
+                            b1.Property<DateOnly?>("StoptDate")
+                                .HasColumnType("date");
+
+                            b1.HasKey("SubscriptionRequestId");
+
+                            b1.ToTable("SubscriptionRequests");
+
+                            b1.ToJson("Schedule");
+
+                            b1.WithOwner()
+                                .HasForeignKey("SubscriptionRequestId");
+                        });
+
+                    b.OwnsOne("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionInfos.Abstractions.SubscrptionInfo", "SubscrptionInfo", b1 =>
+                        {
+                            b1.Property<Guid>("SubscriptionRequestId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Description")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("SubscriptionRequestId");
+
+                            b1.ToTable("SubscriptionRequests");
+
+                            b1.ToJson("SubscrptionInfo");
+
+                            b1.WithOwner()
+                                .HasForeignKey("SubscriptionRequestId");
+                        });
+
                     b.Navigation("Requester");
+
+                    b.Navigation("Schedule");
+
+                    b.Navigation("SubscrptionInfo")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionRequestApprovalLevel", b =>

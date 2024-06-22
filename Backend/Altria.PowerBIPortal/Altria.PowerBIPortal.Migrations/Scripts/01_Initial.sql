@@ -80,15 +80,17 @@ GO
 CREATE TABLE [SubscriptionRequests] (
     [Id] uniqueidentifier NOT NULL,
     [ReportPath] nvarchar(500) NOT NULL,
-    [Email] nvarchar(50) NOT NULL,
+    [SharedScheduleReference] uniqueidentifier NULL,
     [IsProcessed] bit NOT NULL,
-    [SubscriptionId] uniqueidentifier NULL,
+    [SubscriptionReference] uniqueidentifier NULL,
     [CreatedAtUtc] datetime2 NOT NULL,
     [CreatedBy] uniqueidentifier NOT NULL,
     [UpdatedAtUtc] datetime2 NOT NULL,
     [UpdatedBy] uniqueidentifier NOT NULL,
     [Status] int NOT NULL,
     [RequesterId] uniqueidentifier NOT NULL,
+    [Schedule] nvarchar(max) NULL,
+    [SubscrptionInfo] nvarchar(max) NOT NULL,
     CONSTRAINT [PK_SubscriptionRequests] PRIMARY KEY ([Id]),
     CONSTRAINT [FK_SubscriptionRequests_Users_RequesterId] FOREIGN KEY ([RequesterId]) REFERENCES [Users] ([Id])
 );
@@ -193,7 +195,7 @@ CREATE UNIQUE INDEX [UserNameIndex] ON [Users] ([NormalizedUserName]) WHERE [Nor
 GO
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20240620175454_Initial', N'8.0.6');
+VALUES (N'20240622142142_Initial', N'8.0.6');
 GO
 
 COMMIT;

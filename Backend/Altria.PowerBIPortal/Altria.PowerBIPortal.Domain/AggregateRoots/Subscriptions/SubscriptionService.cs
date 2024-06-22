@@ -20,14 +20,14 @@ public class SubscriptionService : ISubscriptionService
 
     public async Task ProcessSubscriptionsAsync()
     {
-        var subscriptions = await _subscriptionRepository.FetchSubscriptionsToProcessAsync();
+        //var subscriptions = await _subscriptionRepository.FetchSubscriptionsToProcessAsync();
 
-        foreach (var subscription in subscriptions)
-        {
-            var subscritionId = await _powerBIReportService.ProcessSubscriptionAsync(subscription);
-            subscription.Processed(subscritionId);
+        //foreach (var subscription in subscriptions)
+        //{
+        //    var subscritionId = await _powerBIReportService.ProcessSubscriptionAsync(subscription);
+        //    subscription.Processed(subscritionId);
 
-            await _unitOfWork.SaveChangesAsync();
-        }
+        //    await _unitOfWork.SaveChangesAsync();
+        //}
     }
 }

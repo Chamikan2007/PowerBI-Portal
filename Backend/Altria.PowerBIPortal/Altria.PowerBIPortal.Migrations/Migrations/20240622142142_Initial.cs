@@ -117,15 +117,17 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ReportPath = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    SharedScheduleReference = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     IsProcessed = table.Column<bool>(type: "bit", nullable: false),
-                    SubscriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    SubscriptionReference = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UpdatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    RequesterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    RequesterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Schedule = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SubscrptionInfo = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

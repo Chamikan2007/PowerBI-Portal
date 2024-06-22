@@ -4,7 +4,6 @@ using Altria.PowerBIPortal.Application.Middleware;
 using Altria.PowerBIPortal.Domain;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Managers;
-using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions;
 using Altria.PowerBIPortal.Domain.Contracts;
 using Altria.PowerBIPortal.Domain.Contracts.DomainServices;
