@@ -40,7 +40,8 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
             {
                 WeeklySchedule = new WeeklySchedule
                 {
-                    StartDate = new DateOnly(2024, 3, 30),
+                    StartDate = "2024-3-30",
+                    StartTime = "10-25",
                     RepeatIn = 2,
                 }
             };
