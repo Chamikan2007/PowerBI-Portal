@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules;
 
-public class Schedule
+public class Schedule : IJsonEntity
 {
     public HourlySchedule? HourlySchedule { get; set; }
 

@@ -4,16 +4,16 @@ namespace Altria.PowerBIPortal.Domain.Validators;
 
 public static class EmailValidator
 {
-    public static (bool isValid, string domain) IsValidEmail(string email)
+    public static (bool isValid, string domain, string email) IsValidEmail(string email)
     {
         try
         {
             var mailAddress = new MailAddress(email);
-            return (true, mailAddress.Host);
+            return (true, mailAddress.Host, mailAddress.Address);
         }
         catch (FormatException)
         {
-            return (false, string.Empty);
+            return (false, string.Empty, string.Empty);
         }
     }
 }

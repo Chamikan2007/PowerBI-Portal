@@ -4,6 +4,7 @@ using Altria.PowerBIPortal.Domain.AggregateRoots.Identity;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
 using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriberWhiteListEntries;
 using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests;
+using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionInfos;
 using Altria.PowerBIPortal.Domain.Contracts;
 using Altria.PowerBIPortal.Domain.Contracts.Repositories;
 using Altria.PowerBIPortal.Domain.Validators;
@@ -26,17 +27,43 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                     return Result.Faliour(IdentityErrors.UserNotFound);
                 }
 
-                var (isValid, domain) = EmailValidator.IsValidEmail(model.Email);
-                if (!isValid)
+                #region Validate Email Delivery Option
+
+                EmailDeliveryOption? emailDeliveryOption = null;
+
+                if (model.SubscrptionInfo.StandardSubscription != null)
                 {
-                    return Result.Faliour(SubscriptionRequestErrors.InvalidEmail);
+                    if (model.SubscrptionInfo.StandardSubscription.DeliveryOption.EmailDeliveryOption != null)
+                    {
+                        emailDeliveryOption = model.SubscrptionInfo.StandardSubscription.DeliveryOption.EmailDeliveryOption;
+                    }
                 }
 
-                var isWhiteListEntry = await subscriptionWhiteListEntryRepository.IsAllowedEntryAsync(model.Email, domain);
-                if (!isWhiteListEntry)
+                if (emailDeliveryOption != null)
                 {
-                    return Result.Faliour(SubscriberWhiteListErrors.NotAllowed);
+                    var tos = emailDeliveryOption.To.Split(";");
+                    var ccs = emailDeliveryOption.Cc?.Split(";") ?? [];
+                    var bccs = emailDeliveryOption.Bcc?.Split(";") ?? [];
+
+                    var allEmails = tos.Concat(ccs).Concat(bccs);
+
+                    var validatedEmails = allEmails.Select(e => EmailValidator.IsValidEmail(e));
+                    if (validatedEmails.Any(x => !x.isValid))
+                    {
+                        return Result.Faliour(SubscriptionRequestErrors.InvalidEmail);
+                    }
+
+                    var emails = validatedEmails.Select(e => e.email).ToArray();
+                    var domains = validatedEmails.Select(e => e.domain).ToArray();
+
+                    var isAllowed = await subscriptionWhiteListEntryRepository.IsAllowedEntryAsync(emails, domains);
+                    if (!isAllowed)
+                    {
+                        return Result.Faliour(SubscriberWhiteListErrors.NotAllowed);
+                    }
                 }
+
+                #endregion
 
                 var subscription = SubscriptionRequest.Create(model.ReportPath, model.SubscrptionInfo, model.Schedule, requester);
                 subscriptionRequestRepository.Create(subscription);

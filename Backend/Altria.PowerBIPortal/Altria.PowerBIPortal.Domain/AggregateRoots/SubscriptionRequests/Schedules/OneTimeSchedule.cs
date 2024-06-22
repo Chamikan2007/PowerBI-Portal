@@ -1,8 +1,8 @@
-﻿using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules.Abstractions;
+﻿using Altria.PowerBIPortal.Domain.Infrastructure;
 
 namespace Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules;
 
-public class OneTimeSchedule
+public class OneTimeSchedule : IJsonEntity
 {
     public TimeOnly StartTime { get; set; }
 

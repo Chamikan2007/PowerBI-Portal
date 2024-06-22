@@ -1,9 +1,9 @@
-﻿using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules.Abstractions;
-using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules.Enums;
+﻿using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules.Enums;
+using Altria.PowerBIPortal.Domain.Infrastructure;
 
 namespace Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules;
 
-public class DailySchedule
+public class DailySchedule : IJsonEntity
 {
     public TimeOnly StartTime { get; set; }
 
