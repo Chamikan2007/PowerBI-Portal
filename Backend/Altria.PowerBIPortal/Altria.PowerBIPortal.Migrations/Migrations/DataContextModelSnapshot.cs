@@ -55,7 +55,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
 
                     b.HasIndex("ApprovalRequestType", "ApprovalLevel");
 
-                    b.ToTable("ApprovalOfficer");
+                    b.ToTable("ApprovalOfficers", (string)null);
                 });
 
             modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities.Role", b =>
@@ -275,7 +275,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     b.ToTable("UserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionWhiteList.SubscriptionWhiteListEntry", b =>
+            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriberWhiteListEntries.SubscriberWhiteList", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -308,10 +308,10 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     b.HasIndex("WhiteListEntry")
                         .IsUnique();
 
-                    b.ToTable("SubscriptionWhiteListEntry");
+                    b.ToTable("SubscriberWhiteList", (string)null);
                 });
 
-            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions.Subscription", b =>
+            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionRequest", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -323,21 +323,25 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<bool>("IsProcessed")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("Report")
+                    b.Property<string>("ReportPath")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<Guid>("RequesterId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("SharedScheduleReference")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<Guid?>("SubscriptionReference")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedAtUtc")
                         .HasColumnType("datetime2");
@@ -349,10 +353,10 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
 
                     b.HasIndex("RequesterId");
 
-                    b.ToTable("Subscription");
+                    b.ToTable("SubscriptionRequests", (string)null);
                 });
 
-            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions.SubscriptionApprovalLevel", b =>
+            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionRequestApprovalLevel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -392,7 +396,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
 
                     b.HasIndex("SubscriptionId");
 
-                    b.ToTable("SubscriptionApprovalLevel");
+                    b.ToTable("SubscriptionRequestApprovalLevels", (string)null);
                 });
 
             modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.ApprovalConfigs.ApprovalOfficer", b =>
@@ -457,7 +461,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions.Subscription", b =>
+            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionRequest", b =>
                 {
                     b.HasOne("Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities.User", "Requester")
                         .WithMany()
@@ -465,17 +469,65 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.OwnsOne("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules.Abstractions.Schedule", "Schedule", b1 =>
+                        {
+                            b1.Property<Guid>("SubscriptionRequestId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateOnly>("StartDate")
+                                .HasColumnType("date");
+
+                            b1.Property<TimeOnly>("StartTime")
+                                .HasColumnType("time");
+
+                            b1.Property<DateOnly?>("StoptDate")
+                                .HasColumnType("date");
+
+                            b1.HasKey("SubscriptionRequestId");
+
+                            b1.ToTable("SubscriptionRequests");
+
+                            b1.ToJson("Schedule");
+
+                            b1.WithOwner()
+                                .HasForeignKey("SubscriptionRequestId");
+                        });
+
+                    b.OwnsOne("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionInfos.Abstractions.SubscrptionInfo", "SubscrptionInfo", b1 =>
+                        {
+                            b1.Property<Guid>("SubscriptionRequestId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Description")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("SubscriptionRequestId");
+
+                            b1.ToTable("SubscriptionRequests");
+
+                            b1.ToJson("SubscrptionInfo");
+
+                            b1.WithOwner()
+                                .HasForeignKey("SubscriptionRequestId");
+                        });
+
                     b.Navigation("Requester");
+
+                    b.Navigation("Schedule");
+
+                    b.Navigation("SubscrptionInfo")
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions.SubscriptionApprovalLevel", b =>
+            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionRequestApprovalLevel", b =>
                 {
                     b.HasOne("Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities.User", "ApprovalOfficer")
                         .WithMany()
                         .HasForeignKey("ApprovalOfficerId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions.Subscription", "Subscription")
+                    b.HasOne("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionRequest", "Subscription")
                         .WithMany("ApprovalRequestLevels")
                         .HasForeignKey("SubscriptionId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -486,7 +538,7 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                     b.Navigation("Subscription");
                 });
 
-            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.Subscriptions.Subscription", b =>
+            modelBuilder.Entity("Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionRequest", b =>
                 {
                     b.Navigation("ApprovalRequestLevels");
                 });

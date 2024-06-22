@@ -20,7 +20,7 @@ CREATE TABLE [Roles] (
 );
 GO
 
-CREATE TABLE [SubscriptionWhiteListEntry] (
+CREATE TABLE [SubscriberWhiteList] (
     [Id] uniqueidentifier NOT NULL,
     [WhiteListEntry] nvarchar(50) NOT NULL,
     [EntryType] int NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE [SubscriptionWhiteListEntry] (
     [CreatedBy] uniqueidentifier NOT NULL,
     [UpdatedAtUtc] datetime2 NOT NULL,
     [UpdatedBy] uniqueidentifier NOT NULL,
-    CONSTRAINT [PK_SubscriptionWhiteListEntry] PRIMARY KEY ([Id])
+    CONSTRAINT [PK_SubscriberWhiteList] PRIMARY KEY ([Id])
 );
 GO
 
@@ -63,7 +63,7 @@ CREATE TABLE [RoleClaims] (
 );
 GO
 
-CREATE TABLE [ApprovalOfficer] (
+CREATE TABLE [ApprovalOfficers] (
     [Id] uniqueidentifier NOT NULL,
     [ApprovalRequestType] int NOT NULL,
     [ApprovalLevel] int NOT NULL,
@@ -72,23 +72,27 @@ CREATE TABLE [ApprovalOfficer] (
     [CreatedBy] uniqueidentifier NOT NULL,
     [UpdatedAtUtc] datetime2 NOT NULL,
     [UpdatedBy] uniqueidentifier NOT NULL,
-    CONSTRAINT [PK_ApprovalOfficer] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_ApprovalOfficer_Users_OfficerId] FOREIGN KEY ([OfficerId]) REFERENCES [Users] ([Id])
+    CONSTRAINT [PK_ApprovalOfficers] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_ApprovalOfficers_Users_OfficerId] FOREIGN KEY ([OfficerId]) REFERENCES [Users] ([Id])
 );
 GO
 
-CREATE TABLE [Subscription] (
+CREATE TABLE [SubscriptionRequests] (
     [Id] uniqueidentifier NOT NULL,
-    [Report] nvarchar(50) NOT NULL,
-    [Email] nvarchar(50) NOT NULL,
+    [ReportPath] nvarchar(500) NOT NULL,
+    [SharedScheduleReference] uniqueidentifier NULL,
+    [IsProcessed] bit NOT NULL,
+    [SubscriptionReference] uniqueidentifier NULL,
     [CreatedAtUtc] datetime2 NOT NULL,
     [CreatedBy] uniqueidentifier NOT NULL,
     [UpdatedAtUtc] datetime2 NOT NULL,
     [UpdatedBy] uniqueidentifier NOT NULL,
     [Status] int NOT NULL,
     [RequesterId] uniqueidentifier NOT NULL,
-    CONSTRAINT [PK_Subscription] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_Subscription_Users_RequesterId] FOREIGN KEY ([RequesterId]) REFERENCES [Users] ([Id])
+    [Schedule] nvarchar(max) NULL,
+    [SubscrptionInfo] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_SubscriptionRequests] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_SubscriptionRequests_Users_RequesterId] FOREIGN KEY ([RequesterId]) REFERENCES [Users] ([Id])
 );
 GO
 
@@ -131,7 +135,7 @@ CREATE TABLE [UserTokens] (
 );
 GO
 
-CREATE TABLE [SubscriptionApprovalLevel] (
+CREATE TABLE [SubscriptionRequestApprovalLevels] (
     [Id] uniqueidentifier NOT NULL,
     [SubscriptionId] uniqueidentifier NOT NULL,
     [CreatedAtUtc] datetime2 NOT NULL,
@@ -142,16 +146,16 @@ CREATE TABLE [SubscriptionApprovalLevel] (
     [ApprovalOfficerId] uniqueidentifier NULL,
     [ApprovalLevel] int NOT NULL,
     [Comment] nvarchar(500) NULL,
-    CONSTRAINT [PK_SubscriptionApprovalLevel] PRIMARY KEY ([Id]),
-    CONSTRAINT [FK_SubscriptionApprovalLevel_Subscription_SubscriptionId] FOREIGN KEY ([SubscriptionId]) REFERENCES [Subscription] ([Id]),
-    CONSTRAINT [FK_SubscriptionApprovalLevel_Users_ApprovalOfficerId] FOREIGN KEY ([ApprovalOfficerId]) REFERENCES [Users] ([Id])
+    CONSTRAINT [PK_SubscriptionRequestApprovalLevels] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_SubscriptionRequestApprovalLevels_SubscriptionRequests_SubscriptionId] FOREIGN KEY ([SubscriptionId]) REFERENCES [SubscriptionRequests] ([Id]),
+    CONSTRAINT [FK_SubscriptionRequestApprovalLevels_Users_ApprovalOfficerId] FOREIGN KEY ([ApprovalOfficerId]) REFERENCES [Users] ([Id])
 );
 GO
 
-CREATE INDEX [IX_ApprovalOfficer_ApprovalRequestType_ApprovalLevel] ON [ApprovalOfficer] ([ApprovalRequestType], [ApprovalLevel]);
+CREATE INDEX [IX_ApprovalOfficers_ApprovalRequestType_ApprovalLevel] ON [ApprovalOfficers] ([ApprovalRequestType], [ApprovalLevel]);
 GO
 
-CREATE INDEX [IX_ApprovalOfficer_OfficerId] ON [ApprovalOfficer] ([OfficerId]);
+CREATE INDEX [IX_ApprovalOfficers_OfficerId] ON [ApprovalOfficers] ([OfficerId]);
 GO
 
 CREATE INDEX [IX_RoleClaims_RoleId] ON [RoleClaims] ([RoleId]);
@@ -160,19 +164,19 @@ GO
 CREATE UNIQUE INDEX [RoleNameIndex] ON [Roles] ([NormalizedName]) WHERE [NormalizedName] IS NOT NULL;
 GO
 
-CREATE INDEX [IX_Subscription_RequesterId] ON [Subscription] ([RequesterId]);
+CREATE INDEX [IX_SubscriberWhiteList_EntryType] ON [SubscriberWhiteList] ([EntryType]);
 GO
 
-CREATE INDEX [IX_SubscriptionApprovalLevel_ApprovalOfficerId] ON [SubscriptionApprovalLevel] ([ApprovalOfficerId]);
+CREATE UNIQUE INDEX [IX_SubscriberWhiteList_WhiteListEntry] ON [SubscriberWhiteList] ([WhiteListEntry]);
 GO
 
-CREATE INDEX [IX_SubscriptionApprovalLevel_SubscriptionId] ON [SubscriptionApprovalLevel] ([SubscriptionId]);
+CREATE INDEX [IX_SubscriptionRequestApprovalLevels_ApprovalOfficerId] ON [SubscriptionRequestApprovalLevels] ([ApprovalOfficerId]);
 GO
 
-CREATE INDEX [IX_SubscriptionWhiteListEntry_EntryType] ON [SubscriptionWhiteListEntry] ([EntryType]);
+CREATE INDEX [IX_SubscriptionRequestApprovalLevels_SubscriptionId] ON [SubscriptionRequestApprovalLevels] ([SubscriptionId]);
 GO
 
-CREATE UNIQUE INDEX [IX_SubscriptionWhiteListEntry_WhiteListEntry] ON [SubscriptionWhiteListEntry] ([WhiteListEntry]);
+CREATE INDEX [IX_SubscriptionRequests_RequesterId] ON [SubscriptionRequests] ([RequesterId]);
 GO
 
 CREATE INDEX [IX_UserClaims_UserId] ON [UserClaims] ([UserId]);
@@ -191,7 +195,7 @@ CREATE UNIQUE INDEX [UserNameIndex] ON [Users] ([NormalizedUserName]) WHERE [Nor
 GO
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20240616141239_Initial', N'8.0.6');
+VALUES (N'20240622142142_Initial', N'8.0.6');
 GO
 
 COMMIT;

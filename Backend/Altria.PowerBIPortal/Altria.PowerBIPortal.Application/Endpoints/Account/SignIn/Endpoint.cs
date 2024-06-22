@@ -1,9 +1,8 @@
 ﻿using Altria.PowerBIPortal.Application.Infrastructure;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
-using Altria.PowerBIPortal.Domain.Contracts;
+using Altria.PowerBIPortal.Domain.Contracts.Repositories;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace Altria.PowerBIPortal.Application.Endpoints.Account.SignIn;
 
@@ -30,15 +29,6 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                     var loginInfo = new UserLoginInfo("LDAP", result.User!.ExternalId, "LDAP");
                     await userManager.AddLoginAsync(user, loginInfo);
                 }
-                var roles = await userManager.GetRolesAsync(user);
-
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.Name),
-                    new Claim(ClaimTypes.Email, user.Email!),
-                    new Claim(ClaimTypes.Role, roles != null ? string.Join(",", roles) : string.Empty),
-                };
 
                 await signInManager.SignInAsync(user, true);
 
