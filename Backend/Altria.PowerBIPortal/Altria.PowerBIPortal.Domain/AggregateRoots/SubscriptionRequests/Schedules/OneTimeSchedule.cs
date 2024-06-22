@@ -4,9 +4,9 @@ namespace Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedu
 
 public class OneTimeSchedule : IJsonEntity
 {
-    public TimeOnly StartTime { get; set; }
+    public required string StartTime { get; set; }
 
-    public DateOnly StartDate { get; set; }
+    public required string StartDate { get; set; }
 
-    public DateOnly? StoptDate { get; set; }
+    public string? StoptDate { get; set; }
 }
