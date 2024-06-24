@@ -49,8 +49,8 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
     // });
 
     this.authForm = this.formBuilder.group({
-      username: ['hemantha.k', Validators.required],
-      password: ['Alt@202405', Validators.required],
+      username: ['', Validators.required],
+      password: ['', Validators.required],
     });
   }
 

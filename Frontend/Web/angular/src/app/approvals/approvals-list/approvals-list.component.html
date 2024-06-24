@@ -18,7 +18,7 @@
                                     <thead>
                                         <tr>
                                             <th>Report</th>
-                                            <th>Email</th>
+                                            <!-- <th>Email</th> -->
                                             <th>Status</th>
                                             <th>Requested By</th>
                                             <th>Actions</th>
@@ -32,7 +32,7 @@
                                         </tr>
                                         <tr *ngFor="let subscription of subscriptionList;">
                                             <td class="table-img" [title]="subscription.report.path">{{subscription.report.name}}</td>
-                                            <td><a href="mailto:{{subscription.email}}">{{subscription.email}}</a></td>
+                                            <!-- <td><a href="mailto:{{subscription.email}}">{{subscription.email}}</a></td> -->
                                             <td>{{ approvalStatus[subscription.status]}}</td>
                                             <td>{{subscription.requesterName}}</td>
                                             <td>

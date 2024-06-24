@@ -4,6 +4,7 @@ using Altria.PowerBIPortal.Domain.AggregateRoots.Identity;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
 using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriberWhiteListEntries;
 using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests;
+using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules;
 using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionInfos;
 using Altria.PowerBIPortal.Domain.Contracts;
 using Altria.PowerBIPortal.Domain.Contracts.Repositories;
@@ -65,8 +66,33 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
 
                 //#endregion
 
-                //var subscription = SubscriptionRequest.Create(model.ReportPath, model.SubscrptionInfo, model.Schedule, requester);
-                //subscriptionRequestRepository.Create(subscription);
+                var subscrptionInfo = new SubscrptionInfo
+                {
+                    StandardSubscription = new StandardSubscription
+                    {
+                        Description = "Test",
+                        DeliveryOption = new DeliveryOption
+                        {
+                            EmailDeliveryOption = new EmailDeliveryOption
+                            {
+                                Subject = "Test",
+                                To = "chamika@gmail.com",
+                            }
+                        }
+                    }
+                };
+
+                var schedule = new Schedule
+                {
+                    HourlySchedule = new HourlySchedule
+                    {
+                        StartDateTime = DateTime.Now,
+                        Hours = 1,
+                    }
+                };
+
+                var subscription = SubscriptionRequest.Create(model.Report.Path, subscrptionInfo, schedule, requester);
+                subscriptionRequestRepository.Create(subscription);
 
                 await unitOfWork.SaveChangesAsync();
                 return Result.Success();

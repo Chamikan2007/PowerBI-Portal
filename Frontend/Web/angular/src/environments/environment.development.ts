@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://4.145.104.202:81',
+  apiUrl: 'https://4.145.104.202/api',
 };
 
 /*
