@@ -23,13 +23,20 @@ export class SubscriptionDto {
     deliveryOptionEmail: DeliveryOptionEmailDto = new DeliveryOptionEmailDto();
     scheduleDetailType: number = 2;
     scheduleType: number = 1;
-    scheduleDetail: any = new ScheduleTypeHourlyDto(); // hourly, daily, weekly, monthly, onetime
-    startEndDates: StartEndDatesDto = new StartEndDatesDto();
+    schedule: ScheduleDto = new ScheduleDto();
 
     status: ApprovalStatus = ApprovalStatus.None;
     requesterName: string = '';
     requesterId: string = '';
     approvalLevels: ApproverLevelDto[] = [];
+}
+
+export class ScheduleDto {
+    scheduleDetailHourly = new ScheduleTypeHourlyDto(); // hourly, daily, weekly, monthly, onetime
+    scheduleDetailDaily = new ScheduleTypeDailyDto(); // hourly, daily, weekly, monthly, onetime
+    scheduleDetailWeekly = new ScheduleTypeWeeklyDto(); // hourly, daily, weekly, monthly, onetime
+    scheduleDetailMonthly = new ScheduleTypeMonthlyDto(); // hourly, daily, weekly, monthly, onetime
+    scheduleDetailOneTime = new ScheduleTypeOneTimeDto(); // hourly, daily, weekly, monthly, onetime
 }
 
 export class ReportDto {
@@ -54,7 +61,15 @@ export class StartTimeDto {
     startHour: number = 0;
     startMinute: number = 0;
     meridiem: number = 1;
+
+    startDateTime: Date = new Date();
+    endDate?: Date;
 }
+
+// export class StartEndDatesDto {
+//     startDateTime: Date = new Date();
+//     endDate?: Date;
+// }
 
 export class ScheduleTypeHourlyDto extends StartTimeDto {
     hour: number = 0;
@@ -82,10 +97,7 @@ export class ScheduleTypeMonthlyDto extends StartTimeDto {
 
 export class ScheduleTypeOneTimeDto extends StartTimeDto { }
 
-export class StartEndDatesDto {
-    startDate: Date = new Date();
-    endDate?: Date;
-}
+
 
 
 export class ApproverLevelDto {

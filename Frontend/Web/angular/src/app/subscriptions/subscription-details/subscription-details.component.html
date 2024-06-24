@@ -214,7 +214,7 @@
                                                     <div class="row d-flex">
                                                         <div class="col col-auto pe-1">
                                                             <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                                <input type="number" class="form-control" matInput formControlName="hourly_hour" (change)="onHourlyRunScheduleEveryHourChange($event)">
+                                                                <input type="number" min="0" max="23" class="form-control" matInput formControlName="hourly_hour" (change)="onHourlyRunScheduleEveryHourChange($event)">
                                                             </mat-form-field>
                                                         </div>
                                                         <div class="col col-auto ps-1">
@@ -222,7 +222,7 @@
                                                         </div>
                                                         <div class="col col-auto pe-1">
                                                             <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                                <input type="number" class="form-control" matInput formControlName="hourly_minute" (change)="onHourlyRunScheduleEveryMinuteChange($event)">
+                                                                <input type="number" min="0" max="59" class="form-control" matInput formControlName="hourly_minute" (change)="onHourlyRunScheduleEveryMinuteChange($event)">
                                                             </mat-form-field>
                                                         </div>
                                                         <div class="col col-auto ps-1">
@@ -235,20 +235,20 @@
                                                         </div>
                                                         <div class="col col-auto">
                                                             <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                                <input type="number" class="form-control" matInput formControlName="hourly_start_hour">
+                                                                <input type="number" min="0" max="23" class="form-control" matInput formControlName="hourly_start_hour" (change)="onHourlyRunScheduleStartHourChange($event)">
                                                             </mat-form-field>
                                                         </div>
                                                         <div class="col col-auto">
                                                             <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                                <input type="number" class="form-control" matInput formControlName="hourly_start_minute">
+                                                                <input type="number" min="0" max="59" class="form-control" matInput formControlName="hourly_start_minute" (change)="onHourlyRunScheduleStartMinuteChange($event)">
                                                             </mat-form-field>
                                                         </div>
-                                                        <div class="col col-auto ps-1">
+                                                        <!-- <div class="col col-auto ps-1">
                                                             <mat-button-toggle-group name="meridiem" class="mt-4" formControlName="hourly_start_meridiem">
                                                                 <mat-button-toggle value="1" (change)="onHourlyMeridiemChange($event)">AM</mat-button-toggle>
                                                                 <mat-button-toggle value="2" (change)="onHourlyMeridiemChange($event)">PM</mat-button-toggle>
                                                             </mat-button-toggle-group>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -258,7 +258,7 @@
                                                     <mat-radio-group class="vertical-radio-group" formControlName="dailyScheduleType" (change)="onDailyScheduleTypeChange($event)">
                                                         <mat-radio-button value="1" checked>On the following days:</mat-radio-button>
                                                         <div class="ms-3">
-                                                            <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.key" [checked]="true" [disabled]="model.scheduleDetail.dailyScheduleType != 1" class="mb-2"
+                                                            <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.key" [checked]="true" [disabled]="model.schedule.scheduleDetailDaily.dailyScheduleType != 1" class="mb-2"
                                                                 (change)="onDailyScheduleDayStatusChange($event.checked, opt)">
                                                                 {{opt.value}}</mat-checkbox>
                                                         </div>
@@ -271,7 +271,8 @@
                                                                 <div class="col col-auto">
                                                                     <mat-form-field class="example-full-width number-input" appearance="outline">
                                                                         <!-- formControlName="daily_after_days_count" -->
-                                                                        <input type="number" class="form-control" matInput [disabled]="model.scheduleDetail.dailyScheduleType !== 3" (change)="onDailyRunScheduleRepeatAfterDayCountChange($event)">
+                                                                        <input type="number" min="0" max="6" class="form-control" matInput [disabled]="model.schedule.scheduleDetailDaily.dailyScheduleType !== 3"
+                                                                            (change)="onDailyRunScheduleRepeatAfterDayCountChange($event)">
                                                                     </mat-form-field>
                                                                 </div>
                                                             </div>
@@ -284,20 +285,20 @@
                                                     </div>
                                                     <div class="col col-auto">
                                                         <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                            <input type="number" class="form-control" matInput formControlName="daily_start_hour" (change)="onDailyRunScheduleStartHourChange($event)">
+                                                            <input type="number" min="0" max="23" class="form-control" matInput formControlName="daily_start_hour" (change)="onDailyRunScheduleStartHourChange($event)">
                                                         </mat-form-field>
                                                     </div>
                                                     <div class="col col-auto">
                                                         <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                            <input type="number" class="form-control" matInput formControlName="daily_start_minute" (change)="onDailyRunScheduleStartMinuteChange($event)">
+                                                            <input type="number" min="0" max="59" class="form-control" matInput formControlName="daily_start_minute" (change)="onDailyRunScheduleStartMinuteChange($event)">
                                                         </mat-form-field>
                                                     </div>
-                                                    <div class="col col-auto ps-1">
+                                                    <!-- <div class="col col-auto ps-1">
                                                         <mat-button-toggle-group name="meridiem" class="mt-4" formControlName="daily_start_meridiem">
                                                             <mat-button-toggle value="1" (change)="onDailyMeridiemChange($event)">AM</mat-button-toggle>
                                                             <mat-button-toggle value="2" (change)="onDailyMeridiemChange($event)">PM</mat-button-toggle>
                                                         </mat-button-toggle-group>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                             <div *ngSwitchCase="3" class="row">
@@ -331,12 +332,12 @@
                                                             <input type="number" class="form-control" matInput formControlName="weekly_start_minute" (change)="onWeeklyRunScheduleStartMinuteChange($event)">
                                                         </mat-form-field>
                                                     </div>
-                                                    <div class="col col-auto ps-1">
+                                                    <!-- <div class="col col-auto ps-1">
                                                         <mat-button-toggle-group name="meridiem" class="mt-4" formControlName="weekly_start_meridiem">
                                                             <mat-button-toggle value="1" (change)="onWeeklyMeridiemChange($event)">AM</mat-button-toggle>
                                                             <mat-button-toggle value="2" (change)="onWeeklyMeridiemChange($event)">PM</mat-button-toggle>
                                                         </mat-button-toggle-group>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                             <div *ngSwitchCase="4" class="row">
@@ -353,7 +354,7 @@
                                                         <mat-radio-button value="1" checked>On week of month:</mat-radio-button>
                                                         <div class="ms-3">
                                                             <mat-form-field>
-                                                                <mat-select [disabled]="model.scheduleDetail.monthlyScheduleType != 1" (selectionChange)="onMonthlyScheduleWeekOfMonthChange($event)">
+                                                                <mat-select [disabled]="model.schedule.scheduleDetailMonthly.monthlyScheduleType != 1" (selectionChange)="onMonthlyScheduleWeekOfMonthChange($event)">
                                                                     <mat-option *ngFor="let opt of weekOfMonthItems;" [value]="opt.key">{{opt.value}}</mat-option>
                                                                 </mat-select>
                                                             </mat-form-field>
@@ -361,7 +362,7 @@
                                                                 <div class="row">
                                                                     <label>On days of week:</label>
                                                                 </div>
-                                                                <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.key" [checked]="true" class="mb-2" [disabled]="model.scheduleDetail.monthlyScheduleType != 1"
+                                                                <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.key" [checked]="true" class="mb-2" [disabled]="model.schedule.scheduleDetailMonthly.monthlyScheduleType != 1"
                                                                     (change)="onMonthlyScheduleOnDayOfWeekChange($event.checked, opt)">{{opt.value}}
                                                                 </mat-checkbox>
                                                             </div>
@@ -373,7 +374,8 @@
                                                                 </div>
                                                                 <div class="col col-auto">
                                                                     <mat-form-field class="example-full-width" appearance="outline">
-                                                                        <input type="text" class="form-control" matInput [disabled]="model.scheduleDetail.monthlyScheduleType != 2" (change)="onMonthlyScheduleOnCalendarDaysChange($event)">
+                                                                        <input type="text" class="form-control" matInput [disabled]="model.schedule.scheduleDetailMonthly.monthlyScheduleType != 2"
+                                                                            (change)="onMonthlyScheduleOnCalendarDaysChange($event)">
                                                                     </mat-form-field>
                                                                 </div>
                                                             </div>
@@ -394,12 +396,12 @@
                                                             <input type="number" class="form-control" matInput formControlName="monthly_start_minute" (change)="onMonthlyRunScheduleStartMinuteChange($event)">
                                                         </mat-form-field>
                                                     </div>
-                                                    <div class="col col-auto ps-1">
+                                                    <!-- <div class="col col-auto ps-1">
                                                         <mat-button-toggle-group name="meridiem" class="mt-4" formControlName="monthly_start_meridiem">
                                                             <mat-button-toggle value="1" (change)="onMonthlyMeridiemChange($event)">AM</mat-button-toggle>
                                                             <mat-button-toggle value="2" (change)="onMonthlyMeridiemChange($event)">PM</mat-button-toggle>
                                                         </mat-button-toggle-group>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                             <div *ngSwitchCase="5" class="row">
@@ -418,12 +420,12 @@
                                                             <input type="number" class="form-control" matInput formControlName="monthly_start_minute" (change)="onOneTimeRunScheduleStartMinuteChange($event)">
                                                         </mat-form-field>
                                                     </div>
-                                                    <div class="col col-auto ps-1">
+                                                    <!-- <div class="col col-auto ps-1">
                                                         <mat-button-toggle-group name="meridiem" class="mt-4" formControlName="onetime_start_meridiem">
                                                             <mat-button-toggle value="1" (change)="onOneTimeMeridiemChange($event)">AM</mat-button-toggle>
                                                             <mat-button-toggle value="2" (change)="onOneTimeMeridiemChange($event)">PM</mat-button-toggle>
                                                         </mat-button-toggle-group>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>
