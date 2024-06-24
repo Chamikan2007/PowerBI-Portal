@@ -2,14 +2,11 @@
 
 namespace Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules;
 
-public class HourlySchedule : IJsonEntity
+public class HourlySchedule : ISchedule, IJsonEntity
 {
+    public DateTime StartDateTime { get; set; }
 
-    public required string StartTime { get; set; }
-
-    public required string StartDate { get; set; }
-
-    public string? StoptDate { get; set; }
+    public DateTime? StoptDate { get; set; }
 
     public int Hours { get; set; }
 

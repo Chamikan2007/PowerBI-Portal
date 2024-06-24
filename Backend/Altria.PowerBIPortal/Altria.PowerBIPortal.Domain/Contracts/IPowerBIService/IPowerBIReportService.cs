@@ -9,5 +9,7 @@ public interface IPowerBIReportService
 
     Task<Report?> GetReportsByIdAsync(string reportPath);
 
-    Task<Guid> ProcessSubscriptionAsync(SubscriptionRequest subscriptions);
+    Task<Guid> CreateSubscriptionAsync(Subscription subscription);
+
+    Task GetSubscriptionDetailsAsync(string subscriptionId);
 }

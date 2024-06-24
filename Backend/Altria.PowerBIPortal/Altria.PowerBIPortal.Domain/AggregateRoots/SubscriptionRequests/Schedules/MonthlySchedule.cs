@@ -3,13 +3,11 @@ using Altria.PowerBIPortal.Domain.Infrastructure;
 
 namespace Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules;
 
-public class MonthlySchedule : IJsonEntity
+public class MonthlySchedule : ISchedule, IJsonEntity
 {
-    public required string StartTime { get; set; }
+    public DateTime StartDateTime { get; set; }
 
-    public required string StartDate { get; set; }
-
-    public string? StoptDate { get; set; }
+    public DateTime? StoptDate { get; set; }
 
     public required List<Month> Months { get; set; }
 
