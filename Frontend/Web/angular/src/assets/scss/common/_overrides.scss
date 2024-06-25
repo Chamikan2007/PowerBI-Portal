@@ -1,15 +1,15 @@
 .mat-mdc-text-field-wrapper {
-    height: 40px !important;
+    height: 46px !important;
 
     .mat-mdc-form-field-flex {
-        height: 40px !important;
+        height: 46px !important;
 
         .mat-mdc-form-field-infix {
-            height: 40px !important;
+            height: 46px !important;
             padding: 10px 0 !important;
 
             .mat-mdc-form-field {
-                height: 40px !important;
+                height: 46px !important;
             }
         }
     }
@@ -18,5 +18,9 @@
 .mat-mdc-text-field-wrapper,
 .mat-mdc-form-field-flex,
 .mat-mdc-floating-label {
-    top: 20px !important;
+    top: 50% !important;
+
+    &.mdc-floating-label--float-above {
+        top: 60% !important;
+    }
 }
