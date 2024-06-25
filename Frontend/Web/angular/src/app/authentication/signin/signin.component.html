@@ -13,11 +13,11 @@
         <div class="form-section">
           <div class="auth-wrapper">
             <h5 class="welcome-msg">Welcome to</h5>
-            <h4 class="welcome-msg mb-4">Sampath PowerBI Portal</h4>
+            <h4 class="welcome-msg-1 mb-4">Sampath PowerBI Portal</h4>
             <h6 class="login-title mb-3">Sign in</h6>
             <form class="validate-form" [formGroup]="authForm" (ngSubmit)="onSubmit()">
               <div class="row">
-                <div class="col p-0">
+                <div class="col p-0 input">
                   <mat-form-field class="example-full-width" appearance="outline">
                     <mat-label>Username</mat-label>
                     <input matInput formControlName="username" />
@@ -31,7 +31,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col p-0">
+                <div class="col p-0 input">
                   <mat-form-field class="example-full-width" appearance="outline">
                     <mat-label>Password</mat-label>
                     <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">

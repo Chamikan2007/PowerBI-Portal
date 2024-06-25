@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
 import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
@@ -17,6 +18,7 @@ import { ReportDto, ScheduleTypeDailyDto, ScheduleTypeHourlyDto, ScheduleTypeMon
 import { ResponseDto } from '@core/models/dto/response-dto';
 import { SubscriptionDetailsMeta } from './subscription-details.meta';
 import { SubscriptionService } from '@core/service/subscription.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-subscription-details',
@@ -37,7 +39,10 @@ import { SubscriptionService } from '@core/service/subscription.service';
     MatSelectModule,
     MatCheckbox,
     MatButtonToggleModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
+    MatIconModule
   ],
   templateUrl: './subscription-details.component.html',
   styleUrl: './subscription-details.component.scss'
