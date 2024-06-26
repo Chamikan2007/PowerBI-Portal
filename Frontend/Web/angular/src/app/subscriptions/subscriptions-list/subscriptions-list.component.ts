@@ -118,6 +118,12 @@ export class SubscriptionsListComponent implements OnInit {
           d.classList.replace('visible', 'hidden');
         }
       });
+
+      document.querySelectorAll(".tableBody button.showHide").forEach(b => {
+        if (b.id != event.currentTarget.id){
+          b.children[0].classList.replace('fa-chevron-down', 'fa-chevron-right');
+        }
+      });
     }
   }
 }

@@ -24,7 +24,7 @@
                                 <div *ngFor="let subscription of subscriptionList;" class="row table-row m-0 border-bottom">
                                     <div class="row m-0">
                                         <div class="col col-1">
-                                            <button type="button" class="btn icon-button-transparent" (click)="showHideApprovals($event, subscription.subscriptionId)">
+                                            <button type="button" class="btn icon-button-transparent showHide" [id]="'shwHid_'+subscription.subscriptionId" (click)="showHideApprovals($event, subscription.subscriptionId)">
                                                 <i class="fa-solid fa-chevron-right"></i>
                                             </button>
                                         </div>
