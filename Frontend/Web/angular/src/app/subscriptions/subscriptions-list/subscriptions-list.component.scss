@@ -2,9 +2,32 @@
     width: unset;
 }
 
-.table {
-    .tbl-action-btn {
-        border: none;
-        background-color: transparent;
+.row,
+.col {
+    margin: 0;
+    padding: 0;
+}
+
+.table-header {
+    background-color: rgb(230, 230, 230);
+    font-weight: bold;
+    padding: 10px 5px;
+}
+
+.table-row {
+    padding: 10px 20px;
+
+    &:hover {
+        background-color: rgb(255, 237, 203);
+    }
+}
+
+.detail-row {
+    &.visible {
+        display: block;
+    }
+
+    &.hidden {
+        display: none;
     }
 }

@@ -14,38 +14,67 @@
                     <div class="body">
                         <div class="tableBody">
                             <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Report</th>
-                                            <!-- <th>Email</th> -->
-                                            <th>Status</th>
-                                            <th>Requested By</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngIf="subscriptionList.length === 0">
-                                            <td colspan="6" class="text-center font-italic">
-                                                No records found.
-                                            </td>
-                                        </tr>
-                                        <tr *ngFor="let subscription of subscriptionList;">
-                                            <td class="table-img" [title]="subscription.report.path">{{subscription.report.name}}</td>
-                                            <!-- <td><a href="mailto:{{subscription.email}}">{{subscription.email}}</a></td> -->
-                                            <td>{{ approvalStatus[subscription.status]}}</td>
-                                            <td>{{subscription.requesterName}}</td>
-                                            <td>
-                                                <button type="button" class="tbl-action-btn" title="Approve Subscription" (click)="approveClicked(subscription)">
-                                                    <i class="fas fa-check fs-5 tbl-fav-approve"></i>
-                                                </button>
-                                                <button type="button" class="tbl-action-btn" title="Reject Subscription" (click)="rejectClicked(subscription)">
-                                                    <i class="fas fa-times fs-5 tbl-fav-delete"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div class="row table-header">
+                                    <div class="col col-3">Report</div>
+                                    <div class="col col-3">Status</div>
+                                    <div class="col col-3">Requested By</div>
+                                    <div class="col col-3">Actions</div>
+                                </div>
+                                <div *ngFor="let subscription of subscriptionList;" class="row table-row m-0 border-bottom">
+                                    <div class="row m-0">
+                                        <div class="col col-3" [title]="subscription.report.path">
+                                            <button type="button" class="btn icon-button-transparent" (click)="toggleDetails($event, subscription.subscriptionId)">
+                                                <i class="fa-solid fa-chevron-right"></i>
+                                            </button>
+                                            {{subscription.report.name}}
+                                        </div>
+                                        <div class="col col-3">
+                                            {{approvalStatus[subscription.status]}}
+                                        </div>
+                                        <div class="col col-3">
+                                            {{subscription.requesterName}}
+                                        </div>
+                                        <div class="col col-3">
+                                            <button type="button" class="btn icon-button-transparent" title="Approve Subscription" (click)="approveClicked(subscription)">
+                                                <i class="fas fa-check fs-5 tbl-fav-approve"></i>
+                                            </button>
+                                            <button type="button" class="btn icon-button-transparent" title="Reject Subscription" (click)="rejectClicked(subscription)">
+                                                <i class="fas fa-times fs-5 tbl-fav-delete"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div [id]="'detail_'+subscription.subscriptionId" class="row detail-row hidden">
+                                        <div *ngFor="let approver of subscription.approvalLevels" class="row">
+                                            <div class="col col-6">
+                                                <div class="row">
+                                                    <div class="col col-2">Approved By:</div>
+                                                    <div class="col col-4">{{approver.approvalOfficerName}}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col col-2">Status:</div>
+                                                    <div class="col col-4">{{approvalStatus[approver.status]}}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col col-2">Approval Level:</div>
+                                                    <div class="col col-4">{{approvalLevel[approver.approvalLevel]}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="col col-6">
+                                                <div class="row">
+                                                    <div class="col col-2">Approved At:</div>
+                                                    <div class="col col-4">{{approver.approvedAtUtc}}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col col-2">Comment:</div>
+                                                    <div class="col col-4">{{approver.comment}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="subscriptionList.length == 0" class="w-100 p-2 text-center">
+                                    No records found.
+                                </div>
                             </div>
                         </div>
                     </div>

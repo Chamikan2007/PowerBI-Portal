@@ -13,11 +13,11 @@ export class SubscriptionService {
     private apiService: ApiService
   ) { }
 
-  getMySubscriptionsList(getAll: boolean = false): Observable<ResponseDto> {
+  getMySubscriptionsList(getAll: boolean = true): Observable<ResponseDto> {
     return this.apiService.get('subscriptionRequests', 'mySubscriptions', { all: getAll });
   }
 
-  getSubscriptionsListForApproval(getAll: boolean = false): Observable<ResponseDto> {
+  getSubscriptionsListForApproval(getAll: boolean = true): Observable<ResponseDto> {
     return this.apiService.get('subscriptionRequests', 'forApprovalOfficer', { all: getAll });
   }
 

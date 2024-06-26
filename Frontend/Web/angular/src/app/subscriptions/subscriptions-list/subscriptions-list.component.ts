@@ -14,7 +14,7 @@ import { SubscriptionService } from '@core/service/subscription.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ResponseDto } from '@core/models/dto/response-dto';
-import { ApprovalStatus, SubscriptionDto } from '@core/models/dto/subscription-dto';
+import { ApprovalLevels, ApprovalStatus, SubscriptionDto } from '@core/models/dto/subscription-dto';
 import { AuthService, Role } from '@core';
 
 @Component({
@@ -33,6 +33,7 @@ export class SubscriptionsListComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   subscriptionList: any[] = [];
   approvalStatus = ApprovalStatus;
+  approvalLevel = ApprovalLevels;
 
   currentUserId: string = '';
   userRoles: Role[] = [];
@@ -85,6 +86,22 @@ export class SubscriptionsListComponent implements OnInit {
           }
         }
       });
+    }
+  }
+
+  toggleDetails(event: any, subscriptionId: any) {
+    let caller = event.currentTarget.children[0];
+    let div = document.getElementById(`detail_${subscriptionId}`);
+
+    if (div) {
+      if (div.classList.contains('hidden')) {
+        div.classList.replace('hidden', 'visible');
+        caller.classList.replace('fa-chevron-right', 'fa-chevron-down');
+      }
+      else {
+        div.classList.replace('visible', 'hidden');
+        caller.classList.replace('fa-chevron-down', 'fa-chevron-right');
+      }
     }
   }
 }
