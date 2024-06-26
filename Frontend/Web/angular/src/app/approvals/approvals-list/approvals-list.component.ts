@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResponseDto } from '@core/models/dto/response-dto';
-import { ApprovalLevels, ApprovalStatus, SubscriptionDto } from '@core/models/dto/subscription-dto';
+import { ApprovalLevels, ApprovalStatus, SubscriptionDto, SubscriptionListModel, SubscriptionRequestApproverLevelModel } from '@core/models/dto/subscription-dto';
 import { Role } from '@core/models/role';
 import { AuthService } from '@core/service/auth.service';
 import { SubscriptionService } from '@core/service/subscription.service';
@@ -26,7 +26,8 @@ import { SubscriptionRejectReasonComponent } from './subscription-reject-reason/
 })
 export class ApprovalsListComponent {
   readonly dialog = inject(MatDialog);
-  subscriptionList: any[] = [];
+  subscriptionList: SubscriptionListModel[] = [];
+  approvalLevels: SubscriptionRequestApproverLevelModel[] = [];
   approvalStatus = ApprovalStatus;
   approvalLevel = ApprovalLevels;
 
@@ -51,9 +52,9 @@ export class ApprovalsListComponent {
     this.subscriptionList.length = 0;
 
     this.subscriptionService.getSubscriptionsListForApproval().subscribe({
-      next: (response: ResponseDto) => {
+      next: (response) => {
         if (response && response.isSuccess) {
-          this.subscriptionList = response.data as SubscriptionDto[];
+          this.subscriptionList = response.data;
         }
       }
     });
@@ -99,16 +100,25 @@ export class ApprovalsListComponent {
     this.openRejectCommentDialog(event.subscriptionId, '100ms', '100ms');
   }
 
-  toggleDetails(event: any, subscriptionId: any) {
+  showHideApprovals(event: any, subscriptionId: any) {
     let caller = event.currentTarget.children[0];
     let div = document.getElementById(`detail_${subscriptionId}`);
 
     if (div) {
       if (div.classList.contains('hidden')) {
-        div.classList.replace('hidden', 'visible');
-        caller.classList.replace('fa-chevron-right', 'fa-chevron-down');
+        this.subscriptionService.getSubscriptionApprovalsById(subscriptionId).subscribe({
+          next: (response) => {
+            if (response.isSuccess) {
+              this.approvalLevels = response.data;
+              
+              div.classList.replace('hidden', 'visible');
+              caller.classList.replace('fa-chevron-right', 'fa-chevron-down');
+            }
+          }
+        });
       }
       else {
+        this.approvalLevels = [];
         div.classList.replace('visible', 'hidden');
         caller.classList.replace('fa-chevron-down', 'fa-chevron-right');
       }

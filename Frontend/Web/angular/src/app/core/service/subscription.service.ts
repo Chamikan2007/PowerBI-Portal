@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api-service.service';
-import { ResponseDto } from '@core/models/dto/response-dto';
-import { SubscriptionDto } from '@core/models/dto/subscription-dto';
+import { ResponseDto, ResponseModel } from '@core/models/dto/response-dto';
+import { SubscriptionDto, SubscriptionListModel, SubscriptionRequestApproverLevelModel } from '@core/models/dto/subscription-dto';
 import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({
@@ -13,16 +13,16 @@ export class SubscriptionService {
     private apiService: ApiService
   ) { }
 
-  getMySubscriptionsList(getAll: boolean = true): Observable<ResponseDto> {
-    return this.apiService.get('subscriptionRequests', 'mySubscriptions', { all: getAll });
+  getMysubscriptionRequests(getAll: boolean = true): Observable<ResponseModel<SubscriptionListModel[]>> {
+    return this.apiService.get('subscriptionRequests', 'my', { all: getAll });
   }
 
-  getSubscriptionsListForApproval(getAll: boolean = true): Observable<ResponseDto> {
+  getSubscriptionsListForApproval(getAll: boolean = true): Observable<ResponseModel<SubscriptionListModel[]>> {
     return this.apiService.get('subscriptionRequests', 'forApprovalOfficer', { all: getAll });
   }
 
-  getSubscriptionApprovalsById(subscriptionId: string): Observable<ResponseDto> {
-    return this.apiService.get('subscriptionRequests', `${subscriptionId}`, null);
+  getSubscriptionApprovalsById(subscriptionId: string): Observable<ResponseModel<SubscriptionRequestApproverLevelModel[]>> {
+    return this.apiService.get('subscriptionRequests', `${subscriptionId}/approvalDetails`, null);
   }
 
   getReportsList(): Observable<ResponseDto> {

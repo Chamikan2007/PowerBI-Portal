@@ -2,6 +2,25 @@
 import { KeyValue } from "@angular/common";
 import { SubscriptionDetailsMeta } from "app/subscriptions/subscription-details/subscription-details.meta";
 
+export interface SubscriptionListModel {
+    subscriptionId: string;
+    description: string;
+    reportPath: string;
+    status: ApprovalStatus;
+    requesterName: string;
+    requesterId: string
+}
+
+export interface SubscriptionRequestApproverLevelModel {
+    approvalLevelId: string;
+    status: ApprovalStatus;
+    approvalOfficerId: string;
+    approvalOfficerName: string;
+    approvalLevel: number;
+    comment: string,
+    approvedAtUtc: Date;
+}
+
 export class SubscriptionDto {
     subscriptionId: string = '';
     report: ReportDto = new ReportDto();
@@ -18,7 +37,6 @@ export class SubscriptionDto {
     status: ApprovalStatus = ApprovalStatus.None;
     requesterName: string = '';
     requesterId: string = '';
-    approvalLevels: ApproverLevelDto[] = [];
 }
 
 export class ScheduleDto {
@@ -81,19 +99,6 @@ export class ScheduleTypeMonthlyDto extends StartTimeDto {
 }
 
 export class ScheduleTypeOneTimeDto extends StartTimeDto { }
-
-
-
-
-export class ApproverLevelDto {
-    approvalLevelId: string = '';
-    status: ApprovalStatus = ApprovalStatus.None;
-    approvalOfficerId: string = '';
-    approvalOfficerName: string = '';
-    approvalLevel: number = 0;
-    approvedAtUtc: string = '';
-    comment: string = '';
-}
 
 export enum ApprovalLevels {
     None = 0,

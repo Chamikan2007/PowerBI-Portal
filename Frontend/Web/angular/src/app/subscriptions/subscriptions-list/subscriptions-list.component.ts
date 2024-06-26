@@ -14,7 +14,7 @@ import { SubscriptionService } from '@core/service/subscription.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ResponseDto } from '@core/models/dto/response-dto';
-import { ApprovalLevels, ApprovalStatus, SubscriptionDto } from '@core/models/dto/subscription-dto';
+import { ApprovalLevels, ApprovalStatus, SubscriptionDto, SubscriptionListModel, SubscriptionRequestApproverLevelModel } from '@core/models/dto/subscription-dto';
 import { AuthService, Role } from '@core';
 
 @Component({
@@ -31,8 +31,8 @@ import { AuthService, Role } from '@core';
 })
 export class SubscriptionsListComponent implements OnInit {
   readonly dialog = inject(MatDialog);
-  subscriptionList: any[] = [];
-  selectedSubscription:  SubscriptionDto | null = null;
+  subscriptionList: SubscriptionListModel[] = [];
+  approvalLevels:  SubscriptionRequestApproverLevelModel[] = [];
   approvalStatus = ApprovalStatus;
   approvalLevel = ApprovalLevels;
 
@@ -56,10 +56,10 @@ export class SubscriptionsListComponent implements OnInit {
   loadData() {
     this.subscriptionList.length = 0;
 
-    this.subscriptionService.getMySubscriptionsList().subscribe({
-      next: (response: ResponseDto) => {
+    this.subscriptionService.getMysubscriptionRequests().subscribe({
+      next: (response) => {
         if (response && response.isSuccess) {
-          this.subscriptionList = response.data as SubscriptionDto[];
+          this.subscriptionList = response.data;
         }
       }
     });
@@ -98,9 +98,9 @@ export class SubscriptionsListComponent implements OnInit {
       if (div.classList.contains('hidden')) {
 
         this.subscriptionService.getSubscriptionApprovalsById(subscriptionId).subscribe({
-          next: (response: ResponseDto) => {
+          next: (response) => {
             if (response.isSuccess) {
-              this.selectedSubscription = response.data as SubscriptionDto;
+              this.approvalLevels = response.data;
 
               div.classList.replace('hidden', 'visible');
               caller.classList.replace('fa-chevron-right', 'fa-chevron-down');
@@ -109,7 +109,7 @@ export class SubscriptionsListComponent implements OnInit {
         });
       }
       else {
-        this.selectedSubscription = null;
+        this.approvalLevels = [];
         div.classList.replace('visible', 'hidden');
         caller.classList.replace('fa-chevron-down', 'fa-chevron-right');
       }

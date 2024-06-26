@@ -15,18 +15,21 @@
                         <div class="tableBody">
                             <div class="table-responsive">
                                 <div class="row table-header">
+                                    <div class="col col-1"></div>
                                     <div class="col col-3">Report</div>
                                     <div class="col col-3">Status</div>
                                     <div class="col col-3">Requested By</div>
-                                    <div class="col col-3">Actions</div>
+                                    <div class="col col-2">Actions</div>
                                 </div>
                                 <div *ngFor="let subscription of subscriptionList;" class="row table-row m-0 border-bottom">
                                     <div class="row m-0">
-                                        <div class="col col-3" [title]="subscription.report.path">
-                                            <button type="button" class="btn icon-button-transparent" (click)="toggleDetails($event, subscription.subscriptionId)">
+                                        <div class="col col-1">
+                                            <button type="button" class="btn icon-button-transparent" (click)="showHideApprovals($event, subscription.subscriptionId)">
                                                 <i class="fa-solid fa-chevron-right"></i>
                                             </button>
-                                            {{subscription.report.name}}
+                                        </div>
+                                        <div class="col col-3" [title]="subscription.reportPath">
+                                            {{subscription.reportPath}}
                                         </div>
                                         <div class="col col-3">
                                             {{approvalStatus[subscription.status]}}
@@ -34,7 +37,7 @@
                                         <div class="col col-3">
                                             {{subscription.requesterName}}
                                         </div>
-                                        <div class="col col-3">
+                                        <div class="col col-2">
                                             <button type="button" class="btn icon-button-transparent" title="Approve Subscription" (click)="approveClicked(subscription)">
                                                 <i class="fas fa-check fs-5 tbl-fav-approve"></i>
                                             </button>
@@ -44,7 +47,7 @@
                                         </div>
                                     </div>
                                     <div [id]="'detail_'+subscription.subscriptionId" class="row detail-row hidden">
-                                        <div *ngFor="let approver of subscription.approvalLevels" class="row">
+                                        <div *ngFor="let approver of approvalLevels" class="row">
                                             <div class="col col-6">
                                                 <div class="row">
                                                     <div class="col col-2">Approved By:</div>

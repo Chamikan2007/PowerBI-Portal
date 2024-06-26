@@ -4,6 +4,12 @@ export class ResponseDto {
     data: any = null;
 }
 
+export interface ResponseModel<T>{
+    isSuccess: boolean;
+    error: ErrorDto;
+    data: T;
+}
+
 export class ErrorDto {
     errorCode: string = '';
 }
