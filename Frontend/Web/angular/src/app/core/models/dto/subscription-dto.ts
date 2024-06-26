@@ -1,14 +1,4 @@
 
-// export class SubscriptionDto {
-//     subscriptionId: string = '';
-//     report: ReportDto = new ReportDto();
-//     email: string = '';
-//     status: ApprovalStatus = ApprovalStatus.None;
-//     requesterName: string = '';
-//     requesterId: string = '';
-//     approvalLevels: ApproverLevelDto[] = [];
-// }
-
 import { KeyValue } from "@angular/common";
 import { SubscriptionDetailsMeta } from "app/subscriptions/subscription-details/subscription-details.meta";
 
@@ -66,11 +56,6 @@ export class StartTimeDto {
     endDate?: Date;
 }
 
-// export class StartEndDatesDto {
-//     startDateTime: Date = new Date();
-//     endDate?: Date;
-// }
-
 export class ScheduleTypeHourlyDto extends StartTimeDto {
     hour: number = 0;
     minute: number = 0;
@@ -109,6 +94,14 @@ export class ApproverLevelDto {
     comment: string = '';
 }
 
+export enum ApprovalLevels {
+    None = 0,
+    Pending = 1,
+    Approved = 2,
+    Rejected = 3,
+    Cancelled = 4,
+}
+
 export enum ApprovalStatus {
     None = 0,
     Pending = 1,
@@ -116,3 +109,7 @@ export enum ApprovalStatus {
     Rejected = 3,
     Cancelled = 4,
 }
+
+
+
+

@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ResponseDto } from '@core/models/dto/response-dto';
-import { ApprovalStatus, SubscriptionDto } from '@core/models/dto/subscription-dto';
+import { ApprovalLevels, ApprovalStatus, SubscriptionDto } from '@core/models/dto/subscription-dto';
 import { Role } from '@core/models/role';
 import { AuthService } from '@core/service/auth.service';
 import { SubscriptionService } from '@core/service/subscription.service';
@@ -28,6 +28,7 @@ export class ApprovalsListComponent {
   readonly dialog = inject(MatDialog);
   subscriptionList: any[] = [];
   approvalStatus = ApprovalStatus;
+  approvalLevel = ApprovalLevels;
 
   currentUserId: string = '';
   userRoles: Role[] = [];
@@ -96,5 +97,21 @@ export class ApprovalsListComponent {
 
   rejectClicked(event: any) {
     this.openRejectCommentDialog(event.subscriptionId, '100ms', '100ms');
+  }
+
+  toggleDetails(event: any, subscriptionId: any) {
+    let caller = event.currentTarget.children[0];
+    let div = document.getElementById(`detail_${subscriptionId}`);
+
+    if (div) {
+      if (div.classList.contains('hidden')) {
+        div.classList.replace('hidden', 'visible');
+        caller.classList.replace('fa-chevron-right', 'fa-chevron-down');
+      }
+      else {
+        div.classList.replace('visible', 'hidden');
+        caller.classList.replace('fa-chevron-down', 'fa-chevron-right');
+      }
+    }
   }
 }
