@@ -16,6 +16,7 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
             {
                 Name = r.Name,
                 Path = r.Path,
+                Owner = r.CreatedBy
             });
 
             return Result<IEnumerable<ReportModel>?>.Success(result);

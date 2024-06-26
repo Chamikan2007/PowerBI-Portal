@@ -28,70 +28,36 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                     return Result.Faliour(IdentityErrors.UserNotFound);
                 }
 
-                //#region Validate Email Delivery Option
+                #region Validate Email Delivery Option
 
-                //EmailDeliveryOption? emailDeliveryOption = null;
-
-                //if (model.SubscrptionInfo.StandardSubscription != null)
-                //{
-                //    if (model.SubscrptionInfo.StandardSubscription.DeliveryOption.EmailDeliveryOption != null)
-                //    {
-                //        emailDeliveryOption = model.SubscrptionInfo.StandardSubscription.DeliveryOption.EmailDeliveryOption;
-                //    }
-                //}
-
-                //if (emailDeliveryOption != null)
-                //{
-                //    var tos = emailDeliveryOption.To.Split(";");
-                //    var ccs = emailDeliveryOption.Cc?.Split(";") ?? [];
-                //    var bccs = emailDeliveryOption.Bcc?.Split(";") ?? [];
-
-                //    var allEmails = tos.Concat(ccs).Concat(bccs);
-
-                //    var validatedEmails = allEmails.Select(e => EmailValidator.IsValidEmail(e));
-                //    if (validatedEmails.Any(x => !x.isValid))
-                //    {
-                //        return Result.Faliour(SubscriptionRequestErrors.InvalidEmail);
-                //    }
-
-                //    var emails = validatedEmails.Select(e => e.email).ToArray();
-                //    var domains = validatedEmails.Select(e => e.domain).ToArray();
-
-                //    var isAllowed = await subscriptionWhiteListEntryRepository.IsAllowedEntryAsync(emails, domains);
-                //    if (!isAllowed)
-                //    {
-                //        return Result.Faliour(SubscriberWhiteListErrors.NotAllowed);
-                //    }
-                //}
-
-                //#endregion
-
-                var subscrptionInfo = new SubscrptionInfo
+                var emailDeliveryOption = model.DeliveryOption.EmailDeliveryOption;
+                if (emailDeliveryOption != null)
                 {
-                    StandardSubscription = new StandardSubscription
-                    {
-                        Description = "Test",
-                        DeliveryOption = new DeliveryOption
-                        {
-                            EmailDeliveryOption = new EmailDeliveryOption
-                            {
-                                Subject = "Test",
-                                To = "chamika@gmail.com",
-                            }
-                        }
-                    }
-                };
+                    var tos = emailDeliveryOption.To.Split(";");
+                    var ccs = emailDeliveryOption.Cc?.Split(";") ?? [];
+                    var bccs = emailDeliveryOption.Bcc?.Split(";") ?? [];
 
-                var schedule = new Schedule
-                {
-                    HourlySchedule = new HourlySchedule
-                    {
-                        StartDateTime = DateTime.Now,
-                        Hours = 1,
-                    }
-                };
+                    var allEmails = tos.Concat(ccs).Concat(bccs);
 
-                var subscription = SubscriptionRequest.Create(model.Report.Path, subscrptionInfo, schedule, requester);
+                    var validatedEmails = allEmails.Select(e => EmailValidator.IsValidEmail(e));
+                    if (validatedEmails.Any(x => !x.isValid))
+                    {
+                        return Result.Faliour(SubscriptionRequestErrors.InvalidEmail);
+                    }
+
+                    var emails = validatedEmails.Select(e => e.email).ToArray();
+                    var domains = validatedEmails.Select(e => e.domain).ToArray();
+
+                    var isAllowed = await subscriptionWhiteListEntryRepository.IsAllowedEntryAsync(emails, domains);
+                    if (!isAllowed)
+                    {
+                        return Result.Faliour(SubscriberWhiteListErrors.NotAllowed);
+                    }
+                }
+
+                #endregion
+
+                var subscription = SubscriptionRequest.Create(model.Report.Path, model.Report.Owner, model.SubscrptionInfo, model.Schedule, model.DeliveryOption, requester);
                 subscriptionRequestRepository.Create(subscription);
 
                 await unitOfWork.SaveChangesAsync();

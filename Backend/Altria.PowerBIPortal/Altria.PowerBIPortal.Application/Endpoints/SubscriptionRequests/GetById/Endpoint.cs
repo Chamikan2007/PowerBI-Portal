@@ -23,7 +23,7 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                 {
                     SubscriptionId = subscription.Id,
                     Email = "",
-                    Report = ReportModel.FromPath(subscription.ReportPath),
+                    Report = ReportModel.FromPath(subscription.ReportPath, subscription.Owner),
                     Status = subscription.Status,
                     RequesterId = subscription.Requester.Id,
                     RequesterName = subscription.Requester.Name,
@@ -34,6 +34,7 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                         Status = l.Status,
                         ApprovalOfficerId = l.ApprovalOfficer?.Id,
                         ApprovalOfficerName = l.ApprovalOfficer?.Name,
+                        ApprovedAtUtc = l.UpdatedAtUtc,
                         Comment = l.Comment,
                     }).ToList(),
                 };

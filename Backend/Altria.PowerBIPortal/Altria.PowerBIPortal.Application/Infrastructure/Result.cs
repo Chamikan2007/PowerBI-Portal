@@ -30,5 +30,5 @@ public class Result<T> : Result
 
     public static Result<T> Success(T data) => new Result<T>(true, data, null);
 
-    public static new Result<T> Faliour(Error error) => new Result<T>(false, default, error);
+    public static Result<T> Faliour(Error error, T data) => new Result<T>(false, data, error);
 }

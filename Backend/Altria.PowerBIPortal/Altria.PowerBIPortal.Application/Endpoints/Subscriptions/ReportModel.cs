@@ -6,12 +6,15 @@ public class ReportModel
 
     public required string Path { get; set; }
 
-    public static ReportModel FromPath(string path)
+    public required string Owner { get; set; }
+
+    public static ReportModel FromPath(string path, string owner)
     {
         return new ReportModel
         {
             Name = GetLastPathElement(path),
             Path = path,
+            Owner = owner
         };
     }
 

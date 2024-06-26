@@ -1,12 +1,11 @@
 ﻿using Altria.PowerBIPortal.Persistence;
-using Altria.PowerBIPortal.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
 namespace Altria.PowerBIPortal.Migrations;
 
-internal class DataContextContextFactory : IDesignTimeDbContextFactory<DataContext>
+internal class DesignTimeDataContextContextFactory : IDesignTimeDbContextFactory<DataContext>
 {
     public DataContext CreateDbContext(string[] args)
     {
@@ -15,7 +14,7 @@ internal class DataContextContextFactory : IDesignTimeDbContextFactory<DataConte
         var connectionString = config.GetConnectionString("defaultDb")!;
 
         var builder = new DbContextOptionsBuilder<DataContext>();
-        builder.UseSqlServer(connectionString, b => b.MigrationsAssembly(typeof(DataContextContextFactory).Assembly.FullName));
+        builder.UseSqlServer(connectionString, b => b.MigrationsAssembly(typeof(DesignTimeDataContextContextFactory).Assembly.FullName));
 
         var context = new DataContext(builder.Options);
 

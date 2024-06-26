@@ -13,13 +13,17 @@ internal class SubscriptionRequestConfiguration : IEntityTypeConfiguration<Subsc
     public void Configure(EntityTypeBuilder<SubscriptionRequest> builder)
     {
         builder.Property(e => e.ReportPath).HasMaxLength(500);
-        //builder.OwnsOne(e => e.SubscrptionInfo, builder => builder.ToJson());
-        //builder.OwnsOne(e => e.Schedule, builder => builder.ToJson());
 
         builder.Property(e => e.SubscrptionInfo)
             .HasConversion(new ValueConverter<SubscrptionInfo, string>(
                 v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
                 v => JsonConvert.DeserializeObject<SubscrptionInfo>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })!))
+            .HasColumnType("nvarchar(max)");
+
+        builder.Property(e => e.DeliveryOption)
+            .HasConversion(new ValueConverter<DeliveryOption, string>(
+                v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+                v => JsonConvert.DeserializeObject<DeliveryOption>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })!))
             .HasColumnType("nvarchar(max)");
 
         builder.Property(e => e.Schedule)

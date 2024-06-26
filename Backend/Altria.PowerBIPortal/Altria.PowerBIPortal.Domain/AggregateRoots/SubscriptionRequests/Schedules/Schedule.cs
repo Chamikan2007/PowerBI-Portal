@@ -1,6 +1,4 @@
 ﻿using Altria.PowerBIPortal.Domain.Infrastructure;
-using JsonSubTypes;
-using Newtonsoft.Json;
 
 namespace Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules;
 

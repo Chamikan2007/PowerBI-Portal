@@ -47,6 +47,8 @@ public class SubscriptionService : ISubscriptionService
 
         subscription.Report = subscriptionRequest.ReportPath;
 
+        SetDeliveryOption(subscription, subscriptionRequest.DeliveryOption);
+
         if (subscriptionRequest.Schedule != null)
         {
             SetSchedule(subscription, subscriptionRequest.Schedule);
@@ -63,8 +65,6 @@ public class SubscriptionService : ISubscriptionService
             EventType = ReportServerEventType.TimedSubscription.ToString(),
             IsDataDriven = false,
         };
-
-        SetDeliveryOption(subscription, standardSubscription.DeliveryOption);
 
         return subscription;
     }

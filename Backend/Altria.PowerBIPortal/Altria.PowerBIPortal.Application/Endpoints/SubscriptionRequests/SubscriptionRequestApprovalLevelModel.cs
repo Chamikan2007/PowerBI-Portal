@@ -15,4 +15,6 @@ public class SubscriptionRequestApprovalLevelModel
     public int ApprovalLevel { get; init; }
 
     public string? Comment { get; init; }
+
+    public DateTime ApprovedAtUtc { get; set; }
 }

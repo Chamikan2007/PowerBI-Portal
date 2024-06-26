@@ -8,7 +8,9 @@ public class SubscriptionRequestCreateModel
 {
     public required ReportModel Report { get; set; }
 
-    //public required SubscrptionInfo SubscrptionInfo { get; set; }
+    public required SubscrptionInfo SubscrptionInfo { get; set; }
 
-    //public required Schedule Schedule { get; set; }
+    public required DeliveryOption DeliveryOption { get; set; }
+
+    public required Schedule Schedule { get; set; }
 }
