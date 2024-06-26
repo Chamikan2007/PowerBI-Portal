@@ -39,7 +39,7 @@ public class SubscriptionRequest : ApprovalRequest<SubscriptionRequestApprovalLe
             Schedule = schedule
         };
 
-        subscription.ApprovalRequestLevels.Add(new SubscriptionRequestApprovalLevel { Subscription = subscription, ApprovalLevel = 1 });
+        subscription.ApprovalRequestLevels.Add(new SubscriptionRequestApprovalLevel { SubscriptionRequest = subscription, ApprovalLevel = 1 });
 
         return subscription;
     }
@@ -51,7 +51,7 @@ public class SubscriptionRequest : ApprovalRequest<SubscriptionRequestApprovalLe
         switch (currentApprovalLevel.ApprovalLevel)
         {
             case 1:
-                ApprovalRequestLevels.Add(new SubscriptionRequestApprovalLevel { Subscription = this, ApprovalLevel = currentApprovalLevel.ApprovalLevel + 1 });
+                ApprovalRequestLevels.Add(new SubscriptionRequestApprovalLevel { SubscriptionRequest = this, ApprovalLevel = currentApprovalLevel.ApprovalLevel + 1 });
                 break;
 
             case 2:

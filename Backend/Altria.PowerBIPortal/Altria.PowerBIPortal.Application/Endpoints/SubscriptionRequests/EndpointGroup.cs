@@ -9,6 +9,7 @@ public class EndpointGroup : IEndpointGroup
         return app
             .MapGroup("/subscriptionRequests")
             .WithTags("Subscriptions")
+            .RequireAuthorization("AuthenticatedUser")
             .WithOpenApi();
     }
 }

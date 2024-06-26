@@ -91,6 +91,7 @@ export class ApproverLevelDto {
     approvalOfficerId: string = '';
     approvalOfficerName: string = '';
     approvalLevel: number = 0;
+    approvedAtUtc: string = '';
     comment: string = '';
 }
 

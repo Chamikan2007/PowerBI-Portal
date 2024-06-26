@@ -1,21 +1,16 @@
 ﻿using Altria.PowerBIPortal.Application.Endpoints.Subscriptions;
-using Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
+using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules;
+using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionInfos;
 
 namespace Altria.PowerBIPortal.Application.Endpoints.SubscriptionRequests;
 
 public class SubscriptionRequestModel
 {
-    public Guid SubscriptionId { get; init; }
+    public required ReportModel Report { get; set; }
 
-    public required ReportModel Report { get; init; }
+    public required SubscrptionInfo SubscrptionInfo { get; set; }
 
-    public required string Email { get; init; }
+    public required DeliveryOption DeliveryOption { get; set; }
 
-    public ApprovalStatus Status { get; init; }
-
-    public required string RequesterName { get; init; }
-
-    public required Guid RequesterId { get; init; }
-
-    public List<SubscriptionRequestApprovalLevelModel> ApprovalLevels { get; set; } = new();
+    public Schedule? Schedule { get; set; }
 }

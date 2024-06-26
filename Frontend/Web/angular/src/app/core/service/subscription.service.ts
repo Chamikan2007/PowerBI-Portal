@@ -21,6 +21,10 @@ export class SubscriptionService {
     return this.apiService.get('subscriptionRequests', 'forApprovalOfficer', { all: getAll });
   }
 
+  getSubscriptionApprovalsById(subscriptionId: string): Observable<ResponseDto> {
+    return this.apiService.get('subscriptionRequests', `${subscriptionId}`, null);
+  }
+
   getReportsList(): Observable<ResponseDto> {
     return this.apiService.get('subscriptionRequests', 'reports', null);
   }

@@ -32,6 +32,7 @@ import { AuthService, Role } from '@core';
 export class SubscriptionsListComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   subscriptionList: any[] = [];
+  selectedSubscription:  SubscriptionDto | null = null;
   approvalStatus = ApprovalStatus;
   approvalLevel = ApprovalLevels;
 
@@ -89,16 +90,26 @@ export class SubscriptionsListComponent implements OnInit {
     }
   }
 
-  toggleDetails(event: any, subscriptionId: any) {
+  showApprovals(event: any, subscriptionId: string) {
     let caller = event.currentTarget.children[0];
     let div = document.getElementById(`detail_${subscriptionId}`);
 
     if (div) {
       if (div.classList.contains('hidden')) {
-        div.classList.replace('hidden', 'visible');
-        caller.classList.replace('fa-chevron-right', 'fa-chevron-down');
+
+        this.subscriptionService.getSubscriptionApprovalsById(subscriptionId).subscribe({
+          next: (response: ResponseDto) => {
+            if (response.isSuccess) {
+              this.selectedSubscription = response.data as SubscriptionDto;
+
+              div.classList.replace('hidden', 'visible');
+              caller.classList.replace('fa-chevron-right', 'fa-chevron-down');
+            }
+          }
+        });
       }
       else {
+        this.selectedSubscription = null;
         div.classList.replace('visible', 'hidden');
         caller.classList.replace('fa-chevron-down', 'fa-chevron-right');
       }

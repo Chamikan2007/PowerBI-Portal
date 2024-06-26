@@ -8,7 +8,7 @@ public class ReportModel
 
     public required string Owner { get; set; }
 
-    public static ReportModel FromPath(string path, string owner)
+    public static ReportModel Create(string path, string owner)
     {
         return new ReportModel
         {

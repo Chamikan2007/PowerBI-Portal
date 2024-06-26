@@ -18,7 +18,7 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
     public void Configure(IEndpointRouteBuilder app)
     {
         _ = app.MapPost("/",
-            async (SubscriptionRequestCreateModel model, RequestContext requestContext,
+            async (SubscriptionRequestModel model, RequestContext requestContext,
             UserManager<User> userManager, ISubscriptionRequestRepository subscriptionRequestRepository,
             ISubscriberWhiteListEntryRepository subscriptionWhiteListEntryRepository, IUnitOfWork unitOfWork) =>
             {

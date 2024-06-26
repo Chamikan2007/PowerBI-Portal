@@ -1,4 +1,4 @@
-﻿using Altria.PowerBIPortal.Application.Endpoints.Subscriptions;
+﻿using Altria.PowerBIPortal.Application.Helpers;
 using Altria.PowerBIPortal.Application.Infrastructure;
 using Altria.PowerBIPortal.Domain;
 using Altria.PowerBIPortal.Domain.Contracts.Repositories;
@@ -10,22 +10,14 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
 {
     public void Configure(IEndpointRouteBuilder app)
     {
-        app.MapGet("/mySubscriptions",
+        app.MapGet("/my",
             async (RequestContext requestContext, ISubscriptionRequestRepository subscriptionRepository, [FromQuery(Name = "all")] bool includeAll = false) =>
             {
                 var subscriptions = await subscriptionRepository.GeMySubscritionRequestsAsync(requestContext.UserId, includeAll);
 
-                var results = subscriptions.Select(s => new SubscriptionRequestModel
-                {
-                    SubscriptionId = s.Id,
-                    Email = "",
-                    Report = ReportModel.FromPath(s.ReportPath, s.Owner),
-                    Status = s.Status,
-                    RequesterId = s.Requester.Id,
-                    RequesterName = s.Requester.Name,
-                });
+                var results = subscriptions.Select(s => CastToSubscriptionRequestListModel.Cast(s));
 
-                return Result<IEnumerable<SubscriptionRequestModel>>.Success(results);
+                return Result<IEnumerable<SubscriptionRequestListModel>>.Success(results);
             });
     }
 }

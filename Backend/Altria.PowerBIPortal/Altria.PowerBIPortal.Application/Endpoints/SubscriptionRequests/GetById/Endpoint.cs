@@ -9,10 +9,10 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
 {
     public void Configure(IEndpointRouteBuilder app)
     {
-        app.MapGet("/{subscriptionId}",
-            async (Guid subscriptionId, ISubscriptionRequestRepository subscriptionRepository) =>
+        app.MapGet("/{subscriptionRequestId}",
+            async (Guid subscriptionRequestId, ISubscriptionRequestRepository subscriptionRepository) =>
             {
-                var subscription = await subscriptionRepository.GetByIdAsync(subscriptionId);
+                var subscription = await subscriptionRepository.GetByIdAsync(subscriptionRequestId);
 
                 if (subscription == null)
                 {
@@ -21,22 +21,10 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
 
                 var result = new SubscriptionRequestModel
                 {
-                    SubscriptionId = subscription.Id,
-                    Email = "",
-                    Report = ReportModel.FromPath(subscription.ReportPath, subscription.Owner),
-                    Status = subscription.Status,
-                    RequesterId = subscription.Requester.Id,
-                    RequesterName = subscription.Requester.Name,
-                    ApprovalLevels = subscription.ApprovalRequestLevels.Select(l => new SubscriptionRequestApprovalLevelModel
-                    {
-                        ApprovalLevelId = l.Id,
-                        ApprovalLevel = l.ApprovalLevel,
-                        Status = l.Status,
-                        ApprovalOfficerId = l.ApprovalOfficer?.Id,
-                        ApprovalOfficerName = l.ApprovalOfficer?.Name,
-                        ApprovedAtUtc = l.UpdatedAtUtc,
-                        Comment = l.Comment,
-                    }).ToList(),
+                    Report = ReportModel.Create(subscription.ReportPath, subscription.Owner),
+                    SubscrptionInfo = subscription.SubscrptionInfo,
+                    DeliveryOption = subscription.DeliveryOption,
+                    Schedule = subscription.Schedule,
                 };
 
                 return Result<SubscriptionRequestModel>.Success(result);

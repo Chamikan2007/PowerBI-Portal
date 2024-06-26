@@ -21,9 +21,16 @@ public class SubscriptionRequestRepository : Repository<SubscriptionRequest>, IS
     {
         return _readOnlyStore
             .Include(s => s.Requester)
-            .Include(r => r.ApprovalRequestLevels)
-                .ThenInclude(l => l.ApprovalOfficer)
             .FirstOrDefaultAsync(r => r.Id == requestId);
+    }
+
+    public Task<List<SubscriptionRequestApprovalLevel>> GetApprovalDetailsByRequestIdAsync(Guid requestId)
+    {
+        return _readOnlyStore
+            .SelectMany(r => r.ApprovalRequestLevels)
+            .Include(l => l.ApprovalOfficer)
+            .Where(l => l.SubscriptionRequest.Id == requestId)
+            .ToListAsync();
     }
 
     public void Create(SubscriptionRequest subscription)
@@ -35,10 +42,10 @@ public class SubscriptionRequestRepository : Repository<SubscriptionRequest>, IS
     {
         return _readOnlyStore.Include(s => s.ApprovalRequestLevels)
                 .Where(a => includeAll || a.Status != ApprovalStatus.Cancelled)
-                .SelectMany(a => a.ApprovalRequestLevels).Include(l => l.ApprovalOfficer).Include(l => l.Subscription.Requester)
+                .SelectMany(a => a.ApprovalRequestLevels).Include(l => l.ApprovalOfficer).Include(l => l.SubscriptionRequest.Requester)
                 .Where(l => l.Status == ApprovalStatus.Pending && applicableApprovalLevels.Contains(l.ApprovalLevel) ||
                             includeAll && l.ApprovalOfficer != null && l.ApprovalOfficer.Id == approvalOfficeId)
-                .Select(l => l.Subscription).Distinct()
+                .Select(l => l.SubscriptionRequest).Distinct()
                 .ToListAsync();
     }
 
