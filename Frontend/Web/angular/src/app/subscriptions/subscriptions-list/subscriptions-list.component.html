@@ -27,7 +27,7 @@
                                 <div *ngFor="let subscription of subscriptionList;" class="row table-row m-0 border-bottom">
                                     <div class="row m-0">
                                         <div class="col col-1">
-                                            <button type="button" class="btn icon-button-transparent" (click)="showApprovals($event, subscription.subscriptionId)">
+                                            <button type="button" class="btn icon-button-transparent" (click)="showHideApprovals($event, subscription.subscriptionId)">
                                                 <i class="fa-solid fa-chevron-right"></i>
                                             </button>
                                         </div>
@@ -47,31 +47,27 @@
                                         </div>
                                     </div>
                                     <div [id]="'detail_'+subscription.subscriptionId" class="row detail-row hidden">
-                                        <div *ngFor="let approver of approvalLevels" class="row">
-                                            <div class="col col-6">
-                                                <div class="row">
-                                                    <div class="col col-2">Approved By:</div>
-                                                    <div class="col col-4">{{approver.approvalOfficerName}}</div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col col-2">Status:</div>
-                                                    <div class="col col-4">{{approvalStatus[approver.status]}}</div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col col-2">Approval Level:</div>
-                                                    <div class="col col-4">{{approver.approvalLevel}}</div>
-                                                </div>
-                                            </div>
-                                            <div class="col col-6">
-                                                <div class="row">
-                                                    <div class="col col-2">Approved At:</div>
-                                                    <div class="col col-4">{{approver.approvedAtUtc}}</div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col col-2">Comment:</div>
-                                                    <div class="col col-4">{{approver.comment}}</div>
-                                                </div>
-                                            </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered nested-table">
+                                                <thead>
+                                                    <tr>
+                                                        <td>Approved By</td>
+                                                        <td>Status</td>
+                                                        <td>Approval Level</td>
+                                                        <td>Approved At</td>
+                                                        <td>Comment</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let approver of approvalLevels">
+                                                        <td>{{approver.approvalOfficerName}}</td>
+                                                        <td>{{approvalStatus[approver.status]}}</td>
+                                                        <td>{{approvalLevel[approver.approvalLevel]}}</td>
+                                                        <td>{{approver.approvedAtUtc}}</td>
+                                                        <td>{{approver.comment}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>

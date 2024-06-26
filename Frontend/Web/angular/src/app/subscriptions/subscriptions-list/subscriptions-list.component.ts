@@ -90,18 +90,17 @@ export class SubscriptionsListComponent implements OnInit {
     }
   }
 
-  showApprovals(event: any, subscriptionId: string) {
+  showHideApprovals(event: any, subscriptionId: any) {
     let caller = event.currentTarget.children[0];
     let div = document.getElementById(`detail_${subscriptionId}`);
 
     if (div) {
       if (div.classList.contains('hidden')) {
-
         this.subscriptionService.getSubscriptionApprovalsById(subscriptionId).subscribe({
           next: (response) => {
             if (response.isSuccess) {
               this.approvalLevels = response.data;
-
+              
               div.classList.replace('hidden', 'visible');
               caller.classList.replace('fa-chevron-right', 'fa-chevron-down');
             }
@@ -113,6 +112,12 @@ export class SubscriptionsListComponent implements OnInit {
         div.classList.replace('visible', 'hidden');
         caller.classList.replace('fa-chevron-down', 'fa-chevron-right');
       }
+
+      document.querySelectorAll(".detail-row").forEach(d => {
+        if (d.id != `detail_${subscriptionId}`){
+          d.classList.replace('visible', 'hidden');
+        }
+      });
     }
   }
 }

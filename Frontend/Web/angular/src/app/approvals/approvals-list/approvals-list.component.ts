@@ -122,6 +122,12 @@ export class ApprovalsListComponent {
         div.classList.replace('visible', 'hidden');
         caller.classList.replace('fa-chevron-down', 'fa-chevron-right');
       }
+
+      document.querySelectorAll(".detail-row").forEach(d => {
+        if (d.id != `detail_${subscriptionId}`){
+          d.classList.replace('visible', 'hidden');
+        }
+      });
     }
   }
 }
