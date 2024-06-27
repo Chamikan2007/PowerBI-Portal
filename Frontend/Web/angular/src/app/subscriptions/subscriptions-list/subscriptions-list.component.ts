@@ -32,7 +32,7 @@ import { AuthService, Role } from '@core';
 export class SubscriptionsListComponent implements OnInit {
   readonly dialog = inject(MatDialog);
   subscriptionList: SubscriptionListModel[] = [];
-  approvalLevels:  SubscriptionRequestApproverLevelModel[] = [];
+  approvalLevels: SubscriptionRequestApproverLevelModel[] = [];
   approvalStatus = ApprovalStatus;
   approvalLevel = ApprovalLevels;
 
@@ -57,7 +57,7 @@ export class SubscriptionsListComponent implements OnInit {
     this.subscriptionList.length = 0;
 
     this.subscriptionService.getMysubscriptionRequests().subscribe({
-      next: (response) => {
+      next: (response: any) => {
         if (response && response.isSuccess) {
           this.subscriptionList = response.data;
         }
@@ -90,19 +90,22 @@ export class SubscriptionsListComponent implements OnInit {
     }
   }
 
-  showApprovals(event: any, subscriptionId: string) {
+  viewClicked(event: any) {
+    this.router.navigate([event.subscriptionId], { relativeTo: this.activatedRoute.parent });
+  }
+
+  showHideApprovals(event: any, subscriptionId: any) {
     let caller = event.currentTarget.children[0];
     let div = document.getElementById(`detail_${subscriptionId}`);
 
     if (div) {
       if (div.classList.contains('hidden')) {
-
         this.subscriptionService.getSubscriptionApprovalsById(subscriptionId).subscribe({
           next: (response) => {
             if (response.isSuccess) {
               this.approvalLevels = response.data;
 
-              div.classList.replace('hidden', 'visible');
+              div!.classList.replace('hidden', 'visible');
               caller.classList.replace('fa-chevron-right', 'fa-chevron-down');
             }
           }
@@ -113,6 +116,18 @@ export class SubscriptionsListComponent implements OnInit {
         div.classList.replace('visible', 'hidden');
         caller.classList.replace('fa-chevron-down', 'fa-chevron-right');
       }
+
+      document.querySelectorAll(".detail-row").forEach(d => {
+        if (d.id != `detail_${subscriptionId}`) {
+          d.classList.replace('visible', 'hidden');
+        }
+      });
+
+      document.querySelectorAll(".tableBody button.showHide").forEach(b => {
+        if (b.id != event.currentTarget.id) {
+          b.children[0].classList.replace('fa-chevron-down', 'fa-chevron-right');
+        }
+      });
     }
   }
 }
