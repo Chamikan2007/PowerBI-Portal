@@ -75,7 +75,7 @@
                                     <div class="mb-3 input">
                                         <h5 class="p-0">Destination</h5>
                                         <div class="col p-0">
-                                            <mat-form-field class="example-full-width"  appearance="outline">
+                                            <mat-form-field class="example-full-width" appearance="outline">
                                                 <mat-select formControlName="destinationType" (selectionChange)="onDestinationChange($event)">
                                                     <mat-option *ngFor="let opt of destinationItems; index as i;" [value]="opt.key" [disabled]="i==0">{{opt.value}}</mat-option>
                                                 </mat-select>
@@ -211,30 +211,14 @@
                                                 <div class="col p-0">
                                                     <h5>Hourly schedule</h5>
                                                     <div class="row">
-                                                        <!-- <div class="col col-auto pe-1">
-                                                            <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                                <input type="number" min="0" max="23" class="form-control" matInput formControlName="hourly_hour" (change)="onHourlyRunScheduleEveryHourChange($event)">
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div class="col col-auto ps-1">
-                                                            <label class="time-label">hours</label>
-                                                        </div>
-                                                        <div class="col col-auto pe-1">
-                                                            <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                                <input type="number" min="0" max="59" class="form-control" matInput formControlName="hourly_minute" (change)="onHourlyRunScheduleEveryMinuteChange($event)">
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div class="col col-auto ps-1">
-                                                            <label class="time-label">minutes</label>
-                                                        </div> -->
                                                         <div class="row px-0">
                                                             <div class="col-6 px-0">
                                                                 <label class="mb-3">Run the schedule every:</label>
                                                                 <mat-form-field class="example-full-width p-0" appearance="outline">
                                                                     <mat-label>Choose a time</mat-label>
-                                                                    <input matInput [owlDateTimeTrigger]="time1" [owlDateTime]="time1">
-                                                                    <mat-icon matSuffix [owlDateTimeTrigger]="time1" class="date-icon">schedule</mat-icon>
-                                                                    <owl-date-time [pickerType]="'timer'" #time1></owl-date-time>
+                                                                    <input matInput [owlDateTimeTrigger]="hourly_run_time" [owlDateTime]="hourly_run_time" (dateTimeChange)="onHourlyRunScheduleEveryTimeChange($event)">
+                                                                    <mat-icon matSuffix [owlDateTimeTrigger]="hourly_run_time" class="date-icon">schedule</mat-icon>
+                                                                    <owl-date-time [pickerType]="'timer'" #hourly_run_time></owl-date-time>
                                                                 </mat-form-field>
                                                             </div>
                                                         </div>
@@ -243,31 +227,12 @@
                                                                 <label class="mb-3">Start time</label>
                                                                 <mat-form-field class="example-full-width mb-3 p-0" appearance="outline">
                                                                     <mat-label>Choose a time</mat-label>
-                                                                    <input matInput [owlDateTimeTrigger]="time1" [owlDateTime]="time1">
-                                                                    <mat-icon matSuffix [owlDateTimeTrigger]="time1" class="date-icon">schedule</mat-icon>
-                                                                    <owl-date-time [pickerType]="'timer'" #time1></owl-date-time>
+                                                                    <input matInput [owlDateTimeTrigger]="hourly_start_time" [owlDateTime]="hourly_start_time" (dateTimeChange)="onHourlyRunScheduleStartTimeChange($event)">
+                                                                    <mat-icon matSuffix [owlDateTimeTrigger]="hourly_start_time" class="date-icon">schedule</mat-icon>
+                                                                    <owl-date-time [pickerType]="'timer'" #hourly_start_time></owl-date-time>
                                                                 </mat-form-field>
                                                             </div>
                                                         </div>
-                                                        <!-- <div class="col col-auto">
-                                                            <label class="time-label">Start time</label>
-                                                        </div>
-                                                        <div class="col col-auto">
-                                                            <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                                <input type="number" min="0" max="23" class="form-control" matInput formControlName="hourly_start_hour" (change)="onHourlyRunScheduleStartHourChange($event)">
-                                                            </mat-form-field>
-                                                        </div>
-                                                        <div class="col col-auto">
-                                                            <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                                <input type="number" min="0" max="59" class="form-control" matInput formControlName="hourly_start_minute" (change)="onHourlyRunScheduleStartMinuteChange($event)">
-                                                            </mat-form-field>
-                                                        </div> -->
-                                                        <!-- <div class="col col-auto ps-1">
-                                                            <mat-button-toggle-group name="meridiem" class="mt-4" formControlName="hourly_start_meridiem">
-                                                                <mat-button-toggle value="1" (change)="onHourlyMeridiemChange($event)">AM</mat-button-toggle>
-                                                                <mat-button-toggle value="2" (change)="onHourlyMeridiemChange($event)">PM</mat-button-toggle>
-                                                            </mat-button-toggle-group>
-                                                        </div> -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -290,8 +255,7 @@
                                                                     </div>
                                                                     <div class="col col-auto input custom-input">
                                                                         <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                                            <!-- formControlName="daily_after_days_count" -->
-                                                                            <input type="number" min="0" max="6" class="form-control mt-4" matInput [disabled]="model.schedule.scheduleDetailDaily.dailyScheduleType !== 3"
+                                                                            <input type="number" min="0" max="6" class="form-control mt-1" matInput [disabled]="model.schedule.scheduleDetailDaily.dailyScheduleType !== 3"
                                                                                 (change)="onDailyRunScheduleRepeatAfterDayCountChange($event)">
                                                                         </mat-form-field>
                                                                     </div>
@@ -301,37 +265,17 @@
                                                     </div>
                                                 </div>
                                                 <div class="row px-0 mt-4">
-
                                                     <div class="row px-0">
                                                         <div class="col-6 px-0">
                                                             <label class="mb-3">Start time</label>
                                                             <mat-form-field class="example-full-width mb-3 p-0" appearance="outline">
                                                                 <mat-label>Choose a time</mat-label>
-                                                                <input matInput [owlDateTimeTrigger]="time1" [owlDateTime]="time1">
-                                                                <mat-icon matSuffix [owlDateTimeTrigger]="time1" class="date-icon">schedule</mat-icon>
-                                                                <owl-date-time [pickerType]="'timer'" #time1></owl-date-time>
+                                                                <input matInput [owlDateTimeTrigger]="daily_start_time" [owlDateTime]="daily_start_time" (dateTimeChange)="onDailyRunScheduleStartTimeChange($event)">
+                                                                <mat-icon matSuffix [owlDateTimeTrigger]="daily_start_time" class="date-icon">schedule</mat-icon>
+                                                                <owl-date-time [pickerType]="'timer'" #daily_start_time></owl-date-time>
                                                             </mat-form-field>
                                                         </div>
                                                     </div>
-                                                    <!-- <div class="col col-auto">
-                                                        <label class="time-label">Start time</label>
-                                                    </div>
-                                                    <div class="col col-auto">
-                                                        <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                            <input type="number" min="0" max="23" class="form-control" matInput formControlName="daily_start_hour" (change)="onDailyRunScheduleStartHourChange($event)">
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <div class="col col-auto">
-                                                        <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                            <input type="number" min="0" max="59" class="form-control" matInput formControlName="daily_start_minute" (change)="onDailyRunScheduleStartMinuteChange($event)">
-                                                        </mat-form-field>
-                                                    </div> -->
-                                                    <!-- <div class="col col-auto ps-1">
-                                                        <mat-button-toggle-group name="meridiem" class="mt-4" formControlName="daily_start_meridiem">
-                                                            <mat-button-toggle value="1" (change)="onDailyMeridiemChange($event)">AM</mat-button-toggle>
-                                                            <mat-button-toggle value="2" (change)="onDailyMeridiemChange($event)">PM</mat-button-toggle>
-                                                        </mat-button-toggle-group>
-                                                    </div> -->
                                                 </div>
                                             </div>
                                             <div *ngSwitchCase="3">
@@ -349,36 +293,14 @@
                                                         <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.key" [checked]="true" (change)="onWeeklyScheduleDayStatusChange($event.checked, opt)">{{opt.value}}</mat-checkbox>
                                                     </div>
                                                 </section>
-                                                <!-- <div class="row d-flex mt-4">
-                                                    <div class="col col-auto">
-                                                        <label class="time-label">Start time</label>
-                                                    </div>
-                                                    <div class="col col-auto">
-                                                        <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                            <input type="number" class="form-control" matInput formControlName="weekly_start_hour" (change)="onWeeklyRunScheduleStartHourChange($event)">
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <div class="col col-auto">
-                                                        <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                            <input type="number" class="form-control" matInput formControlName="weekly_start_minute" (change)="onWeeklyRunScheduleStartMinuteChange($event)">
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <div class="col col-auto ps-1">
-                                                        <mat-button-toggle-group name="meridiem" class="mt-4" formControlName="weekly_start_meridiem">
-                                                            <mat-button-toggle value="1" (change)="onWeeklyMeridiemChange($event)">AM</mat-button-toggle>
-                                                            <mat-button-toggle value="2" (change)="onWeeklyMeridiemChange($event)">PM</mat-button-toggle>
-                                                        </mat-button-toggle-group>
-                                                    </div>
-                                                </div> -->
-
                                                 <div class="row px-0">
                                                     <div class="col-6 px-0">
                                                         <label class="mb-3">Start time</label>
                                                         <mat-form-field class="example-full-width mb-3 p-0" appearance="outline">
                                                             <mat-label>Choose a time</mat-label>
-                                                            <input matInput [owlDateTimeTrigger]="time1" [owlDateTime]="time1">
-                                                            <mat-icon matSuffix [owlDateTimeTrigger]="time1" class="date-icon">schedule</mat-icon>
-                                                            <owl-date-time [pickerType]="'timer'" #time1></owl-date-time>
+                                                            <input matInput [owlDateTimeTrigger]="weekly_start_time" [owlDateTime]="weekly_start_time" (dateTimeChange)="onWeeklyRunScheduleStartTimeChange($event)">
+                                                            <mat-icon matSuffix [owlDateTimeTrigger]="weekly_start_time" class="date-icon">schedule</mat-icon>
+                                                            <owl-date-time [pickerType]="'timer'" #weekly_start_time></owl-date-time>
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
@@ -396,7 +318,7 @@
                                                     <mat-radio-group class="vertical-radio-group px-0" formControlName="monthlyScheduleType" (change)="onMonthlyScheduleTypeChange($event)">
                                                         <mat-radio-button value="1" checked>On week of month:</mat-radio-button>
                                                         <div style="margin-left: 2.8rem;" class="mb-3">
-                                                            <mat-form-field  appearance="outline">
+                                                            <mat-form-field appearance="outline">
                                                                 <mat-select [disabled]="model.schedule.scheduleDetailMonthly.monthlyScheduleType != 1" (selectionChange)="onMonthlyScheduleWeekOfMonthChange($event)">
                                                                     <mat-option *ngFor="let opt of weekOfMonthItems;" [value]="opt.key">{{opt.value}}</mat-option>
                                                                 </mat-select>
@@ -425,35 +347,14 @@
                                                         </mat-radio-button>
                                                     </mat-radio-group>
                                                 </div>
-                                                <!-- <div class="row d-flex mt-4">
-                                                    <div class="col col-auto">
-                                                        <label class="time-label">Start time</label>
-                                                    </div>
-                                                    <div class="col col-auto">
-                                                        <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                            <input type="number" class="form-control" matInput formControlName="monthly_start_hour" (change)="onMonthlyRunScheduleStartHourChange($event)">
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <div class="col col-auto">
-                                                        <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                            <input type="number" class="form-control" matInput formControlName="monthly_start_minute" (change)="onMonthlyRunScheduleStartMinuteChange($event)">
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <div class="col col-auto ps-1">
-                                                        <mat-button-toggle-group name="meridiem" class="mt-4" formControlName="monthly_start_meridiem">
-                                                            <mat-button-toggle value="1" (change)="onMonthlyMeridiemChange($event)">AM</mat-button-toggle>
-                                                            <mat-button-toggle value="2" (change)="onMonthlyMeridiemChange($event)">PM</mat-button-toggle>
-                                                        </mat-button-toggle-group>
-                                                    </div>
-                                                </div> -->
                                                 <div class="row px-0">
                                                     <div class="col-6 px-0">
                                                         <label class="mb-3">Start time</label>
                                                         <mat-form-field class="example-full-width mb-3 p-0" appearance="outline">
                                                             <mat-label>Choose a time</mat-label>
-                                                            <input matInput [owlDateTimeTrigger]="time1" [owlDateTime]="time1">
-                                                            <mat-icon matSuffix [owlDateTimeTrigger]="time1" class="date-icon">schedule</mat-icon>
-                                                            <owl-date-time [pickerType]="'timer'" #time1></owl-date-time>
+                                                            <input matInput [owlDateTimeTrigger]="monthly_start_time" [owlDateTime]="monthly_start_time" (dateTimeChange)="onMonthlyRunScheduleStartTimeChange($event)">
+                                                            <mat-icon matSuffix [owlDateTimeTrigger]="monthly_start_time" class="date-icon">schedule</mat-icon>
+                                                            <owl-date-time [pickerType]="'timer'" #monthly_start_time></owl-date-time>
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
@@ -465,36 +366,14 @@
                                                         <label class="mb-3">Start time</label>
                                                         <mat-form-field class="example-full-width mb-3 p-0" appearance="outline">
                                                             <mat-label>Choose a time</mat-label>
-                                                            <input matInput [owlDateTimeTrigger]="time1" [owlDateTime]="time1">
-                                                            <mat-icon matSuffix [owlDateTimeTrigger]="time1" class="date-icon">schedule</mat-icon>
-                                                            <owl-date-time [pickerType]="'timer'" #time1></owl-date-time>
+                                                            <input matInput [owlDateTimeTrigger]="onetime_start_time" [owlDateTime]="onetime_start_time" (dateTimeChange)="onOneTimeRunScheduleStartTimeChange($event)">
+                                                            <mat-icon matSuffix [owlDateTimeTrigger]="onetime_start_time" class="date-icon">schedule</mat-icon>
+                                                            <owl-date-time [pickerType]="'timer'" #onetime_start_time></owl-date-time>
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
-                                                <!-- <div class="row d-flex mt-4">
-                                                    <div class="col col-auto">
-                                                        <label class="time-label">Start time</label>
-                                                    </div>
-                                                    <div class="col col-auto">
-                                                        <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                            <input type="number" class="form-control" matInput formControlName="monthly_start_hour" (change)="onOneTimeRunScheduleStartHourChange($event)">
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <div class="col col-auto">
-                                                        <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                            <input type="number" class="form-control" matInput formControlName="monthly_start_minute" (change)="onOneTimeRunScheduleStartMinuteChange($event)">
-                                                        </mat-form-field>
-                                                    </div>
-                                                    <div class="col col-auto ps-1">
-                                                        <mat-button-toggle-group name="meridiem" class="mt-4" formControlName="onetime_start_meridiem">
-                                                            <mat-button-toggle value="1" (change)="onOneTimeMeridiemChange($event)">AM</mat-button-toggle>
-                                                            <mat-button-toggle value="2" (change)="onOneTimeMeridiemChange($event)">PM</mat-button-toggle>
-                                                        </mat-button-toggle-group>
-                                                    </div>
-                                                </div> -->
                                             </div>
                                         </div>
-
                                         <hr class="my-2">
                                         <div class="row px-0">
                                             <div class="col p-0">
