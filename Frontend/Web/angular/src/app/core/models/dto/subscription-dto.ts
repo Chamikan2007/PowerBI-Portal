@@ -25,7 +25,7 @@ export class SubscriptionDto {
     subscriptionId: string = '';
     report: ReportDto = new ReportDto();
     description: string = '';
-    owner: string = 'SampathBnakHema\\Hemantha';
+    owner: string = '';
 
     subscriptionType: number = 1;
     destination: number = 2;
@@ -40,16 +40,17 @@ export class SubscriptionDto {
 }
 
 export class ScheduleDto {
-    scheduleDetailHourly = new ScheduleTypeHourlyDto(); // hourly, daily, weekly, monthly, onetime
-    scheduleDetailDaily = new ScheduleTypeDailyDto(); // hourly, daily, weekly, monthly, onetime
-    scheduleDetailWeekly = new ScheduleTypeWeeklyDto(); // hourly, daily, weekly, monthly, onetime
-    scheduleDetailMonthly = new ScheduleTypeMonthlyDto(); // hourly, daily, weekly, monthly, onetime
-    scheduleDetailOneTime = new ScheduleTypeOneTimeDto(); // hourly, daily, weekly, monthly, onetime
+    hourlySchedule = new ScheduleTypeHourlyDto(); // hourly
+    dailySchedule = new ScheduleTypeDailyDto(); // daily
+    weeklySchedule = new ScheduleTypeWeeklyDto(); // weekly
+    monthlySchedule = new ScheduleTypeMonthlyDto(); // monthly
+    oneTimeSchedule = new ScheduleTypeOneTimeDto(); // onetime
 }
 
 export class ReportDto {
     name: string = '';
-    path: string = ''
+    path: string = '';
+    owner: string = '';
 }
 
 export class DeliveryOptionEmailDto {
@@ -66,17 +67,14 @@ export class DeliveryOptionEmailDto {
 }
 
 export class StartTimeDto {
-    startHour: number = 0;
-    startMinute: number = 0;
     meridiem: number = 1;
-
     startDateTime: Date = new Date();
     endDate?: Date;
 }
 
 export class ScheduleTypeHourlyDto extends StartTimeDto {
-    hour: number = 0;
-    minute: number = 0;
+    hours: number = 0;
+    minutes: number = 0;
 }
 
 export class ScheduleTypeDailyDto extends StartTimeDto {

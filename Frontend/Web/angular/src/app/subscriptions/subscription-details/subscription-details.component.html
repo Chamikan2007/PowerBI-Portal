@@ -55,7 +55,7 @@
                                             <div class="col p-0 mb-2">
                                                 <mat-form-field class="example-full-width" appearance="outline">
                                                     <mat-label>Owner</mat-label>
-                                                    <input matInput type="text" formControlName="owner" class="form-control">
+                                                    <input matInput type="text" formControlName="owner" class="form-control" [value]="this.model.report.owner">
                                                     <!-- @if (subscriptionForm.get('owner')?.hasError('required')) {
                                                     <mat-error>
                                                         Owner is required.
@@ -216,12 +216,26 @@
                                                         <div class="row px-0">
                                                             <div class="col-6 px-0">
                                                                 <label class="mb-3">Run the schedule every:</label>
-                                                                <mat-form-field class="example-full-width p-0" appearance="outline">
+                                                                <!-- <mat-form-field class="example-full-width p-0" appearance="outline">
                                                                     <mat-label>Choose a time</mat-label>
                                                                     <input matInput [owlDateTimeTrigger]="hourly_run_time" [owlDateTime]="hourly_run_time" (dateTimeChange)="onHourlyRunScheduleEveryTimeChange($event)">
                                                                     <mat-icon matSuffix [owlDateTimeTrigger]="hourly_run_time" class="date-icon">schedule</mat-icon>
                                                                     <owl-date-time [pickerType]="'timer'" #hourly_run_time></owl-date-time>
-                                                                </mat-form-field>
+                                                                </mat-form-field> -->
+                                                                <div class="row px-0">
+                                                                    <div class="col-6 p-0">
+                                                                        <mat-form-field class="example-full-width number-input" appearance="outline">
+                                                                            <mat-label>hours</mat-label>
+                                                                            <input type="number" min="0" max="23" class="form-control" matInput formControlName="hourly_hour" (change)="onHourlyRunScheduleEveryHourChange($event)">
+                                                                        </mat-form-field>
+                                                                    </div>
+                                                                    <div class="col-6 p-0">
+                                                                        <mat-form-field class="example-full-width number-input" appearance="outline">
+                                                                            <mat-label>minutes</mat-label>
+                                                                            <input type="number" min="0" max="59" class="form-control" matInput formControlName="hourly_minute" (change)="onHourlyRunScheduleEveryMinuteChange($event)">
+                                                                        </mat-form-field>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="row px-0">
@@ -245,7 +259,7 @@
                                                         <mat-radio-group class="vertical-radio-group" formControlName="dailyScheduleType" (change)="onDailyScheduleTypeChange($event)">
                                                             <mat-radio-button value="1" checked>On the following days:</mat-radio-button>
                                                             <section class="example-section d-flex" style="margin-left: 2rem; flex: 1;">
-                                                                <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.key" [checked]="true" [disabled]="model.schedule.scheduleDetailDaily.dailyScheduleType != 1"
+                                                                <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.key" [checked]="true" [disabled]="model.schedule.dailySchedule.dailyScheduleType != 1"
                                                                     (change)="onDailyScheduleDayStatusChange($event.checked, opt)">
                                                                     {{opt.value}}</mat-checkbox>
                                                             </section>
@@ -257,7 +271,7 @@
                                                                     </div>
                                                                     <div class="col col-auto input custom-input">
                                                                         <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                                            <input type="number" min="0" max="6" class="form-control mt-1" matInput [disabled]="model.schedule.scheduleDetailDaily.dailyScheduleType !== 3"
+                                                                            <input type="number" min="0" max="6" class="form-control mt-1" matInput [disabled]="model.schedule.dailySchedule.dailyScheduleType !== 3"
                                                                                 (change)="onDailyRunScheduleRepeatAfterDayCountChange($event)">
                                                                         </mat-form-field>
                                                                     </div>
@@ -321,7 +335,7 @@
                                                         <mat-radio-button value="1" checked>On week of month:</mat-radio-button>
                                                         <div style="margin-left: 2.8rem;" class="mb-3">
                                                             <mat-form-field appearance="outline">
-                                                                <mat-select [disabled]="model.schedule.scheduleDetailMonthly.monthlyScheduleType != 1" (selectionChange)="onMonthlyScheduleWeekOfMonthChange($event)">
+                                                                <mat-select [disabled]="model.schedule.monthlySchedule.monthlyScheduleType != 1" (selectionChange)="onMonthlyScheduleWeekOfMonthChange($event)">
                                                                     <mat-option *ngFor="let opt of weekOfMonthItems;" [value]="opt.key">{{opt.value}}</mat-option>
                                                                 </mat-select>
                                                             </mat-form-field>
@@ -329,7 +343,7 @@
                                                                 <div class="row">
                                                                     <label class="px-0">On days of week:</label>
                                                                 </div>
-                                                                <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.key" [checked]="true" class="mb-2" [disabled]="model.schedule.scheduleDetailMonthly.monthlyScheduleType != 1"
+                                                                <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.key" [checked]="true" class="mb-2" [disabled]="model.schedule.monthlySchedule.monthlyScheduleType != 1"
                                                                     (change)="onMonthlyScheduleOnDayOfWeekChange($event.checked, opt)">{{opt.value}}
                                                                 </mat-checkbox>
                                                             </div>
@@ -341,7 +355,7 @@
                                                                 </div>
                                                                 <div class="col col-auto input custom-input">
                                                                     <mat-form-field class="example-full-width" appearance="outline">
-                                                                        <input type="text" class="form-control" matInput [disabled]="model.schedule.scheduleDetailMonthly.monthlyScheduleType != 2"
+                                                                        <input type="text" class="form-control" matInput [disabled]="model.schedule.monthlySchedule.monthlyScheduleType != 2"
                                                                             (change)="onMonthlyScheduleOnCalendarDaysChange($event)">
                                                                     </mat-form-field>
                                                                 </div>
@@ -542,7 +556,7 @@
                                                                 <br>
                                                                 <label>Choose a time</label>
                                                                 <br>
-                                                                <input type="text" [value]="model.schedule.scheduleDetailHourly.startDateTime.getTime()">
+                                                                <input type="text" [value]="model.schedule.dailySchedule.startDateTime.getTime()">
                                                             </div>
                                                         </div>
                                                         <div class="row px-0">
@@ -551,7 +565,7 @@
                                                                 <br>
                                                                 <label>Choose a time</label>
                                                                 <br>
-                                                                <input type="text" [value]="model.schedule.scheduleDetailHourly.startDateTime.getDate()">
+                                                                <input type="text" [value]="model.schedule.dailySchedule.startDateTime.getDate()">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -575,7 +589,7 @@
                                                         <mat-radio-group class="vertical-radio-group" formControlName="dailyScheduleType" (change)="onDailyScheduleTypeChange($event)">
                                                             <mat-radio-button value="1" checked>On the following days:</mat-radio-button>
                                                             <section class="example-section d-flex" style="margin-left: 2rem; flex: 1;">
-                                                                <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.key" [checked]="true" [disabled]="model.schedule.scheduleDetailDaily.dailyScheduleType != 1"
+                                                                <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.key" [checked]="true" [disabled]="model.schedule.dailySchedule.dailyScheduleType != 1"
                                                                     (change)="onDailyScheduleDayStatusChange($event.checked, opt)">
                                                                     {{opt.value}}</mat-checkbox>
                                                             </section>
@@ -587,7 +601,7 @@
                                                                     </div>
                                                                     <div class="col col-auto input custom-input">
                                                                         <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                                            <input type="number" min="0" max="6" class="form-control mt-1" matInput [disabled]="model.schedule.scheduleDetailDaily.dailyScheduleType !== 3"
+                                                                            <input type="number" min="0" max="6" class="form-control mt-1" matInput [disabled]="model.schedule.dailySchedule.dailyScheduleType !== 3"
                                                                                 (change)="onDailyRunScheduleRepeatAfterDayCountChange($event)">
                                                                         </mat-form-field>
                                                                     </div>
@@ -651,7 +665,7 @@
                                                         <mat-radio-button value="1" checked>On week of month:</mat-radio-button>
                                                         <div style="margin-left: 2.8rem;" class="mb-3">
                                                             <mat-form-field appearance="outline">
-                                                                <mat-select [disabled]="model.schedule.scheduleDetailMonthly.monthlyScheduleType != 1" (selectionChange)="onMonthlyScheduleWeekOfMonthChange($event)">
+                                                                <mat-select [disabled]="model.schedule.monthlySchedule.monthlyScheduleType != 1" (selectionChange)="onMonthlyScheduleWeekOfMonthChange($event)">
                                                                     <mat-option *ngFor="let opt of weekOfMonthItems;" [value]="opt.key">{{opt.value}}</mat-option>
                                                                 </mat-select>
                                                             </mat-form-field>
@@ -659,7 +673,7 @@
                                                                 <div class="row">
                                                                     <label class="px-0">On days of week:</label>
                                                                 </div>
-                                                                <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.key" [checked]="true" class="mb-2" [disabled]="model.schedule.scheduleDetailMonthly.monthlyScheduleType != 1"
+                                                                <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.key" [checked]="true" class="mb-2" [disabled]="model.schedule.monthlySchedule.monthlyScheduleType != 1"
                                                                     (change)="onMonthlyScheduleOnDayOfWeekChange($event.checked, opt)">{{opt.value}}
                                                                 </mat-checkbox>
                                                             </div>
@@ -671,7 +685,7 @@
                                                                 </div>
                                                                 <div class="col col-auto input custom-input">
                                                                     <mat-form-field class="example-full-width" appearance="outline">
-                                                                        <input type="text" class="form-control" matInput [disabled]="model.schedule.scheduleDetailMonthly.monthlyScheduleType != 2"
+                                                                        <input type="text" class="form-control" matInput [disabled]="model.schedule.monthlySchedule.monthlyScheduleType != 2"
                                                                             (change)="onMonthlyScheduleOnCalendarDaysChange($event)">
                                                                     </mat-form-field>
                                                                 </div>
