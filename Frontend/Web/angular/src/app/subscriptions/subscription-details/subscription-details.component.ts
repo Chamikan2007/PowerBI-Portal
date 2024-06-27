@@ -67,7 +67,9 @@ export class SubscriptionDetailsComponent implements OnInit {
   monthsOfYearItems = SubscriptionDetailsMeta.monthsOfYearItems;
   weekOfMonthItems = SubscriptionDetailsMeta.weekOfMonthItems;
 
+  subscriptionId: string = '0';
   model: SubscriptionDto = new SubscriptionDto();
+  isReadOnly: boolean = false;
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -77,7 +79,13 @@ export class SubscriptionDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadData();
+
+    this.activatedRoute.url.subscribe({
+      next: (urlSegments: any) => {
+        this.subscriptionId = urlSegments[0].path;
+        this.loadData();
+      }
+    });
 
     this.subscriptionForm = this.formBuilder.group({
       reportPath: ['', [this.autocompleteStringValidator(this.reportsList), Validators.required]],
@@ -141,14 +149,28 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   loadData() {
     this.reportsList.length = 0;
+    this.isReadOnly = false;
 
-    this.subscriptionService.getReportsList().subscribe({
-      next: (response: ResponseDto) => {
-        if (response.isSuccess) {
-          this.reportsList = response.data as ReportDto[];
+    if (this.subscriptionId === '0') {
+      // create mode
+      this.subscriptionService.getReportsList().subscribe({
+        next: (response: ResponseDto) => {
+          if (response.isSuccess) {
+            this.reportsList = response.data as ReportDto[];
+          }
         }
-      }
-    });
+      });
+    }
+    else {
+      // view mode
+      this.isReadOnly = true;
+
+      this.subscriptionService.getSubscriptionById(this.subscriptionId).subscribe({
+        next: (response: any) => {
+          this.model = response as SubscriptionDto;
+        }
+      });
+    }
   }
 
   goBack() {

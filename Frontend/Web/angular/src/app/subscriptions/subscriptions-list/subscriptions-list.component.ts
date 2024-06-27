@@ -57,7 +57,7 @@ export class SubscriptionsListComponent implements OnInit {
     this.subscriptionList.length = 0;
 
     this.subscriptionService.getMysubscriptionRequests().subscribe({
-      next: (response) => {
+      next: (response: any) => {
         if (response && response.isSuccess) {
           this.subscriptionList = response.data;
         }
@@ -88,6 +88,10 @@ export class SubscriptionsListComponent implements OnInit {
         }
       });
     }
+  }
+
+  viewClicked(event: any) {
+    this.router.navigate([event.subscriptionId], { relativeTo: this.activatedRoute.parent });
   }
 
   showHideApprovals(event: any, subscriptionId: any) {
