@@ -151,10 +151,11 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   loadData() {
     this.reportsList.length = 0;
-    this.isReadOnly = false;
 
     if (this.subscriptionId === '0') {
       // create mode
+      this.isReadOnly = false;
+
       this.subscriptionService.getReportsList().subscribe({
         next: (response: ResponseDto) => {
           if (response.isSuccess) {
@@ -176,12 +177,12 @@ export class SubscriptionDetailsComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/', 'subscriptions']);
+    window.history.back();
+    // this.router.navigate(['/', 'subscriptions']);
   }
 
   setSelectedReport(event: any) {
     let report = this.reportsList.find(r => r.path === event.value) as ReportDto;
-    console.log(report, 'report');
     if (report) {
       this.model.report = report;
     }
@@ -228,7 +229,7 @@ export class SubscriptionDetailsComponent implements OnInit {
   }
 
   onIncludeLinkChange(event: boolean) {
-    this.model.deliveryOptionEmail.inlcudeLink = event;
+    this.model.deliveryOptionEmail.includeLink = event;
   }
 
   onRenderFormatChange(event: any) {
@@ -259,11 +260,11 @@ export class SubscriptionDetailsComponent implements OnInit {
    * additional @params, startHour, startMinute
    * methods onHourlyRunScheduleEveryHourChange, onHourlyRunScheduleEveryMinuteChange, onHourlyRunScheduleStartTimeChange
    */
-  onHourlyRunScheduleEveryHourChange (event: any) {
+  onHourlyRunScheduleEveryHourChange(event: any) {
     this.model.schedule.hourlySchedule.hours = +event.target.value;
   }
-  
-  onHourlyRunScheduleEveryMinuteChange (event: any) {
+
+  onHourlyRunScheduleEveryMinuteChange(event: any) {
     this.model.schedule.hourlySchedule.minutes = +event.target.value;
   }
 
@@ -408,6 +409,118 @@ export class SubscriptionDetailsComponent implements OnInit {
   }
 
   onCancel() {
-    this.router.navigate(['/', 'subscriptions']);
+    window.history.back();
+    // this.router.navigate(['/', 'subscriptions']);
   }
-} 
+
+
+
+  // read-only mode related
+
+  getDestinationText(destination: number) {
+    let text = '';
+    let item = this.destinationItems.find(d => d.key === destination.toString());
+
+    if (item) {
+      text = item.value;
+    }
+    return text;
+  }
+
+  getNumberInDigits(value: number, length: number) {
+    return value.toString().padStart(length, '0');
+  }
+
+  isKeySelected(key: string, keyValueList: KeyValue<string, boolean>[]) {
+    if (key) {
+      let keyValueItem = keyValueList.find(d => d.key == key);
+      if (keyValueItem) {
+        return keyValueItem.value == true;
+      }
+    }
+    return false;
+  }
+
+  getFormattedTime(value?: Date) {
+    if (value) {
+      let time = `${value.getHours().toString().padStart(2, '0')}:${value.getMinutes().toString().padStart(2, '0')}`;
+      return `${time}`;
+    }
+    return '';
+  }
+
+  getFormattedDate(value?: Date) {
+    if (value) {
+      let date = `${value.getFullYear().toString().padStart(4, '0')}-${value.getMonth().toString().padStart(2, '0')}-${value.getDate().toString().padStart(2, '0')}`;
+      return `${date}`;
+    }
+    return '';
+  }
+
+  getFormattedScheduleStartDate() {
+    let date;
+    switch (this.model.scheduleType) {
+      case 1:
+        date = this.model.schedule.hourlySchedule.startDateTime;
+        break;
+      case 2:
+        date = this.model.schedule.dailySchedule.startDateTime;
+        break;
+      case 3:
+        date = this.model.schedule.weeklySchedule.startDateTime;
+        break;
+      case 4:
+        date = this.model.schedule.monthlySchedule.startDateTime;
+        break;
+      case 5:
+        date = this.model.schedule.oneTimeSchedule.startDateTime;
+        break;
+    }
+    return this.getFormattedDate(date);
+  }
+
+  getFormattedScheduleEndDate() {
+    let date;
+    switch (this.model.scheduleType) {
+      case 1:
+        date = this.model.schedule.hourlySchedule.endDate;
+        break;
+      case 2:
+        date = this.model.schedule.dailySchedule.endDate;
+        break;
+      case 3:
+        date = this.model.schedule.weeklySchedule.endDate;
+        break;
+      case 4:
+        date = this.model.schedule.monthlySchedule.endDate;
+        break;
+      case 5:
+        date = this.model.schedule.oneTimeSchedule.endDate;
+        break;
+    }
+    return this.getFormattedDate(date);
+  }
+
+  isScheduleEndDateSet() {
+    let date = null;
+    switch (this.model.scheduleType) {
+      case 1:
+        date = this.model.schedule.hourlySchedule.endDate;
+        break;
+      case 2:
+        date = this.model.schedule.dailySchedule.endDate;
+        break;
+      case 3:
+        date = this.model.schedule.weeklySchedule.endDate;
+        break;
+      case 4:
+        date = this.model.schedule.monthlySchedule.endDate;
+        break;
+      case 5:
+        date = this.model.schedule.oneTimeSchedule.endDate;
+        break;
+    }
+    return (date != null);
+  }
+
+}

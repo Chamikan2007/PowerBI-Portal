@@ -25,13 +25,13 @@ export class SubscriptionDto {
     subscriptionId: string = '';
     report: ReportDto = new ReportDto();
     description: string = '';
-    owner: string = '';
+    // owner: string = '';
 
     subscriptionType: number = 1;
     destination: number = 2;
     deliveryOptionEmail: DeliveryOptionEmailDto = new DeliveryOptionEmailDto();
     scheduleDetailType: number = 2;
-    scheduleType: number = 1;
+    scheduleType: number = 2;
     schedule: ScheduleDto = new ScheduleDto();
 
     status: ApprovalStatus = ApprovalStatus.None;
@@ -60,7 +60,7 @@ export class DeliveryOptionEmailDto {
     replyTo: string = '';
     subject: string = '';
     includeReport: boolean = true;
-    inlcudeLink: boolean = true;
+    includeLink: boolean = true;
     renderFormat: number = 1;
     priority: number = 1;
     comment: string = '';
