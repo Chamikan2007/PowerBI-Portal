@@ -468,39 +468,39 @@
                                         <div>
                                             <div class="col p-0 mb-2">
                                                 <label>To</label>
-                                                <input type="email" readonly class="form-control" [value]="model.deliveryOptionEmail.to">
+                                                <input type="email" readonly class="form-control" [value]="model.deliveryOption.emailDeliveryOption.to">
                                             </div>
                                         </div>
                                         <div>
                                             <div class="col p-0 mb-2">
                                                 <label>Cc</label>
-                                                <input type="email" readonly class="form-control" [value]="model.deliveryOptionEmail.cc">
+                                                <input type="email" readonly class="form-control" [value]="model.deliveryOption.emailDeliveryOption.cc">
                                             </div>
                                         </div>
                                         <div>
                                             <div class="col p-0 mb-2">
                                                 <label>Bcc</label>
-                                                <input type="email" readonly class="form-control" [value]="model.deliveryOptionEmail.bcc">
+                                                <input type="email" readonly class="form-control" [value]="model.deliveryOption.emailDeliveryOption.bcc">
                                             </div>
                                         </div>
                                         <div>
                                             <div class="col p-0 mb-2">
                                                 <label>Reply To</label>
-                                                <input type="email" readonly class="form-control" [value]="model.deliveryOptionEmail.replyTo">
+                                                <input type="email" readonly class="form-control" [value]="model.deliveryOption.emailDeliveryOption.replyTo">
                                             </div>
                                         </div>
                                         <div>
                                             <div class="col p-0 mb-2">
                                                 <label>Subject</label>
-                                                <input type="email" readonly class="form-control" [value]="model.deliveryOptionEmail.subject">
+                                                <input type="email" readonly class="form-control" [value]="model.deliveryOption.emailDeliveryOption.subject">
                                             </div>
                                         </div>
                                         <div class="input mb-3">
                                             <div class="row">
                                                 <div class="col p-0">
-                                                    <input type="checkbox" disabled value="1" [checked]="model.deliveryOptionEmail.includeReport"><label>Include Report</label>
+                                                    <input type="checkbox" disabled value="1" [checked]="model.deliveryOption.emailDeliveryOption.includeReport"><label>Include Report</label>
                                                     <br>
-                                                    <input type="checkbox" disabled value="2" [checked]="model.deliveryOptionEmail.includeLink"><label>Include Link</label>
+                                                    <input type="checkbox" disabled value="2" [checked]="model.deliveryOption.emailDeliveryOption.includeLink"><label>Include Link</label>
                                                     <br>
                                                 </div>
                                             </div>
@@ -508,18 +508,18 @@
                                         <div class="input row">
                                             <div class="col-12 p-0 mb-2">
                                                 <label>Render Format</label>
-                                                <input type="text" readonly class="form-control" [value]="renderFormatItems[model.deliveryOptionEmail.renderFormat-1].value">
+                                                <input type="text" readonly class="form-control" [value]="renderFormatItems[model.deliveryOption.emailDeliveryOption.renderFormat-1].value">
                                             </div>
                                             <div class="col-12 p-0">
                                                 <label>Priority</label>
-                                                <input type="text" readonly class="form-control" [value]="priorityItems[model.deliveryOptionEmail.priority-1].value">
+                                                <input type="text" readonly class="form-control" [value]="priorityItems[model.deliveryOption.emailDeliveryOption.priority-1].value">
                                             </div>
                                         </div>
                                     </div>
                                     <div>
                                         <div class="col">
                                             <label>Comment</label>
-                                            <textarea class="form-control" [value]="model.deliveryOptionEmail.comment"></textarea>
+                                            <textarea class="form-control" [value]="model.deliveryOption.emailDeliveryOption.comment"></textarea>
                                         </div>
                                     </div>
                                 </div>

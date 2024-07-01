@@ -205,43 +205,43 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   // email options
   onDeliveryOptionEmailToChange(event: any) {
-    this.model.deliveryOptionEmail.to = event.target.value;
+    this.model.deliveryOption.emailDeliveryOption.to = event.target.value;
   }
 
   onDeliveryOptionEmailCcChange(event: any) {
-    this.model.deliveryOptionEmail.cc = event.target.value;
+    this.model.deliveryOption.emailDeliveryOption.cc = event.target.value;
   }
 
   onDeliveryOptionEmailBccChange(event: any) {
-    this.model.deliveryOptionEmail.bcc = event.target.value;
+    this.model.deliveryOption.emailDeliveryOption.bcc = event.target.value;
   }
 
   onDeliveryOptionEmailReplyToChange(event: any) {
-    this.model.deliveryOptionEmail.replyTo = event.target.value;
+    this.model.deliveryOption.emailDeliveryOption.replyTo = event.target.value;
   }
 
   onDeliveryOptionEmailSubjectChange(event: any) {
-    this.model.deliveryOptionEmail.subject = event.target.value;
+    this.model.deliveryOption.emailDeliveryOption.subject = event.target.value;
   }
 
   onIncludeReportChange(event: boolean) {
-    this.model.deliveryOptionEmail.includeReport = event;
+    this.model.deliveryOption.emailDeliveryOption.includeReport = event;
   }
 
   onIncludeLinkChange(event: boolean) {
-    this.model.deliveryOptionEmail.includeLink = event;
+    this.model.deliveryOption.emailDeliveryOption.includeLink = event;
   }
 
   onRenderFormatChange(event: any) {
-    this.model.deliveryOptionEmail.renderFormat = +event.value;
+    this.model.deliveryOption.emailDeliveryOption.renderFormat = +event.value;
   }
 
   onPriorityChange(event: any) {
-    this.model.deliveryOptionEmail.priority = +event.value;
+    this.model.deliveryOption.emailDeliveryOption.priority = +event.value;
   }
 
   onCommentTextChange(event: any) {
-    this.model.deliveryOptionEmail.comment = event.target.value;
+    this.model.deliveryOption.emailDeliveryOption.comment = event.target.value;
   }
 
   // schedule detail type

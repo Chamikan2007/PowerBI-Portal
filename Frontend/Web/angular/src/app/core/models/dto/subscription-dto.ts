@@ -29,7 +29,7 @@ export class SubscriptionDto {
 
     subscriptionType: number = 1;
     destination: number = 2;
-    deliveryOptionEmail: DeliveryOptionEmailDto = new DeliveryOptionEmailDto();
+    // deliveryOptionEmail: DeliveryOptionEmailDto = new DeliveryOptionEmailDto();
     scheduleDetailType: number = 2;
     scheduleType: number = 2;
     schedule: ScheduleDto = new ScheduleDto();
@@ -37,6 +37,7 @@ export class SubscriptionDto {
     status: ApprovalStatus = ApprovalStatus.None;
     requesterName: string = '';
     requesterId: string = '';
+    deliveryOption: DeliveryOption = new DeliveryOption();
 }
 
 export class ScheduleDto {
@@ -53,6 +54,24 @@ export class ReportDto {
     owner: string = '';
 }
 
+export class DeliveryOption {
+    emailDeliveryOption: DeliveryOptionEmailDto = new DeliveryOptionEmailDto();
+    fileShareDeliveryOption: FileShareDeliveryOption = new FileShareDeliveryOption()
+}
+
+export class StandardSubscription {
+    description: string = '';
+}
+
+export class DataDrivenSubscription {
+    description: string = '';
+}
+
+export class SubscrptionInfo {
+    standardSubscription: StandardSubscription = new StandardSubscription();
+    dataDrivenSubscription: DataDrivenSubscription = new DataDrivenSubscription();
+}
+
 export class DeliveryOptionEmailDto {
     to: string = '';
     cc: string = '';
@@ -64,6 +83,14 @@ export class DeliveryOptionEmailDto {
     renderFormat: number = 1;
     priority: number = 1;
     comment: string = '';
+}
+
+export class FileShareDeliveryOption {
+    renderFormat: number = 0;
+    fileName: string = "";
+    includeExtension: Boolean = true;
+    path: string = "";
+    overrideOptions: number = 0;
 }
 
 export class StartTimeDto {
