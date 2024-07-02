@@ -7,16 +7,13 @@ public static class CastToSubscriptionRequestListModel
 {
     internal static SubscriptionRequestListModel Cast(SubscriptionRequest subscriptionRequest)
     {
-        var isStandardSubscription = subscriptionRequest.SubscrptionInfo.StandardSubscription != null;
-
-        var description = isStandardSubscription ?
-            subscriptionRequest.SubscrptionInfo.StandardSubscription!.Description :
-            subscriptionRequest.SubscrptionInfo.DataDrivenSubscription!.Description;
+        var isStandardSubscription = subscriptionRequest.SubscriptionInfo.StandardSubscription != null;
 
         var model = new SubscriptionRequestListModel
         {
             SubscriptionId = subscriptionRequest.Id,
-            Description = description,
+            Description = subscriptionRequest.Description,
+            SubscriptionType = subscriptionRequest.SubscriptionType,
             ReportPath = subscriptionRequest.ReportPath,
             RequesterId = subscriptionRequest.Requester.Id,
             RequesterName = subscriptionRequest.Requester.Name,

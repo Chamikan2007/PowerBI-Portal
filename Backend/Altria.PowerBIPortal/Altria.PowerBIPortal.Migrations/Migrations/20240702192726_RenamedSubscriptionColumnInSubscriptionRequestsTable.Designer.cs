@@ -4,6 +4,7 @@ using Altria.PowerBIPortal.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Altria.PowerBIPortal.Migrations.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240702192726_RenamedSubscriptionColumnInSubscriptionRequestsTable")]
+    partial class RenamedSubscriptionColumnInSubscriptionRequestsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -327,11 +330,6 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<bool>("IsProcessed")
                         .HasColumnType("bit");
 
@@ -367,9 +365,6 @@ namespace Altria.PowerBIPortal.Migrations.Migrations
 
                     b.Property<Guid?>("SubscriptionReference")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("SubscriptionType")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAtUtc")
                         .HasColumnType("datetime2");

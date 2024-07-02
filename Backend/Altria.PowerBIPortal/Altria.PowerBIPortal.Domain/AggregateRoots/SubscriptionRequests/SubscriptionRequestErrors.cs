@@ -9,4 +9,6 @@ public static class SubscriptionRequestErrors
     public static Error InvalidStatus => new("SubscriptionRequest.InvalidStatus");
 
     public static Error NotFound => new("SubscriptionRequest.NotFound");
+
+    public static Error InvalidScheduleType => new("SubscriptionRequest.InvalidScheduleType");
 }

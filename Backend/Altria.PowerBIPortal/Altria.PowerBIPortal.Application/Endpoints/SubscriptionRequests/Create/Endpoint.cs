@@ -33,11 +33,12 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                 var emailDeliveryOption = model.DeliveryOption.EmailDeliveryOption;
                 if (emailDeliveryOption != null)
                 {
-                    var tos = emailDeliveryOption.To.Split(";");
-                    var ccs = emailDeliveryOption.Cc?.Split(";") ?? [];
-                    var bccs = emailDeliveryOption.Bcc?.Split(";") ?? [];
+                    var tos = emailDeliveryOption.To.Split(";").Where(e => !string.IsNullOrWhiteSpace(e));
+                    var ccs = (emailDeliveryOption.Cc?.Split(";") ?? []).Where(e => !string.IsNullOrWhiteSpace(e));
+                    var bccs = (emailDeliveryOption.Bcc?.Split(";") ?? []).Where(e => !string.IsNullOrWhiteSpace(e));
+                    var replyTo = (emailDeliveryOption.ReplyTo?.Split(";") ?? []).Where(e => !string.IsNullOrWhiteSpace(e));
 
-                    var allEmails = tos.Concat(ccs).Concat(bccs);
+                    var allEmails = tos.Concat(ccs).Concat(bccs).Concat(replyTo);
 
                     var validatedEmails = allEmails.Select(e => EmailValidator.IsValidEmail(e));
                     if (validatedEmails.Any(x => !x.isValid))
@@ -53,11 +54,21 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                     {
                         return Result.Faliour(SubscriberWhiteListErrors.NotAllowed);
                     }
+
+                    emailDeliveryOption.To = string.Join(";", tos);
+                    emailDeliveryOption.Cc = string.Join(";", ccs);
+                    emailDeliveryOption.Bcc = string.Join(";", bccs);
+                    emailDeliveryOption.ReplyTo = string.Join(";", replyTo);
                 }
 
                 #endregion
 
-                var subscription = SubscriptionRequest.Create(model.Report.Path, model.Report.Owner, model.SubscrptionInfo, model.Schedule, model.DeliveryOption, requester);
+                if (model.ScheduleType == Domain.AggregateRoots.SubscriptionRequests.Schedules.Enums.ScheduleType.None)
+                {
+                    return Result.Faliour(SubscriptionRequestErrors.InvalidScheduleType);
+                }
+
+                var subscription = SubscriptionRequest.Create(model.Report.Path, model.Report.Owner, model.Description, model.SubscriptionType, model.SubscriptionInfo, model.ScheduleType, model.Schedule, model.DeliveryOption, requester);
                 subscriptionRequestRepository.Create(subscription);
 
                 await unitOfWork.SaveChangesAsync();

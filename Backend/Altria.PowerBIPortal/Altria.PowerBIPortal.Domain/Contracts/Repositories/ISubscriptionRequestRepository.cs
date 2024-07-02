@@ -16,5 +16,5 @@ public interface ISubscriptionRequestRepository
 
     Task<List<SubscriptionRequest>> GeMySubscritionRequestsAsync(Guid requesterId, bool includeAll);
 
-    Task<List<SubscriptionRequest>> FetchSubscriptionsToProcessAsync();
+    Task<List<SubscriptionRequest>> FetchSubscriptionRequestsToProcessAsync();
 }

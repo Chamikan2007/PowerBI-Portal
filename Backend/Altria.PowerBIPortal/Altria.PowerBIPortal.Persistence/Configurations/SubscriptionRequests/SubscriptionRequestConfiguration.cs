@@ -14,10 +14,10 @@ internal class SubscriptionRequestConfiguration : IEntityTypeConfiguration<Subsc
     {
         builder.Property(e => e.ReportPath).HasMaxLength(500);
 
-        builder.Property(e => e.SubscrptionInfo)
-            .HasConversion(new ValueConverter<SubscrptionInfo, string>(
+        builder.Property(e => e.SubscriptionInfo)
+            .HasConversion(new ValueConverter<SubscriptionInfo, string>(
                 v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-                v => JsonConvert.DeserializeObject<SubscrptionInfo>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })!))
+                v => JsonConvert.DeserializeObject<SubscriptionInfo>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore })!))
             .HasColumnType("nvarchar(max)");
 
         builder.Property(e => e.DeliveryOption)

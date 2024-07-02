@@ -4,5 +4,4 @@ namespace Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Subscr
 
 public class DataDrivenSubscription : IJsonEntity
 {
-    public required string Description { get; set; }
 }
