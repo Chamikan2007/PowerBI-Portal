@@ -3,6 +3,7 @@ using Altria.PowerBIPortal.Domain.AggregateRoots.ApprovalConfigs;
 using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
 using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriberWhiteListEntries;
 using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests;
+using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules.Enums;
 using Altria.PowerBIPortal.Domain.Contracts;
 using Altria.PowerBIPortal.Domain.Infrastructure;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -97,6 +98,9 @@ public class DataContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRo
         {
             builder.Ignore(entity.ClrType);
         }
+
+        builder.Ignore(typeof(List<KeyValuePair<Day, bool>>));
+        builder.Ignore(typeof(List<KeyValuePair<Month, bool>>));
 
         #endregion
 

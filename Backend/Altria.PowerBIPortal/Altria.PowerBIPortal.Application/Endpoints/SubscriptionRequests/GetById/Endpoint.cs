@@ -25,6 +25,7 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                     SubscrptionInfo = subscription.SubscrptionInfo,
                     DeliveryOption = subscription.DeliveryOption,
                     Schedule = subscription.Schedule,
+                    ScheduleType = subscription.ScheduleType,
                 };
 
                 return Result<SubscriptionRequestModel>.Success(result);

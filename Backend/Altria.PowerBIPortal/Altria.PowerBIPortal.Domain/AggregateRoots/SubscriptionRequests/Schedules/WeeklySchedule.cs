@@ -9,7 +9,7 @@ public class WeeklySchedule : ISchedule, IJsonEntity
 
     public DateTime? StoptDate { get; set; }
 
-    public List<Day>? Days { get; set; }
+    public List<KeyValuePair<Day, bool>>? Days { get; set; }
 
     public int? RepeatIn { get; set; }
 }

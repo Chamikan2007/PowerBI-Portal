@@ -57,7 +57,12 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
 
                 #endregion
 
-                var subscription = SubscriptionRequest.Create(model.Report.Path, model.Report.Owner, model.SubscrptionInfo, model.Schedule, model.DeliveryOption, requester);
+                if (model.ScheduleType == Domain.AggregateRoots.SubscriptionRequests.Schedules.Enums.ScheduleType.None)
+                {
+                    return Result.Faliour(SubscriptionRequestErrors.InvalidScheduleType);
+                }
+
+                var subscription = SubscriptionRequest.Create(model.Report.Path, model.Report.Owner, model.SubscrptionInfo, model.ScheduleType, model.Schedule, model.DeliveryOption, requester);
                 subscriptionRequestRepository.Create(subscription);
 
                 await unitOfWork.SaveChangesAsync();

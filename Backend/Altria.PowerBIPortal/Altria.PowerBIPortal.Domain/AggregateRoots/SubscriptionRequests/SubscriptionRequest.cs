@@ -1,5 +1,6 @@
 ﻿using Altria.PowerBIPortal.Domain.AggregateRoots.Identity.Entities;
 using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules;
+using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules.Enums;
 using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionInfos;
 using Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
 
@@ -19,7 +20,9 @@ public class SubscriptionRequest : ApprovalRequest<SubscriptionRequestApprovalLe
 
     public required DeliveryOption DeliveryOption { get; set; }
 
-    public Schedule? Schedule { get; set; }
+    public ScheduleType ScheduleType { get; set; }
+
+    public required Schedule Schedule { get; set; }
 
     public Guid? SharedScheduleReference { get; set; }
 
@@ -27,8 +30,46 @@ public class SubscriptionRequest : ApprovalRequest<SubscriptionRequestApprovalLe
 
     public Guid? SubscriptionReference { get; private set; }
 
-    public static SubscriptionRequest Create(string reportPath, string owner, SubscrptionInfo subscrptionInfo, Schedule schedule, DeliveryOption deliveryOption, User requester)
+    public static SubscriptionRequest Create(string reportPath, string owner, SubscrptionInfo subscrptionInfo, ScheduleType scheduleType, Schedule schedule, DeliveryOption deliveryOption, User requester)
     {
+        switch (scheduleType)
+        {
+            case ScheduleType.HourlySchedule:
+                schedule.DailySchedule = null;
+                schedule.WeeklySchedule = null;
+                schedule.MonthlySchedule = null;
+                schedule.OneTimeSchedule = null;
+                break;
+
+            case ScheduleType.DailySchedule:
+                schedule.HourlySchedule = null;
+                schedule.WeeklySchedule = null;
+                schedule.MonthlySchedule = null;
+                schedule.OneTimeSchedule = null;
+                break;
+
+            case ScheduleType.WeeklySchedule:
+                schedule.HourlySchedule = null;
+                schedule.DailySchedule = null;
+                schedule.MonthlySchedule = null;
+                schedule.OneTimeSchedule = null;
+                break;
+
+            case ScheduleType.MonthlySchedule:
+                schedule.HourlySchedule = null;
+                schedule.DailySchedule = null;
+                schedule.WeeklySchedule = null;
+                schedule.OneTimeSchedule = null;
+                break;
+
+            case ScheduleType.OneTimeSchedule:
+                schedule.HourlySchedule = null;
+                schedule.DailySchedule = null;
+                schedule.WeeklySchedule = null;
+                schedule.MonthlySchedule = null;
+                break;
+        }
+
         var subscription = new SubscriptionRequest
         {
             Requester = requester,
@@ -36,6 +77,7 @@ public class SubscriptionRequest : ApprovalRequest<SubscriptionRequestApprovalLe
             Owner = owner,
             SubscrptionInfo = subscrptionInfo,
             DeliveryOption = deliveryOption,
+            ScheduleType = scheduleType,
             Schedule = schedule
         };
 
