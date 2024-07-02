@@ -1,5 +1,6 @@
 ﻿using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests;
 using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules;
+using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules.Enums;
 using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionInfos;
 using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionInfos.Enums;
 using Altria.PowerBIPortal.Domain.Contracts;
@@ -23,13 +24,13 @@ public class SubscriptionService : ISubscriptionService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task ProcessSubscriptionsAsync()
+    public async Task ProcessSubscriptionRequestsAsync()
     {
-        var subscriptionRequests = await _subscriptionRepository.FetchSubscriptionsToProcessAsync();
+        var subscriptionRequests = await _subscriptionRepository.FetchSubscriptionRequestsToProcessAsync();
 
         foreach (var subscriptionRequest in subscriptionRequests)
         {
-            //var subscription = CastTpBowerBISubScription(subscriptionRequest);
+            var subscription = CastTpBowerBISubScription(subscriptionRequest);
             //var subscritionId = await _powerBIReportService.CreateSubscriptionAsync(subscription);
             //subscriptionRequest.Processed(subscritionId);
 
@@ -39,9 +40,9 @@ public class SubscriptionService : ISubscriptionService
 
     private Subscription CastTpBowerBISubScription(SubscriptionRequest subscriptionRequest)
     {
-        var subscription = (subscriptionRequest.SubscrptionInfo.StandardSubscription != null) ?
-            CastFromStandardSubscription(subscriptionRequest.SubscrptionInfo.StandardSubscription) :
-            CastFromDataDrivenSubscription(subscriptionRequest.SubscrptionInfo.DataDrivenSubscription);
+        var subscription = (subscriptionRequest.SubscriptionInfo.StandardSubscription != null) ?
+            CastFromStandardSubscription(subscriptionRequest.SubscriptionInfo.StandardSubscription) :
+            CastFromDataDrivenSubscription(subscriptionRequest.SubscriptionInfo.DataDrivenSubscription);
 
         // _powerBIReportService.GetReportsByIdAsync(subscriptionRequest.ReportPath);
 
@@ -51,7 +52,7 @@ public class SubscriptionService : ISubscriptionService
 
         if (subscriptionRequest.Schedule != null)
         {
-            SetSchedule(subscription, subscriptionRequest.Schedule);
+            SetSchedule(subscription, subscriptionRequest.Schedule, subscriptionRequest.ScheduleType);
         }
 
         return subscription;
@@ -174,15 +175,17 @@ public class SubscriptionService : ISubscriptionService
         };
     }
 
-    private void SetSchedule(Subscription subscription, SubscriptionRequests.Schedules.Schedule schedule)
+    private void SetSchedule(Subscription subscription, SubscriptionRequests.Schedules.Schedule schedule, ScheduleType scheduleType)
     {
-        subscription.Schedule =
-            (schedule.HourlySchedule != null) ? SetHourlySchedule(schedule.HourlySchedule) :
-            (schedule.DailySchedule != null) ? SetDailySchedule(schedule.DailySchedule) :
-            (schedule.WeeklySchedule != null) ? SetWeeklySchedule(schedule.WeeklySchedule) :
-            (schedule.MonthlySchedule != null) ? SetMonthlySchedule(schedule.MonthlySchedule) :
-            (schedule.OneTimeSchedule != null) ? SetOneTimeSchedule(schedule.OneTimeSchedule) :
-            throw new NotImplementedException();
+        subscription.Schedule = scheduleType switch
+        {
+            ScheduleType.HourlySchedule => SetHourlySchedule(schedule.HourlySchedule!),
+            ScheduleType.DailySchedule => SetDailySchedule(schedule.DailySchedule!),
+            ScheduleType.WeeklySchedule => SetWeeklySchedule(schedule.WeeklySchedule!),
+            ScheduleType.MonthlySchedule => SetMonthlySchedule(schedule.MonthlySchedule!),
+            ScheduleType.OneTimeSchedule => SetOneTimeSchedule(schedule.OneTimeSchedule!),
+            _ => throw new NotImplementedException()
+        };
     }
 
     private Contracts.IPowerBIService.Entities.Schedule SetHourlySchedule(HourlySchedule hourlySchedule)

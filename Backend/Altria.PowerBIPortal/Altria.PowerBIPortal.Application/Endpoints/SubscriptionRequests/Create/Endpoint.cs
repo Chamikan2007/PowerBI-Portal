@@ -62,7 +62,7 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                     return Result.Faliour(SubscriptionRequestErrors.InvalidScheduleType);
                 }
 
-                var subscription = SubscriptionRequest.Create(model.Report.Path, model.Report.Owner, model.SubscrptionInfo, model.ScheduleType, model.Schedule, model.DeliveryOption, requester);
+                var subscription = SubscriptionRequest.Create(model.Report.Path, model.Report.Owner, model.SubscriptionInfo, model.ScheduleType, model.Schedule, model.DeliveryOption, requester);
                 subscriptionRequestRepository.Create(subscription);
 
                 await unitOfWork.SaveChangesAsync();

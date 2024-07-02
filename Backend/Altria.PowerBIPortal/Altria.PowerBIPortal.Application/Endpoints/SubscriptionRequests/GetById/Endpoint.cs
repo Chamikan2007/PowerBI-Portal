@@ -22,7 +22,7 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
                 var result = new SubscriptionRequestModel
                 {
                     Report = ReportModel.Create(subscription.ReportPath, subscription.Owner),
-                    SubscrptionInfo = subscription.SubscrptionInfo,
+                    SubscriptionInfo = subscription.SubscriptionInfo,
                     DeliveryOption = subscription.DeliveryOption,
                     Schedule = subscription.Schedule,
                     ScheduleType = subscription.ScheduleType,

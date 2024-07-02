@@ -56,7 +56,7 @@ public class SubscriptionRequestRepository : Repository<SubscriptionRequest>, IS
             .ToListAsync();
     }
 
-    public Task<List<SubscriptionRequest>> FetchSubscriptionsToProcessAsync()
+    public Task<List<SubscriptionRequest>> FetchSubscriptionRequestsToProcessAsync()
     {
         return _store.Where(s => s.Status == ApprovalStatus.Approved && !s.IsProcessed).ToListAsync();
     }

@@ -35,7 +35,7 @@ public class SubscripionsProcessor : IHostedService, IDisposable
 
         using var scope = _services.CreateScope();
         var subscriptionService = scope.ServiceProvider.GetRequiredService<ISubscriptionService>();
-        await subscriptionService.ProcessSubscriptionsAsync();
+        await subscriptionService.ProcessSubscriptionRequestsAsync();
 
         Interlocked.Exchange(ref _subscriptionsBeingProcessed, 0);
     }

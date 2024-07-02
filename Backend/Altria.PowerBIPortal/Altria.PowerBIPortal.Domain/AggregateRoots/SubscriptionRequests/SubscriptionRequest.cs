@@ -16,7 +16,7 @@ public class SubscriptionRequest : ApprovalRequest<SubscriptionRequestApprovalLe
 
     public required string Owner { get; set; }
 
-    public required SubscrptionInfo SubscrptionInfo { get; set; }
+    public required SubscriptionInfo SubscriptionInfo { get; set; }
 
     public required DeliveryOption DeliveryOption { get; set; }
 
@@ -30,7 +30,7 @@ public class SubscriptionRequest : ApprovalRequest<SubscriptionRequestApprovalLe
 
     public Guid? SubscriptionReference { get; private set; }
 
-    public static SubscriptionRequest Create(string reportPath, string owner, SubscrptionInfo subscrptionInfo, ScheduleType scheduleType, Schedule schedule, DeliveryOption deliveryOption, User requester)
+    public static SubscriptionRequest Create(string reportPath, string owner, SubscriptionInfo subscriptionInfo, ScheduleType scheduleType, Schedule schedule, DeliveryOption deliveryOption, User requester)
     {
         switch (scheduleType)
         {
@@ -75,7 +75,7 @@ public class SubscriptionRequest : ApprovalRequest<SubscriptionRequestApprovalLe
             Requester = requester,
             ReportPath = reportPath,
             Owner = owner,
-            SubscrptionInfo = subscrptionInfo,
+            SubscriptionInfo = subscriptionInfo,
             DeliveryOption = deliveryOption,
             ScheduleType = scheduleType,
             Schedule = schedule

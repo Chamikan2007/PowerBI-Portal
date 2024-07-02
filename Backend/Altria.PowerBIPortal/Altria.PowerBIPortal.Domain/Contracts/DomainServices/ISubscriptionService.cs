@@ -2,5 +2,5 @@
 
 public interface ISubscriptionService
 {
-    Task ProcessSubscriptionsAsync();
+    Task ProcessSubscriptionRequestsAsync();
 }

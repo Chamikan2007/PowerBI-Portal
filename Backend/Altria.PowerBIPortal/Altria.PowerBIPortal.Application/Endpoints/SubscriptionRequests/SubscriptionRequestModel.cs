@@ -9,7 +9,7 @@ public class SubscriptionRequestModel
 {
     public required ReportModel Report { get; set; }
 
-    public required SubscrptionInfo SubscrptionInfo { get; set; }
+    public required SubscriptionInfo SubscriptionInfo { get; set; }
 
     public ScheduleType ScheduleType { get; set; }
 
