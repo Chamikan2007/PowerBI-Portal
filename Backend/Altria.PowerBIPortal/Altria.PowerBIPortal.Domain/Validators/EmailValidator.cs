@@ -11,7 +11,7 @@ public static class EmailValidator
             var mailAddress = new MailAddress(email);
             return (true, mailAddress.Host, mailAddress.Address);
         }
-        catch (FormatException)
+        catch
         {
             return (false, string.Empty, string.Empty);
         }
