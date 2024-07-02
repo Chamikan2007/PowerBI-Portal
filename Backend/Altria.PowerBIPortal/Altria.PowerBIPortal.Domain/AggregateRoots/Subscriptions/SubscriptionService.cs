@@ -41,8 +41,8 @@ public class SubscriptionService : ISubscriptionService
     private Subscription CastTpBowerBISubScription(SubscriptionRequest subscriptionRequest)
     {
         var subscription = (subscriptionRequest.SubscriptionInfo.StandardSubscription != null) ?
-            CastFromStandardSubscription(subscriptionRequest.SubscriptionInfo.StandardSubscription) :
-            CastFromDataDrivenSubscription(subscriptionRequest.SubscriptionInfo.DataDrivenSubscription);
+            CastFromStandardSubscription(subscriptionRequest.Description, subscriptionRequest.SubscriptionInfo.StandardSubscription) :
+            CastFromDataDrivenSubscription(subscriptionRequest.Description, subscriptionRequest.SubscriptionInfo.DataDrivenSubscription);
 
         // _powerBIReportService.GetReportsByIdAsync(subscriptionRequest.ReportPath);
 
@@ -58,11 +58,11 @@ public class SubscriptionService : ISubscriptionService
         return subscription;
     }
 
-    private Subscription CastFromStandardSubscription(StandardSubscription standardSubscription)
+    private Subscription CastFromStandardSubscription(string description, StandardSubscription standardSubscription)
     {
         var subscription = new Subscription
         {
-            Description = standardSubscription.Description,
+            Description = description,
             EventType = ReportServerEventType.TimedSubscription.ToString(),
             IsDataDriven = false,
         };
@@ -70,7 +70,7 @@ public class SubscriptionService : ISubscriptionService
         return subscription;
     }
 
-    private Subscription CastFromDataDrivenSubscription(DataDrivenSubscription? dataDrivenSubscription)
+    private Subscription CastFromDataDrivenSubscription(string description, DataDrivenSubscription? dataDrivenSubscription)
     {
         throw new NotImplementedException();
     }

@@ -1,4 +1,5 @@
-﻿using Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
+﻿using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionInfos.Enums;
+using Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
 
 namespace Altria.PowerBIPortal.Application.Endpoints.SubscriptionRequests;
 
@@ -7,6 +8,8 @@ public class SubscriptionRequestListModel
     public Guid SubscriptionId { get; init; }
 
     public required string Description { get; set; }
+
+    public SubscriptionType SubscriptionType { get; set; }
 
     public required string ReportPath { get; init; }
 

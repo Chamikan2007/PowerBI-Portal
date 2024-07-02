@@ -9,14 +9,11 @@ public static class CastToSubscriptionRequestListModel
     {
         var isStandardSubscription = subscriptionRequest.SubscriptionInfo.StandardSubscription != null;
 
-        var description = isStandardSubscription ?
-            subscriptionRequest.SubscriptionInfo.StandardSubscription!.Description :
-            subscriptionRequest.SubscriptionInfo.DataDrivenSubscription!.Description;
-
         var model = new SubscriptionRequestListModel
         {
             SubscriptionId = subscriptionRequest.Id,
-            Description = description,
+            Description = subscriptionRequest.Description,
+            SubscriptionType = subscriptionRequest.SubscriptionType,
             ReportPath = subscriptionRequest.ReportPath,
             RequesterId = subscriptionRequest.Requester.Id,
             RequesterName = subscriptionRequest.Requester.Name,

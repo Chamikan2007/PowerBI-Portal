@@ -2,6 +2,7 @@
 using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules;
 using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.Schedules.Enums;
 using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionInfos;
+using Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests.SubscriptionInfos.Enums;
 using Altria.PowerBIPortal.Domain.Infrastructure.ApprovalRequests;
 
 namespace Altria.PowerBIPortal.Domain.AggregateRoots.SubscriptionRequests;
@@ -15,6 +16,10 @@ public class SubscriptionRequest : ApprovalRequest<SubscriptionRequestApprovalLe
     public required string ReportPath { get; set; }
 
     public required string Owner { get; set; }
+
+    public required string Description { get; set; }
+
+    public SubscriptionType SubscriptionType { get; set; }
 
     public required SubscriptionInfo SubscriptionInfo { get; set; }
 
@@ -30,7 +35,7 @@ public class SubscriptionRequest : ApprovalRequest<SubscriptionRequestApprovalLe
 
     public Guid? SubscriptionReference { get; private set; }
 
-    public static SubscriptionRequest Create(string reportPath, string owner, SubscriptionInfo subscriptionInfo, ScheduleType scheduleType, Schedule schedule, DeliveryOption deliveryOption, User requester)
+    public static SubscriptionRequest Create(string reportPath, string owner, string description, SubscriptionType subscriptionType, SubscriptionInfo subscriptionInfo, ScheduleType scheduleType, Schedule schedule, DeliveryOption deliveryOption, User requester)
     {
         switch (scheduleType)
         {
@@ -70,11 +75,24 @@ public class SubscriptionRequest : ApprovalRequest<SubscriptionRequestApprovalLe
                 break;
         }
 
+        switch (subscriptionType)
+        {
+            case SubscriptionType.StandardSubscription:
+                subscriptionInfo.DataDrivenSubscription = null;
+                break;
+
+            case SubscriptionType.DataDrivenSubscription:
+                subscriptionInfo.StandardSubscription = null;
+                break;
+        }
+
         var subscription = new SubscriptionRequest
         {
             Requester = requester,
             ReportPath = reportPath,
             Owner = owner,
+            Description = description,
+            SubscriptionType = subscriptionType,
             SubscriptionInfo = subscriptionInfo,
             DeliveryOption = deliveryOption,
             ScheduleType = scheduleType,

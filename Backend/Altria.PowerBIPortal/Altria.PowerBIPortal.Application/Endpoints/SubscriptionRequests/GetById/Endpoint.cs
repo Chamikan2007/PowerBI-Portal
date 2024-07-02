@@ -12,20 +12,22 @@ public class Endpoint : IGroupedEndpoint<EndpointGroup>
         app.MapGet("/{subscriptionRequestId}",
             async (Guid subscriptionRequestId, ISubscriptionRequestRepository subscriptionRepository) =>
             {
-                var subscription = await subscriptionRepository.GetByIdAsync(subscriptionRequestId);
+                var subscriptionRequest = await subscriptionRepository.GetByIdAsync(subscriptionRequestId);
 
-                if (subscription == null)
+                if (subscriptionRequest == null)
                 {
                     return Result.Faliour(SubscriptionRequestErrors.NotFound);
                 }
 
                 var result = new SubscriptionRequestModel
                 {
-                    Report = ReportModel.Create(subscription.ReportPath, subscription.Owner),
-                    SubscriptionInfo = subscription.SubscriptionInfo,
-                    DeliveryOption = subscription.DeliveryOption,
-                    Schedule = subscription.Schedule,
-                    ScheduleType = subscription.ScheduleType,
+                    Report = ReportModel.Create(subscriptionRequest.ReportPath, subscriptionRequest.Owner),
+                    Description = subscriptionRequest.Description,
+                    SubscriptionType = subscriptionRequest.SubscriptionType,
+                    SubscriptionInfo = subscriptionRequest.SubscriptionInfo,
+                    DeliveryOption = subscriptionRequest.DeliveryOption,
+                    Schedule = subscriptionRequest.Schedule,
+                    ScheduleType = subscriptionRequest.ScheduleType,
                 };
 
                 return Result<SubscriptionRequestModel>.Success(result);
