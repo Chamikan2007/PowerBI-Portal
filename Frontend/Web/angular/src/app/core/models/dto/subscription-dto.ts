@@ -25,31 +25,51 @@ export class SubscriptionDto {
     subscriptionId: string = '';
     report: ReportDto = new ReportDto();
     description: string = '';
-    owner: string = 'SampathBnakHema\\Hemantha';
+    // owner: string = '';
 
     subscriptionType: number = 1;
     destination: number = 2;
-    deliveryOptionEmail: DeliveryOptionEmailDto = new DeliveryOptionEmailDto();
+    // deliveryOptionEmail: DeliveryOptionEmailDto = new DeliveryOptionEmailDto();
     scheduleDetailType: number = 2;
-    scheduleType: number = 1;
+    scheduleType: number = 2;
     schedule: ScheduleDto = new ScheduleDto();
 
     status: ApprovalStatus = ApprovalStatus.None;
     requesterName: string = '';
     requesterId: string = '';
+    deliveryOption: DeliveryOption = new DeliveryOption();
 }
 
 export class ScheduleDto {
-    scheduleDetailHourly = new ScheduleTypeHourlyDto(); // hourly, daily, weekly, monthly, onetime
-    scheduleDetailDaily = new ScheduleTypeDailyDto(); // hourly, daily, weekly, monthly, onetime
-    scheduleDetailWeekly = new ScheduleTypeWeeklyDto(); // hourly, daily, weekly, monthly, onetime
-    scheduleDetailMonthly = new ScheduleTypeMonthlyDto(); // hourly, daily, weekly, monthly, onetime
-    scheduleDetailOneTime = new ScheduleTypeOneTimeDto(); // hourly, daily, weekly, monthly, onetime
+    hourlySchedule = new ScheduleTypeHourlyDto(); // hourly
+    dailySchedule = new ScheduleTypeDailyDto(); // daily
+    weeklySchedule = new ScheduleTypeWeeklyDto(); // weekly
+    monthlySchedule = new ScheduleTypeMonthlyDto(); // monthly
+    oneTimeSchedule = new ScheduleTypeOneTimeDto(); // onetime
 }
 
 export class ReportDto {
     name: string = '';
-    path: string = ''
+    path: string = '';
+    owner: string = '';
+}
+
+export class DeliveryOption {
+    emailDeliveryOption: DeliveryOptionEmailDto = new DeliveryOptionEmailDto();
+    fileShareDeliveryOption: FileShareDeliveryOption = new FileShareDeliveryOption()
+}
+
+export class StandardSubscription {
+    description: string = '';
+}
+
+export class DataDrivenSubscription {
+    description: string = '';
+}
+
+export class SubscrptionInfo {
+    standardSubscription: StandardSubscription = new StandardSubscription();
+    dataDrivenSubscription: DataDrivenSubscription = new DataDrivenSubscription();
 }
 
 export class DeliveryOptionEmailDto {
@@ -59,24 +79,29 @@ export class DeliveryOptionEmailDto {
     replyTo: string = '';
     subject: string = '';
     includeReport: boolean = true;
-    inlcudeLink: boolean = true;
+    includeLink: boolean = true;
     renderFormat: number = 1;
     priority: number = 1;
     comment: string = '';
 }
 
-export class StartTimeDto {
-    startHour: number = 0;
-    startMinute: number = 0;
-    meridiem: number = 1;
+export class FileShareDeliveryOption {
+    renderFormat: number = 0;
+    fileName: string = "";
+    includeExtension: Boolean = true;
+    path: string = "";
+    overrideOptions: number = 0;
+}
 
+export class StartTimeDto {
+    meridiem: number = 1;
     startDateTime: Date = new Date();
     endDate?: Date;
 }
 
 export class ScheduleTypeHourlyDto extends StartTimeDto {
-    hour: number = 0;
-    minute: number = 0;
+    hours: number = 0;
+    minutes: number = 0;
 }
 
 export class ScheduleTypeDailyDto extends StartTimeDto {

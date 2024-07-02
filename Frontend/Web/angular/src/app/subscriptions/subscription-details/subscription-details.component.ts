@@ -67,17 +67,9 @@ export class SubscriptionDetailsComponent implements OnInit {
   monthsOfYearItems = SubscriptionDetailsMeta.monthsOfYearItems;
   weekOfMonthItems = SubscriptionDetailsMeta.weekOfMonthItems;
 
-  // selectedSubscriptionType: string = '1';
-  // selectedDestination: string = '2';
-  // selectedRenderFormat: string = '1';
-  // selectedPriority: string = '1';
-  // selectedScheduleDetailType: string = '2';
-  // selectedScheduleType: string = '1';
-  // selectedDailyScheduleType: string = '1';
-  // selectedMonthlyScheduleType: string = '1';
-  // selectedWeekOfMonth_WeeklyScheduleType = '1';
-
+  subscriptionId: string = '0';
   model: SubscriptionDto = new SubscriptionDto();
+  isReadOnly: boolean = false;
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -87,12 +79,18 @@ export class SubscriptionDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadData();
+
+    this.activatedRoute.url.subscribe({
+      next: (urlSegments: any) => {
+        this.subscriptionId = urlSegments[0].path;
+        this.loadData();
+      }
+    });
 
     this.subscriptionForm = this.formBuilder.group({
       reportPath: ['', [this.autocompleteStringValidator(this.reportsList), Validators.required]],
       description: ['', [Validators.required]],
-      owner: [{ value: 'SampathBnakHema\\Hemantha', disabled: true }, [Validators.required]],
+      owner: [{ value: '', disabled: true }, [Validators.required]],
       subscriptionType: ['', Validators.required],
       destinationType: ['', Validators.required],
       comment: [''],
@@ -107,45 +105,29 @@ export class SubscriptionDetailsComponent implements OnInit {
       priority: ['1', [Validators.required]],
       scheduleDetailType: ['2', [Validators.required]],
       scheduleType: ['1', [Validators.required]],
-      hourly_hour: ['00', [Validators.required, Validators.min(0), Validators.max(23)]],
-      hourly_minute: ['00', [Validators.required, Validators.min(0), Validators.max(59)]],
-      hourly_start_hour: ['00', [Validators.required, Validators.min(0), Validators.max(23)]],
-      hourly_start_minute: ['00', [Validators.required, Validators.min(0), Validators.max(59)]],
-      hourly_start_meridiem: ['1', [Validators.required]],
+      hourly_hour: ['00', [Validators.required]],
+      hourly_minute: ['00', [Validators.required]],
+      hourly_run_time: ['00:00 AM', [Validators.required]],
+      hourly_start_time: ['00:00 AM', [Validators.required]],
       hourly_start_date: [new Date(), [Validators.required]],
       hourly_end_date: [null, []],
-      daily_hour: ['00', [Validators.required, Validators.min(0), Validators.max(23)]],
-      daily_minute: ['00', [Validators.required, Validators.min(0), Validators.max(59)]],
-      daily_start_hour: ['00', [Validators.required, Validators.min(0), Validators.max(23)]],
-      daily_start_minute: ['00', [Validators.required, Validators.min(0), Validators.max(59)]],
-      daily_start_meridiem: ['1', [Validators.required]],
+      daily_start_time: ['00:00 AM', [Validators.required]],
       daily_start_date: [new Date(), [Validators.required]],
       daily_end_date: [null, []],
-      weekly_hour: ['00', [Validators.required, Validators.min(0), Validators.max(23)]],
-      weekly_minute: ['00', [Validators.required, Validators.min(0), Validators.max(59)]],
-      weekly_start_hour: ['00', [Validators.required, Validators.min(0), Validators.max(23)]],
-      weekly_start_minute: ['00', [Validators.required, Validators.min(0), Validators.max(59)]],
-      weekly_start_meridiem: ['1', [Validators.required]],
+      weekly_start_time: ['00:00 AM', [Validators.required]],
       weekly_start_date: [new Date(), [Validators.required]],
       weekly_end_date: [null, []],
-      monthly_hour: ['00', [Validators.required, Validators.min(0), Validators.max(23)]],
-      monthly_minute: ['00', [Validators.required, Validators.min(0), Validators.max(59)]],
-      monthly_start_hour: ['00', [Validators.required, Validators.min(0), Validators.max(23)]],
-      monthly_start_minute: ['00', [Validators.required, Validators.min(0), Validators.max(59)]],
-      monthly_start_meridiem: ['1', [Validators.required]],
+      monthly_start_time: ['00:00 AM', [Validators.required]],
       monthly_start_date: [new Date(), [Validators.required]],
       monthly_end_date: [null, []],
-      onetime_start_hour: ['00', [Validators.required, Validators.min(0), Validators.max(23)]],
-      onetime_start_minute: ['00', [Validators.required, Validators.min(0), Validators.max(59)]],
-      onetime_start_meridiem: ['1', [Validators.required]],
+      onetime_start_time: ['00:00 AM', [Validators.required]],
       dailyScheduleType: ['1', []],
       monthlyScheduleType: ['1', []],
-      // daily_after_days_count: [0, []],
     });
 
     this.filteredReports = this.reportPicker.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value || '')),
+      map((value: any) => this._filter(value || '')),
     );
   }
 
@@ -170,17 +152,33 @@ export class SubscriptionDetailsComponent implements OnInit {
   loadData() {
     this.reportsList.length = 0;
 
-    this.subscriptionService.getReportsList().subscribe({
-      next: (response: ResponseDto) => {
-        if (response.isSuccess) {
-          this.reportsList = response.data as ReportDto[];
+    if (this.subscriptionId === '0') {
+      // create mode
+      this.isReadOnly = false;
+
+      this.subscriptionService.getReportsList().subscribe({
+        next: (response: ResponseDto) => {
+          if (response.isSuccess) {
+            this.reportsList = response.data as ReportDto[];
+          }
         }
-      }
-    });
+      });
+    }
+    else {
+      // view mode
+      this.isReadOnly = true;
+
+      this.subscriptionService.getSubscriptionById(this.subscriptionId).subscribe({
+        next: (response: any) => {
+          this.model = response as SubscriptionDto;
+        }
+      });
+    }
   }
 
   goBack() {
-    this.router.navigate(['/', 'subscriptions']);
+    window.history.back();
+    // this.router.navigate(['/', 'subscriptions']);
   }
 
   setSelectedReport(event: any) {
@@ -207,43 +205,43 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   // email options
   onDeliveryOptionEmailToChange(event: any) {
-    this.model.deliveryOptionEmail.to = event.target.value;
+    this.model.deliveryOption.emailDeliveryOption.to = event.target.value;
   }
 
   onDeliveryOptionEmailCcChange(event: any) {
-    this.model.deliveryOptionEmail.cc = event.target.value;
+    this.model.deliveryOption.emailDeliveryOption.cc = event.target.value;
   }
 
   onDeliveryOptionEmailBccChange(event: any) {
-    this.model.deliveryOptionEmail.bcc = event.target.value;
+    this.model.deliveryOption.emailDeliveryOption.bcc = event.target.value;
   }
 
   onDeliveryOptionEmailReplyToChange(event: any) {
-    this.model.deliveryOptionEmail.replyTo = event.target.value;
+    this.model.deliveryOption.emailDeliveryOption.replyTo = event.target.value;
   }
 
   onDeliveryOptionEmailSubjectChange(event: any) {
-    this.model.deliveryOptionEmail.subject = event.target.value;
+    this.model.deliveryOption.emailDeliveryOption.subject = event.target.value;
   }
 
   onIncludeReportChange(event: boolean) {
-    this.model.deliveryOptionEmail.includeReport = event;
+    this.model.deliveryOption.emailDeliveryOption.includeReport = event;
   }
 
   onIncludeLinkChange(event: boolean) {
-    this.model.deliveryOptionEmail.inlcudeLink = event;
+    this.model.deliveryOption.emailDeliveryOption.includeLink = event;
   }
 
   onRenderFormatChange(event: any) {
-    this.model.deliveryOptionEmail.renderFormat = +event.value;
+    this.model.deliveryOption.emailDeliveryOption.renderFormat = +event.value;
   }
 
   onPriorityChange(event: any) {
-    this.model.deliveryOptionEmail.priority = +event.value;
+    this.model.deliveryOption.emailDeliveryOption.priority = +event.value;
   }
 
   onCommentTextChange(event: any) {
-    this.model.deliveryOptionEmail.comment = event.target.value;
+    this.model.deliveryOption.emailDeliveryOption.comment = event.target.value;
   }
 
   // schedule detail type
@@ -256,135 +254,103 @@ export class SubscriptionDetailsComponent implements OnInit {
     this.model.scheduleType = +event.value;
   }
 
-  // hourly
-  onHourlyMeridiemChange(event: any) {
-    this.model.schedule.scheduleDetailHourly.meridiem = +event.value;
-  }
-
+  /* 
+   * hourly Schedular running here
+   * @params, hours, minutes, startDateTime
+   * additional @params, startHour, startMinute
+   * methods onHourlyRunScheduleEveryHourChange, onHourlyRunScheduleEveryMinuteChange, onHourlyRunScheduleStartTimeChange
+   */
   onHourlyRunScheduleEveryHourChange(event: any) {
-    this.model.schedule.scheduleDetailHourly.hour = +event.target.value;
+    this.model.schedule.hourlySchedule.hours = +event.target.value;
   }
 
   onHourlyRunScheduleEveryMinuteChange(event: any) {
-    this.model.schedule.scheduleDetailHourly.minute = +event.target.value;
+    this.model.schedule.hourlySchedule.minutes = +event.target.value;
   }
 
-  onHourlyRunScheduleStartHourChange(event: any) {
-    this.model.schedule.scheduleDetailHourly.startHour = +event.target.value;
-    this.model.schedule.scheduleDetailHourly.startDateTime = this._createStartDateTime(this.model.schedule.scheduleDetailHourly.startDateTime, this.model.schedule.scheduleDetailHourly.startHour, this.model.schedule.scheduleDetailHourly.startMinute);
+  onHourlyRunScheduleStartTimeChange(event: any) {
+    let dt = event.value as Date;
+    this.model.schedule.hourlySchedule.startDateTime = this._createStartDateTime(this.model.schedule.hourlySchedule.startDateTime, dt.getHours(), dt.getMinutes());
   }
 
-  onHourlyRunScheduleStartMinuteChange(event: any) {
-    this.model.schedule.scheduleDetailHourly.startMinute = +event.target.value;
-    this.model.schedule.scheduleDetailHourly.startDateTime = this._createStartDateTime(this.model.schedule.scheduleDetailHourly.startDateTime, this.model.schedule.scheduleDetailHourly.startHour, this.model.schedule.scheduleDetailHourly.startMinute);
-  }
+  // onHourlyRunScheduleEveryTimeChange(event: any) {
+  //   let dt = event.value as Date;
+  //   this.model.schedule.hourlySchedule.hours = dt.getHours();
+  //   this.model.schedule.hourlySchedule.minutes = dt.getMinutes();
+  // }
+
 
   // daily 
   onDailyScheduleTypeChange(event: any) {
     if (event.value) {
-      this.model.schedule.scheduleDetailDaily.dailyScheduleType = +event.value;
+      this.model.schedule.dailySchedule.dailyScheduleType = +event.value;
     }
   }
 
   onDailyScheduleDayStatusChange(event: boolean, opt: KeyValue<string, string>) {
-    let day = this.model.schedule.scheduleDetailDaily.selectedDays.find((d) => d.key === opt.value);
+    let day = this.model.schedule.dailySchedule.selectedDays.find((d) => d.key === opt.value);
     day!.value = event;
   }
 
   onDailyRunScheduleRepeatAfterDayCountChange(event: any) {
-    this.model.schedule.scheduleDetailDaily.repeatAfterDaysCount = +event.target.value;
+    this.model.schedule.dailySchedule.repeatAfterDaysCount = +event.target.value;
   }
 
-  onDailyRunScheduleStartHourChange(event: any) {
-    this.model.schedule.scheduleDetailDaily.startHour = +event.target.value;
-    this.model.schedule.scheduleDetailDaily.startDateTime = this._createStartDateTime(this.model.schedule.scheduleDetailDaily.startDateTime, this.model.schedule.scheduleDetailDaily.startHour, this.model.schedule.scheduleDetailDaily.startMinute);
-  }
-
-  onDailyRunScheduleStartMinuteChange(event: any) {
-    this.model.schedule.scheduleDetailDaily.startMinute = +event.target.value;
-    this.model.schedule.scheduleDetailDaily.startDateTime = this._createStartDateTime(this.model.schedule.scheduleDetailDaily.startDateTime, this.model.schedule.scheduleDetailDaily.startHour, this.model.schedule.scheduleDetailDaily.startMinute);
-  }
-
-  onDailyMeridiemChange(event: any) {
-    this.model.schedule.scheduleDetailDaily.meridiem = +event.value;
+  onDailyRunScheduleStartTimeChange(event: any) {
+    let dt = event.value as Date;
+    this.model.schedule.dailySchedule.startDateTime = this._createStartDateTime(this.model.schedule.hourlySchedule.startDateTime, dt.getHours(), dt.getMinutes());
   }
 
   // weekly
   onWeeklyRunScheduleRepeatAfterDayCountChange(event: any) {
-    this.model.schedule.scheduleDetailWeekly.repeatAfterDaysCount = +event.target.value;
+    this.model.schedule.weeklySchedule.repeatAfterDaysCount = +event.target.value;
   }
 
   onWeeklyScheduleDayStatusChange(event: boolean, opt: KeyValue<string, string>) {
-    let day = this.model.schedule.scheduleDetailWeekly.selectedDays.find((d) => d.key === opt.value);
+    let day = this.model.schedule.weeklySchedule.selectedDays.find((d) => d.key === opt.value);
     day!.value = event;
   }
 
-  onWeeklyRunScheduleStartHourChange(event: any) {
-    this.model.schedule.scheduleDetailWeekly.startHour = +event.target.value;
-    this.model.schedule.scheduleDetailWeekly.startDateTime = this._createStartDateTime(this.model.schedule.scheduleDetailWeekly.startDateTime, this.model.schedule.scheduleDetailWeekly.startHour, this.model.schedule.scheduleDetailWeekly.startMinute);
-  }
-
-  onWeeklyRunScheduleStartMinuteChange(event: any) {
-    this.model.schedule.scheduleDetailWeekly.startMinute = +event.target.value;
-    this.model.schedule.scheduleDetailWeekly.startDateTime = this._createStartDateTime(this.model.schedule.scheduleDetailWeekly.startDateTime, this.model.schedule.scheduleDetailWeekly.startHour, this.model.schedule.scheduleDetailWeekly.startMinute);
-  }
-
-  onWeeklyMeridiemChange(event: any) {
-    this.model.schedule.scheduleDetailWeekly.meridiem = +event.value;
+  onWeeklyRunScheduleStartTimeChange(event: any) {
+    let dt = event.value as Date;
+    this.model.schedule.weeklySchedule.startDateTime = this._createStartDateTime(this.model.schedule.hourlySchedule.startDateTime, dt.getHours(), dt.getMinutes());
   }
 
   // monthly
   onMonthlyScheduleMonthStatusChange(event: boolean, opt: KeyValue<string, string>) {
-    let month = this.model.schedule.scheduleDetailMonthly.selectedMonths.find((d) => d.key === opt.value);
+    let month = this.model.schedule.monthlySchedule.selectedMonths.find((d) => d.key === opt.value);
     month!.value = event;
   }
 
   onMonthlyScheduleTypeChange(event: any) {
     if (event.value) {
-      this.model.schedule.scheduleDetailMonthly.monthlyScheduleType = +event.value;
+      this.model.schedule.monthlySchedule.monthlyScheduleType = +event.value;
     }
   }
 
   onMonthlyScheduleWeekOfMonthChange(event: any) {
-    this.model.schedule.scheduleDetailMonthly.onWeekOfMonth = +event.value;
+    this.model.schedule.monthlySchedule.onWeekOfMonth = +event.value;
   }
 
   onMonthlyScheduleOnDayOfWeekChange(event: boolean, opt: KeyValue<string, string>) {
-    let day = this.model.schedule.scheduleDetailMonthly.onDaysOfWeek.find((d) => d.key === opt.value);
+    let day = this.model.schedule.monthlySchedule.onDaysOfWeek.find((d) => d.key === opt.value);
     day!.value = event;
   }
 
   onMonthlyScheduleOnCalendarDaysChange(event: any) {
-    this.model.schedule.scheduleDetailMonthly.onCalendarDays = event.target.value;
+    this.model.schedule.monthlySchedule.onCalendarDays = event.target.value;
   }
 
-  onMonthlyRunScheduleStartHourChange(event: any) {
-    this.model.schedule.scheduleDetailMonthly.startHour = +event.target.value;
-    this.model.schedule.scheduleDetailMonthly.startDateTime = this._createStartDateTime(this.model.schedule.scheduleDetailMonthly.startDateTime, this.model.schedule.scheduleDetailMonthly.startHour, this.model.schedule.scheduleDetailMonthly.startMinute);
-  }
-
-  onMonthlyRunScheduleStartMinuteChange(event: any) {
-    this.model.schedule.scheduleDetailMonthly.startMinute = +event.target.value;
-    this.model.schedule.scheduleDetailMonthly.startDateTime = this._createStartDateTime(this.model.schedule.scheduleDetailMonthly.startDateTime, this.model.schedule.scheduleDetailMonthly.startHour, this.model.schedule.scheduleDetailMonthly.startMinute);
-  }
-
-  onMonthlyMeridiemChange(event: any) {
-    this.model.schedule.scheduleDetailMonthly.meridiem = +event.value;
+  onMonthlyRunScheduleStartTimeChange(event: any) {
+    let dt = event.value as Date;
+    this.model.schedule.monthlySchedule.startDateTime = this._createStartDateTime(this.model.schedule.hourlySchedule.startDateTime, dt.getHours(), dt.getMinutes());
   }
 
   // one-time
-  onOneTimeRunScheduleStartHourChange(event: any) {
-    this.model.schedule.scheduleDetailOneTime.startHour = +event.target.value;
-    this.model.schedule.scheduleDetailOneTime.startDateTime = this._createStartDateTime(this.model.schedule.scheduleDetailOneTime.startDateTime, this.model.schedule.scheduleDetailOneTime.startHour, this.model.schedule.scheduleDetailOneTime.startMinute);
-  }
 
-  onOneTimeRunScheduleStartMinuteChange(event: any) {
-    this.model.schedule.scheduleDetailOneTime.startMinute = +event.target.value;
-    this.model.schedule.scheduleDetailOneTime.startDateTime = this._createStartDateTime(this.model.schedule.scheduleDetailOneTime.startDateTime, this.model.schedule.scheduleDetailOneTime.startHour, this.model.schedule.scheduleDetailOneTime.startMinute);
-  }
-
-  onOneTimeMeridiemChange(event: any) {
-    this.model.schedule.scheduleDetailOneTime.meridiem = +event.value;
+  onOneTimeRunScheduleStartTimeChange(event: any) {
+    let dt = event.value as Date;
+    this.model.schedule.oneTimeSchedule.startDateTime = this._createStartDateTime(this.model.schedule.hourlySchedule.startDateTime, dt.getHours(), dt.getMinutes());
   }
 
   _createStartDateTime(startDateTime: Date, startHour: number, startMinute: number): Date {
@@ -399,19 +365,19 @@ export class SubscriptionDetailsComponent implements OnInit {
   onStartDateChange(event: any) {
     switch (this.model.scheduleType) {
       case 1:
-        this.model.schedule.scheduleDetailHourly.startDateTime = this._createStartDateTime(event.value._d, this.model.schedule.scheduleDetailHourly.startHour, this.model.schedule.scheduleDetailHourly.startMinute);
+        this.model.schedule.hourlySchedule.startDateTime = new Date();
         break;
       case 2:
-        this.model.schedule.scheduleDetailDaily.startDateTime = this._createStartDateTime(event.value._d, this.model.schedule.scheduleDetailDaily.startHour, this.model.schedule.scheduleDetailDaily.startMinute);
+        this.model.schedule.dailySchedule.startDateTime = new Date();
         break;
       case 3:
-        this.model.schedule.scheduleDetailWeekly.startDateTime = this._createStartDateTime(event.value._d, this.model.schedule.scheduleDetailWeekly.startHour, this.model.schedule.scheduleDetailWeekly.startMinute);
+        this.model.schedule.weeklySchedule.startDateTime = new Date();
         break;
       case 4:
-        this.model.schedule.scheduleDetailMonthly.startDateTime = this._createStartDateTime(event.value._d, this.model.schedule.scheduleDetailMonthly.startHour, this.model.schedule.scheduleDetailMonthly.startMinute);
+        this.model.schedule.monthlySchedule.startDateTime = new Date();
         break;
       case 5:
-        this.model.schedule.scheduleDetailOneTime.startDateTime = this._createStartDateTime(event.value._d, this.model.schedule.scheduleDetailOneTime.startHour, this.model.schedule.scheduleDetailOneTime.startMinute);
+        this.model.schedule.oneTimeSchedule.startDateTime = new Date();
         break;
     }
   }
@@ -443,6 +409,118 @@ export class SubscriptionDetailsComponent implements OnInit {
   }
 
   onCancel() {
-    this.router.navigate(['/', 'subscriptions']);
+    window.history.back();
+    // this.router.navigate(['/', 'subscriptions']);
   }
-} 
+
+
+
+  // read-only mode related
+
+  getDestinationText(destination: number) {
+    let text = '';
+    let item = this.destinationItems.find(d => d.key === destination.toString());
+
+    if (item) {
+      text = item.value;
+    }
+    return text;
+  }
+
+  getNumberInDigits(value: number, length: number) {
+    return value.toString().padStart(length, '0');
+  }
+
+  isKeySelected(key: string, keyValueList: KeyValue<string, boolean>[]) {
+    if (key) {
+      let keyValueItem = keyValueList.find(d => d.key == key);
+      if (keyValueItem) {
+        return keyValueItem.value == true;
+      }
+    }
+    return false;
+  }
+
+  getFormattedTime(value?: Date) {
+    if (value) {
+      let time = `${value.getHours().toString().padStart(2, '0')}:${value.getMinutes().toString().padStart(2, '0')}`;
+      return `${time}`;
+    }
+    return '';
+  }
+
+  getFormattedDate(value?: Date) {
+    if (value) {
+      let date = `${value.getFullYear().toString().padStart(4, '0')}-${value.getMonth().toString().padStart(2, '0')}-${value.getDate().toString().padStart(2, '0')}`;
+      return `${date}`;
+    }
+    return '';
+  }
+
+  getFormattedScheduleStartDate() {
+    let date;
+    switch (this.model.scheduleType) {
+      case 1:
+        date = this.model.schedule.hourlySchedule.startDateTime;
+        break;
+      case 2:
+        date = this.model.schedule.dailySchedule.startDateTime;
+        break;
+      case 3:
+        date = this.model.schedule.weeklySchedule.startDateTime;
+        break;
+      case 4:
+        date = this.model.schedule.monthlySchedule.startDateTime;
+        break;
+      case 5:
+        date = this.model.schedule.oneTimeSchedule.startDateTime;
+        break;
+    }
+    return this.getFormattedDate(date);
+  }
+
+  getFormattedScheduleEndDate() {
+    let date;
+    switch (this.model.scheduleType) {
+      case 1:
+        date = this.model.schedule.hourlySchedule.endDate;
+        break;
+      case 2:
+        date = this.model.schedule.dailySchedule.endDate;
+        break;
+      case 3:
+        date = this.model.schedule.weeklySchedule.endDate;
+        break;
+      case 4:
+        date = this.model.schedule.monthlySchedule.endDate;
+        break;
+      case 5:
+        date = this.model.schedule.oneTimeSchedule.endDate;
+        break;
+    }
+    return this.getFormattedDate(date);
+  }
+
+  isScheduleEndDateSet() {
+    let date = null;
+    switch (this.model.scheduleType) {
+      case 1:
+        date = this.model.schedule.hourlySchedule.endDate;
+        break;
+      case 2:
+        date = this.model.schedule.dailySchedule.endDate;
+        break;
+      case 3:
+        date = this.model.schedule.weeklySchedule.endDate;
+        break;
+      case 4:
+        date = this.model.schedule.monthlySchedule.endDate;
+        break;
+      case 5:
+        date = this.model.schedule.oneTimeSchedule.endDate;
+        break;
+    }
+    return (date != null);
+  }
+
+}

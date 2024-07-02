@@ -110,8 +110,8 @@ export class ApprovalsListComponent {
           next: (response) => {
             if (response.isSuccess) {
               this.approvalLevels = response.data;
-              
-              div.classList.replace('hidden', 'visible');
+
+              div!.classList.replace('hidden', 'visible');
               caller.classList.replace('fa-chevron-right', 'fa-chevron-down');
             }
           }
@@ -124,13 +124,13 @@ export class ApprovalsListComponent {
       }
 
       document.querySelectorAll(".detail-row").forEach(d => {
-        if (d.id != `detail_${subscriptionId}`){
+        if (d.id != `detail_${subscriptionId}`) {
           d.classList.replace('visible', 'hidden');
         }
       });
 
       document.querySelectorAll(".tableBody button.showHide").forEach(b => {
-        if (b.id != event.currentTarget.id){
+        if (b.id != event.currentTarget.id) {
           b.children[0].classList.replace('fa-chevron-down', 'fa-chevron-right');
         }
       });

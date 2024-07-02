@@ -19,10 +19,10 @@
                             <div class="table-responsive">
                                 <div class="row table-header">
                                     <div class="col col-1"></div>
-                                    <div class="col col-3">Report</div>
-                                    <div class="col col-3">Status</div>
-                                    <div class="col col-3">Requested By</div>
-                                    <div class="col col-2">Actions</div>
+                                    <div class="col col-3 ps-3">Report</div>
+                                    <div class="col col-3 ps-3">Status</div>
+                                    <div class="col col-3 ps-3">Requested By</div>
+                                    <div class="col col-2 pe-4 text-end">Actions</div>
                                 </div>
                                 <div *ngFor="let subscription of subscriptionList;" class="row table-row m-0 border-bottom">
                                     <div class="row m-0">
@@ -31,18 +31,22 @@
                                                 <i class="fa-solid fa-chevron-right"></i>
                                             </button>
                                         </div>
-                                        <div class="col col-3" [title]="subscription.reportPath">
+                                        <div class="col col-3 pt-1" [title]="subscription.reportPath">
                                             {{subscription.reportPath}}
                                         </div>
-                                        <div class="col col-3">
+                                        <div class="col col-3 pt-1">
                                             {{approvalStatus[subscription.status]}}
                                         </div>
-                                        <div class="col col-3">
+                                        <div class="col col-3 pt-1">
                                             {{subscription.requesterName}}
                                         </div>
-                                        <div class="col col-2">
+                                        <div class="col col-2 text-end">
                                             <button *ngIf="currentUserId === subscription.requesterId" type="button" class="btn icon-button-transparent" title="Delete Subscription" (click)="deleteClicked(subscription)">
                                                 <i class="fa fa-trash tbl-fav-delete"></i>
+                                            </button>
+
+                                            <button *ngIf="currentUserId === subscription.requesterId" type="button" class="btn icon-button-transparent" title="View Subscription" (click)="viewClicked(subscription)">
+                                                <i class="fa fa-eye"></i>
                                             </button>
                                         </div>
                                     </div>
