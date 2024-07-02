@@ -78,7 +78,7 @@
                                         <div class="col p-0">
                                             <mat-form-field class="example-full-width" appearance="outline">
                                                 <mat-select formControlName="destinationType" (selectionChange)="onDestinationChange($event)">
-                                                    <mat-option *ngFor="let opt of destinationItems; index as i;" [value]="opt.key" [disabled]="i==0">{{opt.value}}</mat-option>
+                                                    <mat-option *ngFor="let opt of destinationItems; index as i;" [value]="opt.key" [disabled]="i==0" >{{opt.value}}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
                                         </div>
@@ -204,7 +204,7 @@
                                     <div *ngIf="model.scheduleDetailType == 2" class="row">
                                         <div class="col p-0 mb-5">
                                             <mat-radio-group formControlName="scheduleType" (change)="onScheduleTypeChange($event)">
-                                                <mat-radio-button *ngFor="let opt of scheduleTypeItems; index as i" [value]="opt.key" [checked]="i==0" class="me-4">{{opt.value}}</mat-radio-button>
+                                                <mat-radio-button *ngFor="let opt of scheduleTypeItems; index as i" [value]="opt.key.toString()" [checked]="i==0" class="me-4">{{opt.value}}</mat-radio-button>
                                             </mat-radio-group>
                                         </div>
                                         <div [ngSwitch]="model.scheduleType" class="mt-4 p-0">
@@ -251,7 +251,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div *ngSwitchCase="2" class="row">
+                                            <!-- <div *ngSwitchCase="2" class="row">
                                                 <h5 class="px-0">Daily schedule</h5>
                                                 <div class="row px-0">
                                                     <div class="col px-0">
@@ -386,7 +386,7 @@
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                         <hr class="my-2">
                                         <div class="row px-0">
@@ -402,10 +402,10 @@
                                                     </mat-form-field>
                                                 </div>
                                                 <div class="col col-6">
-                                                    <mat-checkbox value="1" [disabled]="true" class="mt-4" appearance="outline">Stop this schedule on:</mat-checkbox>
+                                                    <mat-checkbox value="1" [disabled]="false" class="mt-4" appearance="outline" (change)="onHourlyRunScheduleIsEnabledStopTimeChange($event.checked)">Stop this schedule on:</mat-checkbox>
                                                     <mat-form-field class="example-full-width mt-0" appearance="outline">
                                                         <!-- formControlName="hourly_end_date" -->
-                                                        <input matInput [matDatepicker]="hourly_picker_end" [disabled]="true" />
+                                                        <input matInput [matDatepicker]="hourly_picker_end" formControlName="hourly_stop_date" [disabled]="model.schedule.hourlySchedule.isDisabledStopDate" (dateChange)="onStopDateChange($event)"/>
                                                         <mat-hint>YYYY/MM/DD</mat-hint>
                                                         <mat-datepicker-toggle matIconSuffix [for]="hourly_picker_end"></mat-datepicker-toggle>
                                                         <mat-datepicker #hourly_picker_end></mat-datepicker>
@@ -426,7 +426,7 @@
                             </div>
                         </form>
 
-                        <div *ngIf="isReadOnly == true">
+                        <!-- <div *ngIf="isReadOnly == true">
                             <div class="row mb-5">
                                 <div class="col col-5 border rounded p-4">
                                     <div class="mb-3 input">
@@ -725,7 +725,7 @@
                             <div class="me-4 text-end">
                                 <button mat-button color="accent" class="btn" type="button" style="border-radius: 5px;" (click)="goBack()">Go Back</button>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
                 </div>

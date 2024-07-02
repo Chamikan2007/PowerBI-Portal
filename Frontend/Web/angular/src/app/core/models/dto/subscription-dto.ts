@@ -25,27 +25,24 @@ export class SubscriptionDto {
     subscriptionId: string = '';
     report: ReportDto = new ReportDto();
     description: string = '';
-    // owner: string = '';
-
     subscriptionType: number = 1;
     destination: number = 2;
-    // deliveryOptionEmail: DeliveryOptionEmailDto = new DeliveryOptionEmailDto();
     scheduleDetailType: number = 2;
-    scheduleType: number = 2;
-    schedule: ScheduleDto = new ScheduleDto();
-
+    scheduleType: number = 1;
     status: ApprovalStatus = ApprovalStatus.None;
     requesterName: string = '';
     requesterId: string = '';
     deliveryOption: DeliveryOption = new DeliveryOption();
+    schedule: ScheduleDto = new ScheduleDto();
+    subscriptionInfo: SubscriptionInfo = new SubscriptionInfo();
 }
 
 export class ScheduleDto {
     hourlySchedule = new ScheduleTypeHourlyDto(); // hourly
-    dailySchedule = new ScheduleTypeDailyDto(); // daily
-    weeklySchedule = new ScheduleTypeWeeklyDto(); // weekly
-    monthlySchedule = new ScheduleTypeMonthlyDto(); // monthly
-    oneTimeSchedule = new ScheduleTypeOneTimeDto(); // onetime
+    // dailySchedule = new ScheduleTypeDailyDto(); // daily
+    // weeklySchedule = new ScheduleTypeWeeklyDto(); // weekly
+    // monthlySchedule = new ScheduleTypeMonthlyDto(); // monthly
+    // oneTimeSchedule = new ScheduleTypeOneTimeDto(); // onetime
 }
 
 export class ReportDto {
@@ -56,20 +53,20 @@ export class ReportDto {
 
 export class DeliveryOption {
     emailDeliveryOption: DeliveryOptionEmailDto = new DeliveryOptionEmailDto();
-    fileShareDeliveryOption: FileShareDeliveryOption = new FileShareDeliveryOption()
+    // fileShareDeliveryOption: FileShareDeliveryOption = new FileShareDeliveryOption();
 }
 
 export class StandardSubscription {
-    description: string = '';
+    // description: string = '1';
 }
 
 export class DataDrivenSubscription {
     description: string = '';
 }
 
-export class SubscrptionInfo {
+export class SubscriptionInfo {
     standardSubscription: StandardSubscription = new StandardSubscription();
-    dataDrivenSubscription: DataDrivenSubscription = new DataDrivenSubscription();
+    // dataDrivenSubscription: DataDrivenSubscription = new DataDrivenSubscription();
 }
 
 export class DeliveryOptionEmailDto {
@@ -94,9 +91,9 @@ export class FileShareDeliveryOption {
 }
 
 export class StartTimeDto {
-    meridiem: number = 1;
     startDateTime: Date = new Date();
-    endDate?: Date;
+    stoptDate: Date = new Date();
+    isDisabledStopDate: boolean = true;
 }
 
 export class ScheduleTypeHourlyDto extends StartTimeDto {
@@ -140,7 +137,3 @@ export enum ApprovalStatus {
     Rejected = 3,
     Cancelled = 4,
 }
-
-
-
-
