@@ -242,7 +242,7 @@
                                                                 <label class="mb-3">Start time</label>
                                                                 <mat-form-field class="example-full-width mb-3 p-0" appearance="outline">
                                                                     <mat-label>Choose a time</mat-label>
-                                                                    <input matInput [owlDateTimeTrigger]="hourly_start_time" [owlDateTime]="hourly_start_time" (dateTimeChange)="onHourlyRunScheduleStartTimeChange($event)">
+                                                                    <input matInput [owlDateTimeTrigger]="hourly_start_time" [owlDateTime]="hourly_start_time" formControlName="hourly_start_time" (dateTimeChange)="onHourlyRunScheduleStartTimeChange($event)">
                                                                     <mat-icon matSuffix [owlDateTimeTrigger]="hourly_start_time" class="date-icon">schedule</mat-icon>
                                                                     <owl-date-time [pickerType]="'timer'" #hourly_start_time></owl-date-time>
                                                                 </mat-form-field>
@@ -285,7 +285,7 @@
                                                             <label class="mb-3">Start time</label>
                                                             <mat-form-field class="example-full-width mb-3 p-0" appearance="outline">
                                                                 <mat-label>Choose a time</mat-label>
-                                                                <input matInput [owlDateTimeTrigger]="daily_start_time" [owlDateTime]="daily_start_time" (dateTimeChange)="onDailyRunScheduleStartTimeChange($event)">
+                                                                <input matInput [owlDateTimeTrigger]="daily_start_time" [owlDateTime]="daily_start_time" formControlName="daily_start_time" (dateTimeChange)="onDailyRunScheduleStartTimeChange($event)">
                                                                 <mat-icon matSuffix [owlDateTimeTrigger]="daily_start_time" class="date-icon">schedule</mat-icon>
                                                                 <owl-date-time [pickerType]="'timer'" #daily_start_time></owl-date-time>
                                                             </mat-form-field>
@@ -314,7 +314,7 @@
                                                         <label class="mb-3">Start time</label>
                                                         <mat-form-field class="example-full-width mb-3 p-0" appearance="outline">
                                                             <mat-label>Choose a time</mat-label>
-                                                            <input matInput [owlDateTimeTrigger]="weekly_start_time" [owlDateTime]="weekly_start_time" (dateTimeChange)="onWeeklyRunScheduleStartTimeChange($event)">
+                                                            <input matInput [owlDateTimeTrigger]="weekly_start_time" [owlDateTime]="weekly_start_time" formControlName="weekly_start_time" (dateTimeChange)="onWeeklyRunScheduleStartTimeChange($event)">
                                                             <mat-icon matSuffix [owlDateTimeTrigger]="weekly_start_time" class="date-icon">schedule</mat-icon>
                                                             <owl-date-time [pickerType]="'timer'" #weekly_start_time></owl-date-time>
                                                         </mat-form-field>
@@ -367,7 +367,7 @@
                                                         <label class="mb-3">Start time</label>
                                                         <mat-form-field class="example-full-width mb-3 p-0" appearance="outline">
                                                             <mat-label>Choose a time</mat-label>
-                                                            <input matInput [owlDateTimeTrigger]="monthly_start_time" [owlDateTime]="monthly_start_time" (dateTimeChange)="onMonthlyRunScheduleStartTimeChange($event)">
+                                                            <input matInput [owlDateTimeTrigger]="monthly_start_time" [owlDateTime]="monthly_start_time" formControlName="monthly_start_time" (dateTimeChange)="onMonthlyRunScheduleStartTimeChange($event)">
                                                             <mat-icon matSuffix [owlDateTimeTrigger]="monthly_start_time" class="date-icon">schedule</mat-icon>
                                                             <owl-date-time [pickerType]="'timer'" #monthly_start_time></owl-date-time>
                                                         </mat-form-field>
@@ -381,7 +381,7 @@
                                                         <label class="mb-3">Start time</label>
                                                         <mat-form-field class="example-full-width mb-3 p-0" appearance="outline">
                                                             <mat-label>Choose a time</mat-label>
-                                                            <input matInput [owlDateTimeTrigger]="onetime_start_time" [owlDateTime]="onetime_start_time" (dateTimeChange)="onOneTimeRunScheduleStartTimeChange($event)">
+                                                            <input matInput [owlDateTimeTrigger]="onetime_start_time" [owlDateTime]="onetime_start_time" formControlName="onetime_start_time" (dateTimeChange)="onOneTimeRunScheduleStartTimeChange($event)">
                                                             <mat-icon matSuffix [owlDateTimeTrigger]="onetime_start_time" class="date-icon">schedule</mat-icon>
                                                             <owl-date-time [pickerType]="'timer'" #onetime_start_time></owl-date-time>
                                                         </mat-form-field>
