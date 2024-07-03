@@ -26,11 +26,11 @@ export class SubscriptionDetailsMeta {
     ];
 
     public static scheduleTypeItems: KeyValue<number, string>[] = [
-        { key: 0, value: 'Hour' },
-        { key: 1, value: 'Day' },
-        { key: 2, value: 'Week' },
-        { key: 3, value: 'Month' },
-        { key: 4, value: 'Once' }
+        { key: 1, value: 'Hour' },
+        { key: 2, value: 'Day' },
+        { key: 3, value: 'Week' },
+        { key: 4, value: 'Month' },
+        { key: 5, value: 'Once' }
     ];
 
     public static daysOfWeekItems: KeyValue<number, string>[] = [

@@ -28,7 +28,7 @@ export class SubscriptionDto {
     subscriptionType: number = 0;
     destination: number = 1;
     scheduleDetailType: number = 1;
-    scheduleType: number = 0;
+    scheduleType: number = 1;
     status: ApprovalStatus = ApprovalStatus.None;
     requesterName: string = '';
     requesterId: string = '';
@@ -95,6 +95,7 @@ export class StartTimeDto {
     startDateTime: Date = new Date();
     stoptDate: Date = new Date();
     isDisabledStopDate: boolean = true;
+    selectedTime: Date = new Date();
 }
 
 export class ScheduleTypeHourlyDto extends StartTimeDto {
@@ -121,7 +122,7 @@ export class ScheduleTypeMonthlyDto extends StartTimeDto {
     onCalendarDays: string = '';
 }
 
-export class ScheduleTypeOneTimeDto extends StartTimeDto { }
+export class ScheduleTypeOneTimeDto extends StartTimeDto {}
 
 export enum ApprovalLevels {
     None = 0,
