@@ -25,10 +25,10 @@ export class SubscriptionDto {
     subscriptionId: string = '';
     report: ReportDto = new ReportDto();
     description: string = '';
-    subscriptionType: number = 1;
-    destination: number = 2;
-    scheduleDetailType: number = 2;
-    scheduleType: number = 1;
+    subscriptionType: number = 0;
+    destination: number = 1;
+    scheduleDetailType: number = 1;
+    scheduleType: number = 0;
     status: ApprovalStatus = ApprovalStatus.None;
     requesterName: string = '';
     requesterId: string = '';
@@ -38,11 +38,11 @@ export class SubscriptionDto {
 }
 
 export class ScheduleDto {
-    hourlySchedule = new ScheduleTypeHourlyDto(); // hourly
-    // dailySchedule = new ScheduleTypeDailyDto(); // daily
-    // weeklySchedule = new ScheduleTypeWeeklyDto(); // weekly
-    // monthlySchedule = new ScheduleTypeMonthlyDto(); // monthly
-    // oneTimeSchedule = new ScheduleTypeOneTimeDto(); // onetime
+    hourlySchedule: any = new ScheduleTypeHourlyDto(); // hourly
+    dailySchedule: any = new ScheduleTypeDailyDto(); // daily
+    weeklySchedule: any = new ScheduleTypeWeeklyDto(); // weekly
+    monthlySchedule: any = new ScheduleTypeMonthlyDto(); // monthly
+    oneTimeSchedule: any = new ScheduleTypeOneTimeDto(); // onetime
 }
 
 export class ReportDto {
@@ -77,8 +77,8 @@ export class DeliveryOptionEmailDto {
     subject: string = '';
     includeReport: boolean = true;
     includeLink: boolean = true;
-    renderFormat: number = 1;
-    priority: number = 1;
+    renderFormat: number = 0;
+    priority: number = 0;
     comment: string = '';
 }
 
@@ -102,21 +102,21 @@ export class ScheduleTypeHourlyDto extends StartTimeDto {
 }
 
 export class ScheduleTypeDailyDto extends StartTimeDto {
-    dailyScheduleType: number = 1;
-    selectedDays: KeyValue<string, boolean>[] = Array.from(SubscriptionDetailsMeta.daysOfWeekItems.map(d => ({ key: d.value, value: true }) as KeyValue<string, boolean>));
+    dailyScheduleType: number = 0;
+    selectedDays: KeyValue<number, boolean>[] = Array.from(SubscriptionDetailsMeta.daysOfWeekItems.map(d => ({ key: d.key, value: true }) as KeyValue<number, boolean>));
     repeatAfterDaysCount: number = 0;
 }
 
 export class ScheduleTypeWeeklyDto extends StartTimeDto {
     repeatAfterDaysCount: number = 0;
-    selectedDays: KeyValue<string, boolean>[] = Array.from(SubscriptionDetailsMeta.daysOfWeekItems.map(d => ({ key: d.value, value: true }) as KeyValue<string, boolean>));
+    selectedDays: KeyValue<number, boolean>[] = Array.from(SubscriptionDetailsMeta.daysOfWeekItems.map(d => ({ key: d.key, value: true }) as KeyValue<number, boolean>));
 }
 
 export class ScheduleTypeMonthlyDto extends StartTimeDto {
-    selectedMonths: KeyValue<string, boolean>[] = Array.from(SubscriptionDetailsMeta.monthsOfYearItems.map(d => ({ key: d.value, value: true }) as KeyValue<string, boolean>));
-    monthlyScheduleType: number = 1;
-    onWeekOfMonth: number = 1;
-    onDaysOfWeek: KeyValue<string, boolean>[] = Array.from(SubscriptionDetailsMeta.daysOfWeekItems.map(d => ({ key: d.value, value: true }) as KeyValue<string, boolean>));
+    selectedMonths: KeyValue<number, boolean>[] = Array.from(SubscriptionDetailsMeta.monthsOfYearItems.map(d => ({ key: d.key, value: true }) as KeyValue<number, boolean>));
+    monthlyScheduleType: number = 0;
+    onWeekOfMonth: number = 0;
+    onDaysOfWeek: KeyValue<number, boolean>[] = Array.from(SubscriptionDetailsMeta.daysOfWeekItems.map(d => ({ key: d.key, value: true }) as KeyValue<number, boolean>));
     onCalendarDays: string = '';
 }
 
