@@ -293,7 +293,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- <div *ngSwitchCase="2">
+                                            <div *ngSwitchCase="2">
                                                 <h5 class="px-0">Weekly schedule</h5>
                                                 <div class="row px-0">
                                                     <label class="mb-3 px-0">Repeat after this number of days:</label>
@@ -305,7 +305,8 @@
                                                 </div>
                                                 <section class="example-section px-0">
                                                     <div class="ms-0">
-                                                        <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.key" [checked]="true" (change)="onWeeklyScheduleDayStatusChange($event.checked, opt)">{{opt.value}}</mat-checkbox>
+                                                        <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.key.toString()" [checked]="true" (change)="onWeeklyScheduleDayStatusChange($event.checked, opt)">{{opt.value}}</mat-checkbox>
+                                                        <!-- <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.key.toString()" [checked]="true" (change)="onDailyScheduleDayStatusChange($event.checked, opt)"> {{opt.value}}</mat-checkbox> -->
                                                     </div>
                                                 </section>
                                                 <div class="row px-0">
@@ -319,13 +320,13 @@
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div *ngSwitchCase="3" class="row">
+                                            </div> 
+                                             <div *ngSwitchCase="3" class="row">
                                                 <h5 class="px-0">Monthly schedule</h5>
                                                 <div class="row px-0">
                                                     <label class="px-0">Months:</label>
                                                     <div class="p-0">
-                                                        <mat-checkbox *ngFor="let opt of monthsOfYearItems;" [value]="opt.key" [checked]="true" class="mb-2" (change)="onMonthlyScheduleMonthStatusChange($event.checked, opt)">{{opt.value}}
+                                                        <mat-checkbox *ngFor="let opt of monthsOfYearItems;" [value]="opt.key.toString()" [checked]="true" class="mb-2" (change)="onMonthlyScheduleMonthStatusChange($event.checked, opt)">{{opt.value}}
                                                         </mat-checkbox>
                                                     </div>
                                                 </div>
@@ -335,14 +336,14 @@
                                                         <div style="margin-left: 2.8rem;" class="mb-3">
                                                             <mat-form-field appearance="outline">
                                                                 <mat-select [disabled]="model.schedule.monthlySchedule.monthlyScheduleType != 1" (selectionChange)="onMonthlyScheduleWeekOfMonthChange($event)">
-                                                                    <mat-option *ngFor="let opt of weekOfMonthItems;" [value]="opt.key">{{opt.value}}</mat-option>
+                                                                    <mat-option *ngFor="let opt of weekOfMonthItems;" [value]="opt.key.toString()">{{opt.value}}</mat-option>
                                                                 </mat-select>
                                                             </mat-form-field>
                                                             <div class="mt-0">
                                                                 <div class="row">
                                                                     <label class="px-0">On days of week:</label>
                                                                 </div>
-                                                                <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.key" [checked]="true" class="mb-2" [disabled]="model.schedule.monthlySchedule.monthlyScheduleType != 1"
+                                                                <mat-checkbox *ngFor="let opt of daysOfWeekItems;" [value]="opt.key.toString()" [checked]="true" class="mb-2" [disabled]="model.schedule.monthlySchedule.monthlyScheduleType != 1"
                                                                     (change)="onMonthlyScheduleOnDayOfWeekChange($event.checked, opt)">{{opt.value}}
                                                                 </mat-checkbox>
                                                             </div>
@@ -386,7 +387,7 @@
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
-                                            </div> -->
+                                            </div>
                                         </div>
                                         <hr class="my-2">
                                         <div class="row px-0">
@@ -405,7 +406,7 @@
                                                     <mat-checkbox value="1" [disabled]="false" class="mt-4" appearance="outline" (change)="onHourlyRunScheduleIsEnabledStopTimeChange($event.checked)">Stop this schedule on:</mat-checkbox>
                                                     <mat-form-field class="example-full-width mt-0" appearance="outline">
                                                         <!-- formControlName="hourly_end_date" -->
-                                                        <input matInput [matDatepicker]="hourly_picker_end" formControlName="hourly_stop_date" [disabled]="model.schedule.hourlySchedule.isDisabledStopDate" (dateChange)="onStopDateChange($event)" />
+                                                        <input matInput [matDatepicker]="hourly_picker_end" formControlName="stop_date" (dateChange)="onStopDateChange($event)" />
                                                         <mat-hint>YYYY/MM/DD</mat-hint>
                                                         <mat-datepicker-toggle matIconSuffix [for]="hourly_picker_end"></mat-datepicker-toggle>
                                                         <mat-datepicker #hourly_picker_end></mat-datepicker>
