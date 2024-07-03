@@ -35,7 +35,7 @@ export class SubscriptionDto {
     deliveryOption: DeliveryOption = new DeliveryOption();
     schedule: ScheduleDto = new ScheduleDto();
     subscriptionInfo: SubscriptionInfo = new SubscriptionInfo();
-    isDisabledStopDate: boolean = false;
+    isDisabledStopDate: boolean = true;
 }
 
 export class ScheduleDto {

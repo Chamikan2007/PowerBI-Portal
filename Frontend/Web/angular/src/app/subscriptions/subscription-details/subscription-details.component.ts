@@ -88,7 +88,7 @@ export class SubscriptionDetailsComponent implements OnInit {
     });
 
     this.subscriptionForm = this.formBuilder.group({
-      reportPath: ['', [this.autocompleteStringValidator(this.reportsList), Validators.required]],
+      // reportPath: ['ssssss', [this.autocompleteStringValidator(this.reportsList), Validators.required]],
       description: ['', [Validators.required]],
       owner: [{ value: '', disabled: true }, [Validators.required]],
       subscriptionType: [0, Validators.required],
@@ -105,9 +105,9 @@ export class SubscriptionDetailsComponent implements OnInit {
       comment: [''],
       scheduleDetailType: [1, [Validators.required]],
       scheduleType: [1, [Validators.required]],
-      hourly_hour: ['00', [Validators.required]],
-      hourly_minute: ['00', [Validators.required]],
-      hourly_run_time: ['00:00 AM', [Validators.required]],
+      hourly_hour: ['', [Validators.required]],
+      hourly_minute: ['', [Validators.required]],
+      // hourly_run_time: ['00:00 AM', [Validators.required]],
       hourly_start_time: ['00:00 AM', [Validators.required]],
       hourly_start_date: [new Date(), [Validators.required]],
       stop_date: [{ value: '', disabled: true }],
@@ -422,12 +422,12 @@ export class SubscriptionDetailsComponent implements OnInit {
     
     switch (this.model.scheduleType) {
       case 1:
-        selectedTime = new Date(this.model.schedule.weeklySchedule.selectedTime);
+        selectedTime = new Date(this.model.schedule.hourlySchedule.selectedTime);
         console.log(selectedTime, 'selectedTime');
         this.model.schedule.hourlySchedule.stoptDate = this._createStartDateTime(new Date(this.getFormattedDate(dt)), selectedTime.getHours(), selectedTime.getMinutes());
         break;
       case 2:
-        selectedTime = new Date(this.model.schedule.weeklySchedule.selectedTime);
+        selectedTime = new Date(this.model.schedule.dailySchedule.selectedTime);
         console.log(selectedTime, 'selectedTime');
         this.model.schedule.dailySchedule.stoptDate = this._createStartDateTime(new Date(this.getFormattedDate(dt)), selectedTime.getHours(), selectedTime.getMinutes());
         break;
@@ -437,75 +437,89 @@ export class SubscriptionDetailsComponent implements OnInit {
         this.model.schedule.weeklySchedule.stoptDate = this._createStartDateTime(new Date(this.getFormattedDate(dt)), selectedTime.getHours(), selectedTime.getMinutes());
         break;
       case 4:
-        selectedTime = new Date(this.model.schedule.weeklySchedule.selectedTime);
+        selectedTime = new Date(this.model.schedule.monthlySchedule.selectedTime);
         console.log(selectedTime, 'selectedTime');
         this.model.schedule.monthlySchedule.stoptDate = this._createStartDateTime(new Date(this.getFormattedDate(dt)), selectedTime.getHours(), selectedTime.getMinutes());
         break;
       case 5:
-        selectedTime = new Date(this.model.schedule.weeklySchedule.selectedTime);
+        selectedTime = new Date(this.model.schedule.oneTimeSchedule.selectedTime);
         console.log(selectedTime, 'selectedTime');
         this.model.schedule.oneTimeSchedule.stoptDate = this._createStartDateTime(new Date(this.getFormattedDate(dt)), selectedTime.getHours(), selectedTime.getMinutes());
         break;
     }
   }
 
-  validateFormInputs() {
-    let isValid = true;
-
-    return isValid;
+  validateFormInputs(formGroup: UntypedFormGroup) {
+  //   Object.keys(this.subscriptionForm.controls).forEach(field => {
+  //     const control = this._createStartDateTime.subscriptionForm.get(field);
+  //     if (control instanceof UntypedFormGroup) {
+  //       this.validateFormInputs(control);
+  //     } else {
+  //       control.markAsTouched({ onlySelf: true });
+  //     }
+  //   });
   }
 
   onSubmit() {
-    let isValid = this.validateFormInputs();
+    // let isValid = this.validateFormInputs();
 
-    switch (this.model.scheduleType) {
-      case 1: // hourly
-        this.model.schedule.dailySchedule = null; // daily
-        this.model.schedule.weeklySchedule = null; // weekly
-        this.model.schedule.monthlySchedule = null; // monthly
-        this.model.schedule.oneTimeSchedule = null; // onetime
-        break;
-      case 2: // daily
-        this.model.schedule.hourlySchedule = null; // hourly
-        this.model.schedule.weeklySchedule = null; // weekly
-        this.model.schedule.monthlySchedule = null; // monthly
-        this.model.schedule.oneTimeSchedule = null; // onetime
-        break;
-      case 3: // weekly
-        this.model.schedule.hourlySchedule = null; // hourly
-        this.model.schedule.dailySchedule = null; // daily
-        this.model.schedule.monthlySchedule = null; // monthly
-        this.model.schedule.oneTimeSchedule = null; // onetime
-        break;
-      case 4: // monthly
-        this.model.schedule.hourlySchedule = null; // hourly
-        this.model.schedule.dailySchedule = null; // daily
-        this.model.schedule.weeklySchedule = null; // weekly
-        this.model.schedule.oneTimeSchedule = null; // onetime
-        break;
-      case 5: // onetime
-        this.model.schedule.hourlySchedule = null; // hourly
-        this.model.schedule.dailySchedule = null; // daily
-        this.model.schedule.weeklySchedule = null; // weekly
-        this.model.schedule.monthlySchedule = null; // monthly
-        break;
-    }
+    if (this.subscriptionForm.valid) {
 
-    this.subscriptionService.createSubscription(this.model).subscribe({
-      next: (response: ResponseDto) => {
-        debugger;
-        if (response.isSuccess) {
-          this.router.navigate(['../'], { relativeTo: this.activatedRoute });
-        }
-        else {
-          this.error = response.error.errorCode;
-        }
-      },
-      error: (error: any) => {
-        debugger;
-        this.error = 'Something went wrong.';
+      switch (this.model.scheduleType) {
+        case 1: // hourly
+          this.model.schedule.dailySchedule = null; // daily
+          this.model.schedule.weeklySchedule = null; // weekly
+          this.model.schedule.monthlySchedule = null; // monthly
+          this.model.schedule.oneTimeSchedule = null; // onetime
+          if(this.model.isDisabledStopDate) this.model.schedule.hourlySchedule.stoptDate = null;
+          break;
+        case 2: // daily
+          this.model.schedule.hourlySchedule = null; // hourly
+          this.model.schedule.weeklySchedule = null; // weekly
+          this.model.schedule.monthlySchedule = null; // monthly
+          this.model.schedule.oneTimeSchedule = null; // onetime
+          if(this.model.isDisabledStopDate) this.model.schedule.dailySchedule.stoptDate = null;
+          break;
+        case 3: // weekly
+          this.model.schedule.hourlySchedule = null; // hourly
+          this.model.schedule.dailySchedule = null; // daily
+          this.model.schedule.monthlySchedule = null; // monthly
+          this.model.schedule.oneTimeSchedule = null; // onetime
+          if(this.model.isDisabledStopDate) this.model.schedule.weeklySchedule.stoptDate = null;
+          break;
+        case 4: // monthly
+          this.model.schedule.hourlySchedule = null; // hourly
+          this.model.schedule.dailySchedule = null; // daily
+          this.model.schedule.weeklySchedule = null; // weekly
+          this.model.schedule.oneTimeSchedule = null; // onetime
+          if(this.model.isDisabledStopDate) this.model.schedule.monthlySchedule.stoptDate = null;
+          break;
+        case 5: // onetime
+          this.model.schedule.hourlySchedule = null; // hourly
+          this.model.schedule.dailySchedule = null; // daily
+          this.model.schedule.weeklySchedule = null; // weekly
+          this.model.schedule.monthlySchedule = null; // monthly
+          if(this.model.isDisabledStopDate) this.model.schedule.oneTimeSchedule.stoptDate = null;
+          break;
       }
-    });
+      this.subscriptionService.createSubscription(this.model).subscribe({
+        next: (response: ResponseDto) => {
+          debugger;
+          if (response.isSuccess) {
+            this.router.navigate(['../'], { relativeTo: this.activatedRoute });
+          }
+          else {
+            this.error = response.error.errorCode;
+          }
+        },
+        error: (error: any) => {
+          debugger;
+          this.error = 'Something went wrong.';
+        }
+      });
+    } else {
+      console.error('Fields are Mandatory');
+    }
   }
 
   onCancel() {

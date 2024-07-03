@@ -222,13 +222,13 @@
                                                                     <owl-date-time [pickerType]="'timer'" #hourly_run_time></owl-date-time>
                                                                 </mat-form-field> -->
                                                                 <div class="row px-0">
-                                                                    <div class="col-6 p-0">
+                                                                    <div class="col-6 col-sm-6 p-0">
                                                                         <mat-form-field class="example-full-width number-input" appearance="outline">
                                                                             <mat-label>hours</mat-label>
                                                                             <input type="number" min="0" max="23" class="form-control" matInput formControlName="hourly_hour" (change)="onHourlyRunScheduleEveryHourChange($event)">
                                                                         </mat-form-field>
                                                                     </div>
-                                                                    <div class="col-6 p-0">
+                                                                    <div class="col-6 col-sm-6 p-0">
                                                                         <mat-form-field class="example-full-width number-input" appearance="outline">
                                                                             <mat-label>minutes</mat-label>
                                                                             <input type="number" min="0" max="59" class="form-control" matInput formControlName="hourly_minute" (change)="onHourlyRunScheduleEveryMinuteChange($event)">
