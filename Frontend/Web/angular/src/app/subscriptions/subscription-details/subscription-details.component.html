@@ -299,7 +299,7 @@
                                                     <label class="mb-3 px-0">Repeat after this number of days:</label>
                                                     <div class="col px-0 input">
                                                         <mat-form-field class="example-full-width number-input" appearance="outline">
-                                                            <input type="number" class="form-control" matInput (change)="onWeeklyRunScheduleRepeatAfterDayCountChange($event)">
+                                                            <input type="number" class="form-control" matInput formControlName="weekly_repeat_In" (change)="onWeeklyRunScheduleRepeatAfterDayCountChange($event)">
                                                         </mat-form-field>
                                                     </div>
                                                 </div>
@@ -331,8 +331,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="row pt-3 px-0">
-                                                    <mat-radio-group class="vertical-radio-group px-0" formControlName="monthlyScheduleType" (change)="onMonthlyScheduleTypeChange($event)">
-                                                        <mat-radio-button value="1" checked>On week of month:</mat-radio-button>
+                                                    <mat-radio-group class="vertical-radio-group px-0" formControlName="monthly_schedule_type" (change)="onMonthlyScheduleTypeChange($event)">
+                                                        <mat-radio-button [value]="1">On week of month:</mat-radio-button>
                                                         <div style="margin-left: 2.8rem;" class="mb-3">
                                                             <mat-form-field appearance="outline">
                                                                 <mat-select [disabled]="model.schedule.monthlySchedule.monthlyScheduleType != 1" (selectionChange)="onMonthlyScheduleWeekOfMonthChange($event)">
@@ -348,14 +348,14 @@
                                                                 </mat-checkbox>
                                                             </div>
                                                         </div>
-                                                        <mat-radio-button value="2" class="mb-3">
+                                                        <mat-radio-button [value]="2" class="mb-3">
                                                             <div class="row d-flex align-items-center">
                                                                 <div class="col col-auto ms-0 ps-0">
                                                                     <label class="mt-0">On calendar day(s):</label>
                                                                 </div>
                                                                 <div class="col col-auto input custom-input">
                                                                     <mat-form-field class="example-full-width" appearance="outline">
-                                                                        <input type="text" class="form-control" matInput [disabled]="model.schedule.monthlySchedule.monthlyScheduleType != 2" (change)="onMonthlyScheduleOnCalendarDaysChange($event)">
+                                                                        <input type="text" class="form-control" formControlName="monthly_calendar_days" matInput [disabled]="model.schedule.monthlySchedule.monthlyScheduleType != 2" (change)="onMonthlyScheduleOnCalendarDaysChange($event)">
                                                                     </mat-form-field>
                                                                 </div>
                                                             </div>

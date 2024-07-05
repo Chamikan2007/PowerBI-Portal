@@ -117,10 +117,10 @@ export class ScheduleTypeWeeklyDto extends StartTimeDto {
 
 export class ScheduleTypeMonthlyDto extends StartTimeDto {
     months: KeyValue<number, boolean>[] = Array.from(SubscriptionDetailsMeta.monthsOfYearItems.map(d => ({ key: d.key, value: true }) as KeyValue<number, boolean>));
-    monthlyScheduleType: number = 1;
+    monthlyScheduleType: number = 2;
     weekOfMonth: number = 1;
     days: KeyValue<number, boolean>[] = Array.from(SubscriptionDetailsMeta.daysOfWeekItems.map(d => ({ key: d.key, value: true }) as KeyValue<number, boolean>));
-    calenderDays: string = '';
+    calenderDays: string = '1-3,5';
 }
 
 export class ScheduleTypeOneTimeDto extends StartTimeDto {}
