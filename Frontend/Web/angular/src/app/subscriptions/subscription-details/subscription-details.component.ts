@@ -123,7 +123,7 @@ export class SubscriptionDetailsComponent implements OnInit {
       monthly_end_date: [null, []],
       onetime_start_time: ['', [Validators.required]],
       dailyScheduleType: [0, []],
-      monthlyScheduleType: [0, []],
+      monthlyScheduleType: [1, []],
     });
 
     this.filteredReports = this.reportPicker.valueChanges.pipe(
@@ -323,13 +323,11 @@ export class SubscriptionDetailsComponent implements OnInit {
    * methods onHourlyRunScheduleEveryHourChange, onHourlyRunScheduleEveryMinuteChange, onHourlyRunScheduleStartTimeChange
    */
   onWeeklyRunScheduleRepeatAfterDayCountChange(event: any) {
-    this.model.schedule.weeklySchedule.repeatAfterDaysCount = +event.target.value;
+    this.model.schedule.weeklySchedule.repeatIn = +event.target.value;
   }
 
   onWeeklyScheduleDayStatusChange(event: boolean, opt: KeyValue<number, string>) {
-    this.model.schedule.weeklySchedule.selectedDays[opt.key].value = event;
-    // let day = this.model.schedule.weeklySchedule.selectedDays.find((d) => d.key === opt.value);
-    // day!.value = event;
+    this.model.schedule.weeklySchedule.days[opt.key].value = event;
   }
 
   onWeeklyRunScheduleStartTimeChange(event: any) {
@@ -342,28 +340,34 @@ export class SubscriptionDetailsComponent implements OnInit {
    * additional @params, startHour, startMinute
    * methods onHourlyRunScheduleEveryHourChange, onHourlyRunScheduleEveryMinuteChange, onHourlyRunScheduleStartTimeChange
    */
-  onMonthlyScheduleMonthStatusChange(event: boolean, opt: KeyValue<number, string>) {
-    this.model.schedule.monthlySchedule.selectedDays[opt.key].value = event;
-    // let month = this.model.schedule.monthlySchedule.selectedMonths.find((d) => d.key === opt.value);
-    // month!.value = event;
-  }
-
   onMonthlyScheduleTypeChange(event: any) {
     if (event.value) {
       this.model.schedule.monthlySchedule.monthlyScheduleType = +event.value;
+
+      if(event.value == 1) {
+        this.model.schedule.monthlySchedule.days = Array.from(SubscriptionDetailsMeta.daysOfWeekItems.map(d => ({ key: d.key, value: true }) as KeyValue<number, boolean>));
+        this.model.schedule.monthlySchedule.calenderDays = null;
+      }else {
+        this.model.schedule.monthlySchedule.days = [];
+        this.model.schedule.monthlySchedule.weekOfMonth = null;
+      }
     }
   }
 
+  onMonthlyScheduleMonthStatusChange(event: boolean, opt: KeyValue<number, string>) {
+    this.model.schedule.monthlySchedule.months[opt.key].value = event;
+  }
+
   onMonthlyScheduleWeekOfMonthChange(event: any) {
-    this.model.schedule.monthlySchedule.onWeekOfMonth = +event.value;
+    this.model.schedule.monthlySchedule.weekOfMonth = +event.value;
   }
 
   onMonthlyScheduleOnDayOfWeekChange(event: boolean, opt: KeyValue<number, string>) {
-    this.model.schedule.monthlySchedule.onDaysOfWeek[opt.key].value = event;
+    this.model.schedule.monthlySchedule.days[opt.key].value = event;
   }
 
   onMonthlyScheduleOnCalendarDaysChange(event: any) {
-    this.model.schedule.monthlySchedule.onCalendarDays = event.target.value;
+    this.model.schedule.monthlySchedule.calenderDays = event.target.value;
   }
 
   onMonthlyRunScheduleStartTimeChange(event: any) {
