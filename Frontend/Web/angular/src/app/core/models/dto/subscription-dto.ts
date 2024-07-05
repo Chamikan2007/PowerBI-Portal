@@ -105,8 +105,9 @@ export class ScheduleTypeHourlyDto extends StartTimeDto {
 
 export class ScheduleTypeDailyDto extends StartTimeDto {
     dailyScheduleType: number = 0;
-    selectedDays: KeyValue<number, boolean>[] = Array.from(SubscriptionDetailsMeta.daysOfWeekItems.map(d => ({ key: d.key, value: true }) as KeyValue<number, boolean>));
-    repeatAfterDaysCount: number = 0;
+    days: KeyValue<number, boolean>[] = Array.from(SubscriptionDetailsMeta.daysOfWeekItems.map(d => ({ key: d.key, value: true }) as KeyValue<number, boolean>));
+    repeatIn: number = 0;
+    everyWeekDay: boolean = false;
 }
 
 export class ScheduleTypeWeeklyDto extends StartTimeDto {

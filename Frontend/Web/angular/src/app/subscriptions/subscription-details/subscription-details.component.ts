@@ -289,15 +289,27 @@ export class SubscriptionDetailsComponent implements OnInit {
   onDailyScheduleTypeChange(event: any) {
     if (event.value) {
       this.model.schedule.dailySchedule.dailyScheduleType = +event.value;
+      if ( event.value == 0 ) {
+        this.model.schedule.dailySchedule.repeatIn = 0;
+        this.model.schedule.dailySchedule.days = Array.from(SubscriptionDetailsMeta.daysOfWeekItems.map(d => ({ key: d.key, value: true }) as KeyValue<number, boolean>));
+        this.model.schedule.dailySchedule.everyWeekDay = false;
+      } else if (event.value == 1) {
+       this.model.schedule.dailySchedule.everyWeekDay = true;
+        this.model.schedule.dailySchedule.repeatIn = 0;
+        this.model.schedule.dailySchedule.days = [];
+      } else if ( event.value == 2 ) {
+        this.model.schedule.dailySchedule.days = [];
+        this.model.schedule.dailySchedule.everyWeekDay = true;
+      }
     }
   }
 
   onDailyScheduleDayStatusChange(event: boolean, opt: KeyValue<number, string>) {
-    this.model.schedule.dailySchedule.selectedDays[opt.key].value = event;
+    this.model.schedule.dailySchedule.days[opt.key].value = event;
   }
 
   onDailyRunScheduleRepeatAfterDayCountChange(event: any) {
-    this.model.schedule.dailySchedule.repeatAfterDaysCount = +event.target.value;
+    this.model.schedule.dailySchedule.repeatIn = +event.target.value;
   }
 
   onDailyRunScheduleStartTimeChange(event: any) {
@@ -463,7 +475,7 @@ export class SubscriptionDetailsComponent implements OnInit {
   onSubmit() {
     // let isValid = this.validateFormInputs();
 
-    if (this.subscriptionForm.valid) {
+    // if (this.subscriptionForm.valid) {
 
       switch (this.model.scheduleType) {
         case 1: // hourly
@@ -517,9 +529,9 @@ export class SubscriptionDetailsComponent implements OnInit {
           this.error = 'Something went wrong.';
         }
       });
-    } else {
-      console.error('Fields are Mandatory');
-    }
+    // } else {
+    //   console.error('Fields are Mandatory');
+    // }
   }
 
   onCancel() {
