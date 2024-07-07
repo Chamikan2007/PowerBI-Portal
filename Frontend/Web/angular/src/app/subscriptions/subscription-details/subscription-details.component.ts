@@ -460,6 +460,7 @@ export class SubscriptionDetailsComponent implements OnInit {
   onHourlyRunScheduleIsEnabledStopTimeChange(event: any) {
     this.model.isDisabledStopDate = !event;
     event ? this.subscriptionForm.get('stop_date')?.enable() : this.subscriptionForm.get('stop_date')?.disable();
+    event ? this.subscriptionForm.get('stop_date')?.setValue(new Date()) : this.subscriptionForm.get('stop_date')?.setValue('');
   }
 
   // stop and end date
