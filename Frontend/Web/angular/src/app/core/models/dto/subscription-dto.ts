@@ -75,7 +75,7 @@ export class DeliveryOptionEmailDto {
     cc: string = '';
     bcc: string = '';
     replyTo: string = '';
-    subject: string = '';
+    subject: string = '@ReportName was executed at @ExecutionTime';
     includeReport: boolean = true;
     includeLink: boolean = true;
     renderFormat: number = 0;
@@ -99,7 +99,7 @@ export class StartTimeDto {
 }
 
 export class ScheduleTypeHourlyDto extends StartTimeDto {
-    hours: number = 0;
+    hours: number = 1;
     minutes: number = 0;
 }
 
