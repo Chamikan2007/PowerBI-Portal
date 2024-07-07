@@ -207,7 +207,7 @@
                                                 <mat-radio-button *ngFor="let opt of scheduleTypeItems; index as i" [value]="opt.key" [checked]="i==0" class="me-4">{{opt.value}}</mat-radio-button>
                                             </mat-radio-group>
                                         </div>
-                                        <div [ngSwitch]="model.scheduleDetailType" class="mt-4 p-0">
+                                        <div [ngSwitch]="model.scheduleType" class="mt-4 p-0">
                                             <div *ngSwitchCase="1" class="row">
                                                 <div class="col p-0">
                                                     <h5>Hourly schedule</h5>

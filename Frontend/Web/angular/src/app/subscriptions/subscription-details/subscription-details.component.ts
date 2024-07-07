@@ -279,23 +279,23 @@ export class SubscriptionDetailsComponent implements OnInit {
   onScheduleTypeChange(event: any) {
     this.model.scheduleType = +event.value;
 
-    switch (event.value) {
-      case 1: console.log(event.value, '1')
+    // switch (event.value) {
+    //   case 1: console.log(event.value, '1')
 
-        break;
-      case 2: console.log(event.value, '2')
+    //     break;
+    //   case 2: console.log(event.value, '2')
 
-        break;
-      case 3: console.log(event.value, '3')
+    //     break;
+    //   case 3: console.log(event.value, '3')
 
-        break;
-      case 4: console.log(event.value, '4')
+    //     break;
+    //   case 4: console.log(event.value, '4')
 
-        break;
-      case 5: console.log(event.value, '5')
+    //     break;
+    //   case 5: console.log(event.value, '5')
 
-        break;
-    }
+    //     break;
+    // }
   }
 
   /* 
