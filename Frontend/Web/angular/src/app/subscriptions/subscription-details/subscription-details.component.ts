@@ -56,7 +56,7 @@ export class SubscriptionDetailsComponent implements OnInit {
   hide = true;
 
   reportsList: ReportDto[] = [];
-  reportPicker = new FormControl('');
+  reportPicker = new FormControl('', [Validators.required]);
   filteredReports: Observable<ReportDto[]> | undefined;
 
   destinationItems = SubscriptionDetailsMeta.destinationItems;
@@ -88,7 +88,9 @@ export class SubscriptionDetailsComponent implements OnInit {
     });
 
     this.subscriptionForm = this.formBuilder.group({
+      renderFormat: [0, [Validators.required]],
       // reportPath: ['ssssss', [this.autocompleteStringValidator(this.reportsList), Validators.required]],
+      // reportPicker_fl: ['', [Validators.required]],
       description: ['', [Validators.required]],
       owner: [{ value: '', disabled: true }, [Validators.required]],
       subscriptionType: [0, Validators.required],
@@ -100,29 +102,28 @@ export class SubscriptionDetailsComponent implements OnInit {
       email_subject: ['@ReportName was executed at @ExecutionTime', [Validators.required]],
       includeReportCheckbox: [true, []],
       includeLinkCheckbox: [true, []],
-      renderFormat: [0, [Validators.required]],
       priority: [0, [Validators.required]],
       comment: [''],
       scheduleDetailType: [1, [Validators.required]],
       scheduleType: [1, [Validators.required]],
-      hourly_hour: ['', [Validators.required]],
-      hourly_minute: ['', [Validators.required]],
-      // hourly_run_time: ['00:00 AM', [Validators.required]],
-      hourly_start_time: [new Date(), [Validators.required]],
-      hourly_start_date: [new Date(), [Validators.required]],
+      hourly_hour: [1, []],
+      hourly_minute: [0, []],
+      // hourly_run_time: ['00:00 AM', []],
+      hourly_start_time: [new Date(), []],
+      hourly_start_date: [new Date(), []],
       stop_date: [{ value: '', disabled: true }],
       hourly_end_date: [null, []],
-      daily_start_time: [new Date(), [Validators.required]],
-      daily_start_date: [new Date(), [Validators.required]],
+      daily_start_time: [new Date(), []],
+      daily_start_date: [new Date(), []],
       daily_end_date: [null, []],
-      weekly_start_time: [new Date(), [Validators.required]],
-      weekly_start_date: [new Date(), [Validators.required]],
+      weekly_start_time: [new Date(), []],
+      weekly_start_date: [new Date(), []],
       weekly_end_date: [null, []],
       weekly_repeat_In: [1, []],
-      monthly_start_time: [new Date(), [Validators.required]],
-      monthly_start_date: [new Date(), [Validators.required]],
+      monthly_start_time: [new Date(), []],
+      monthly_start_date: [new Date(), []],
       monthly_end_date: [null, []],
-      onetime_start_time: [new Date(), [Validators.required]],
+      onetime_start_time: [new Date(), []],
       dailyScheduleType: [0, []],
       monthly_schedule_type: [2, []],
       monthly_calendar_days: ["1-3,5", []],
@@ -173,7 +174,30 @@ export class SubscriptionDetailsComponent implements OnInit {
 
       this.subscriptionService.getSubscriptionById(this.subscriptionId).subscribe({
         next: (response: any) => {
-          this.model = response as SubscriptionDto;
+          this.model = response.data as SubscriptionDto;
+          
+          let schedule = response.data.schedule;
+          let keyValue = '';
+
+          for ( let key in schedule ) {
+            if(schedule[key]) {
+              keyValue = key;
+            }
+          }
+
+          switch (keyValue) {
+            case 'hourlySchedule': this.model.scheduleDetailType = 1;
+            break;
+            case 'dailySchedule': this.model.scheduleDetailType = 2;
+            break;
+            case 'weeklySchedule': this.model.scheduleDetailType = 3;
+            break;
+            case 'monthlySchedule': this.model.scheduleDetailType = 4;
+            break;
+            case 'oneTimeSchedule': this.model.scheduleDetailType = 5;
+            break;
+          }
+          console.log(this.model, 'response');
         }
       });
     }
@@ -181,7 +205,6 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   goBack() {
     window.history.back();
-    // this.router.navigate(['/', 'subscriptions']);
   }
 
   setSelectedReport(event: any) {
@@ -255,6 +278,24 @@ export class SubscriptionDetailsComponent implements OnInit {
   // schedule types
   onScheduleTypeChange(event: any) {
     this.model.scheduleType = +event.value;
+
+    switch (event.value) {
+      case 1: console.log(event.value, '1')
+
+        break;
+      case 2: console.log(event.value, '2')
+
+        break;
+      case 3: console.log(event.value, '3')
+
+        break;
+      case 4: console.log(event.value, '4')
+
+        break;
+      case 5: console.log(event.value, '5')
+
+        break;
+    }
   }
 
   /* 
@@ -274,13 +315,6 @@ export class SubscriptionDetailsComponent implements OnInit {
   onHourlyRunScheduleStartTimeChange(event: any) {
     this.model.schedule.hourlySchedule.selectedTime = new Date(event.value) as Date;
   }
-
-  // onHourlyRunScheduleEveryTimeChange(event: any) {
-  //   let dt = event.value as Date;
-  //   this.model.schedule.hourlySchedule.hours = dt.getHours();
-  //   this.model.schedule.hourlySchedule.minutes = dt.getMinutes();
-  // }
-
 
   /* 
    * Daily Schedular running here
@@ -401,27 +435,22 @@ export class SubscriptionDetailsComponent implements OnInit {
     switch (this.model.scheduleType) {
       case 1:
         selectedTime = new Date(this.model.schedule.hourlySchedule.selectedTime);
-        console.log(selectedTime, 'selectedTime', this._createStartDateTime(new Date(this.getFormattedDate(dt)), selectedTime.getHours(), selectedTime.getMinutes()));
         this.model.schedule.hourlySchedule.startDateTime =  this._createStartDateTime(new Date(this.getFormattedDate(dt)), selectedTime.getHours(), selectedTime.getMinutes());
         break;
       case 2:
         selectedTime = new Date(this.model.schedule.dailySchedule.selectedTime);
-        console.log(selectedTime, 'selectedTime');
         this.model.schedule.dailySchedule.startDateTime = this._createStartDateTime(new Date(this.getFormattedDate(dt)), selectedTime.getHours(), selectedTime.getMinutes());
         break;
       case 3:
         selectedTime = new Date(this.model.schedule.weeklySchedule.selectedTime);
-        console.log(selectedTime, 'selectedTime');
         this.model.schedule.weeklySchedule.startDateTime = this._createStartDateTime(new Date(this.getFormattedDate(dt)), selectedTime.getHours(), selectedTime.getMinutes());
         break;
       case 4:
         selectedTime = new Date(this.model.schedule.monthlySchedule.selectedTime);
-        console.log(selectedTime, 'selectedTime');
         this.model.schedule.monthlySchedule.startDateTime = this._createStartDateTime(new Date(this.getFormattedDate(dt)), selectedTime.getHours(), selectedTime.getMinutes());
         break;
       case 5:
         selectedTime = new Date(this.model.schedule.oneTimeSchedule.selectedTime);
-        console.log(selectedTime, 'selectedTime');
         this.model.schedule.oneTimeSchedule.startDateTime = this._createStartDateTime(new Date(this.getFormattedDate(dt)), selectedTime.getHours(), selectedTime.getMinutes());
         break;
     }
@@ -441,48 +470,29 @@ export class SubscriptionDetailsComponent implements OnInit {
     switch (this.model.scheduleType) {
       case 1:
         selectedTime = new Date(this.model.schedule.hourlySchedule.selectedTime);
-        console.log(selectedTime, 'selectedTime');
         this.model.schedule.hourlySchedule.stoptDate = this._createStartDateTime(new Date(this.getFormattedDate(dt)), selectedTime.getHours(), selectedTime.getMinutes());
         break;
       case 2:
         selectedTime = new Date(this.model.schedule.dailySchedule.selectedTime);
-        console.log(selectedTime, 'selectedTime');
         this.model.schedule.dailySchedule.stoptDate = this._createStartDateTime(new Date(this.getFormattedDate(dt)), selectedTime.getHours(), selectedTime.getMinutes());
         break;
       case 3:
         selectedTime = new Date(this.model.schedule.weeklySchedule.selectedTime);
-        console.log(selectedTime, 'selectedTime');
         this.model.schedule.weeklySchedule.stoptDate = this._createStartDateTime(new Date(this.getFormattedDate(dt)), selectedTime.getHours(), selectedTime.getMinutes());
         break;
       case 4:
         selectedTime = new Date(this.model.schedule.monthlySchedule.selectedTime);
-        console.log(selectedTime, 'selectedTime');
         this.model.schedule.monthlySchedule.stoptDate = this._createStartDateTime(new Date(this.getFormattedDate(dt)), selectedTime.getHours(), selectedTime.getMinutes());
         break;
       case 5:
         selectedTime = new Date(this.model.schedule.oneTimeSchedule.selectedTime);
-        console.log(selectedTime, 'selectedTime');
         this.model.schedule.oneTimeSchedule.stoptDate = this._createStartDateTime(new Date(this.getFormattedDate(dt)), selectedTime.getHours(), selectedTime.getMinutes());
         break;
     }
   }
 
-  validateFormInputs(formGroup: UntypedFormGroup) {
-  //   Object.keys(this.subscriptionForm.controls).forEach(field => {
-  //     const control = this._createStartDateTime.subscriptionForm.get(field);
-  //     if (control instanceof UntypedFormGroup) {
-  //       this.validateFormInputs(control);
-  //     } else {
-  //       control.markAsTouched({ onlySelf: true });
-  //     }
-  //   });
-  }
-
   onSubmit() {
-    // let isValid = this.validateFormInputs();
-
-    // if (this.subscriptionForm.valid) {
-
+    if (this.subscriptionForm.valid) {
       switch (this.model.scheduleType) {
         case 1: // hourly
           this.model.schedule.dailySchedule = null; // daily
@@ -535,9 +545,9 @@ export class SubscriptionDetailsComponent implements OnInit {
           this.error = 'Something went wrong.';
         }
       });
-    // } else {
-    //   console.error('Fields are Mandatory');
-    // }
+    } else {
+      console.error('Fields are Mandatory');
+    }
   }
 
   onCancel() {
@@ -549,6 +559,8 @@ export class SubscriptionDetailsComponent implements OnInit {
   getDestinationText(destination: number) {
     let text = '';
     let item = this.destinationItems.find(d => d.key === destination);
+    
+    // console.log(item, destination, 'item')
 
     if (item) {
       text = item.value;
@@ -570,17 +582,19 @@ export class SubscriptionDetailsComponent implements OnInit {
     return false;
   }
 
-  getFormattedTime(value?: Date) {
+  getFormattedTime(value?: any) {
+    let newValue = new Date(value);
     if (value) {
-      let time = `${value.getHours().toString().padStart(2, '0')}:${value.getMinutes().toString().padStart(2, '0')}`;
+      let time = `${newValue.getHours().toString().padStart(2, '0')}:${newValue.getMinutes().toString().padStart(2, '0')}`;
       return `${time}`;
     }
     return '';
   }
 
-  getFormattedDate(value?: Date) {
+  getFormattedDate(value?: any) {
+    let newValue = new Date(value);
     if (value) {
-      let date = `${value.getFullYear().toString().padStart(4, '0')}-${value.getMonth().toString().padStart(2, '0')}-${value.getDate().toString().padStart(2, '0')}`;
+      let date = `${newValue.getFullYear().toString().padStart(4, '0')}-${newValue.getMonth().toString().padStart(2, '0')}-${newValue.getDate().toString().padStart(2, '0')}`;
       return `${date}`;
     }
     return '';
@@ -610,21 +624,21 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   getFormattedScheduleEndDate() {
     let date;
-    switch (this.model.scheduleType) {
+    switch (this.model.scheduleDetailType) {
       case 1:
         date = this.model.schedule.hourlySchedule.stoptDate;
         break;
       case 2:
-        date = this.model.schedule.dailySchedule.endDate;
+        date = this.model.schedule.dailySchedule.stoptDate;
         break;
       case 3:
-        date = this.model.schedule.weeklySchedule.endDate;
+        date = this.model.schedule.weeklySchedule.stoptDate;
         break;
       case 4:
-        date = this.model.schedule.monthlySchedule.endDate;
+        date = this.model.schedule.monthlySchedule.stoptDate;
         break;
       case 5:
-        date = this.model.schedule.oneTimeSchedule.endDate;
+        date = this.model.schedule.oneTimeSchedule.stoptDate;
         break;
     }
     return this.getFormattedDate(date);

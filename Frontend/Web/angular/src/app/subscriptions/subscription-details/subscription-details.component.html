@@ -207,7 +207,7 @@
                                                 <mat-radio-button *ngFor="let opt of scheduleTypeItems; index as i" [value]="opt.key" [checked]="i==0" class="me-4">{{opt.value}}</mat-radio-button>
                                             </mat-radio-group>
                                         </div>
-                                        <div [ngSwitch]="model.scheduleType" class="mt-4 p-0">
+                                        <div [ngSwitch]="model.scheduleDetailType" class="mt-4 p-0">
                                             <div *ngSwitchCase="1" class="row">
                                                 <div class="col p-0">
                                                     <h5>Hourly schedule</h5>
@@ -321,7 +321,7 @@
                                                     </div>
                                                 </div>
                                             </div> 
-                                             <div *ngSwitchCase="4" class="row">
+                                            <div *ngSwitchCase="4" class="row">
                                                 <h5 class="px-0">Monthly schedule</h5>
                                                 <div class="row px-0">
                                                     <label class="px-0">Months:</label>
@@ -427,25 +427,25 @@
                             </div>
                         </form>
 
-                        <!-- <div *ngIf="isReadOnly == true">
+                        <div *ngIf="isReadOnly == true" class="readonly">
                             <div class="row mb-5">
                                 <div class="col col-5 border rounded p-4">
                                     <div class="mb-3 input">
                                         <div class="row">
                                             <div class="col p-0">
-                                                <label>Report</label>
+                                                <label class="px-0">Report</label>
                                                 <input type="text" readonly class="form-control" aria-label="Report" [value]="model.report.path">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col  p-0 mb-2">
-                                                <label>Description</label>
+                                                <label class="px-0">Description</label>
                                                 <input type="text" readonly class="form-control" [value]="model.description">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col p-0 mb-2">
-                                                <label>Owner</label>
+                                                <label class="px-0">Owner</label>
                                                 <input type="text" readonly class="form-control" [value]="model.report.owner">
                                             </div>
                                         </div>
@@ -453,46 +453,45 @@
                                     <div class="mb-3 input">
                                         <h5 class="p-0">Subscription type</h5>
                                         <div class="col p-0 mb-5">
-                                            <input type="radio" [checked]="model.subscriptionType == 1" disabled value="1"><label>Standard subscription</label>
-                                            <br>
-                                            <input type="radio" [checked]="model.subscriptionType == 2" disabled value="2"><label>Data-driven subscription</label>
+                                            <input type="radio" [checked]="model.subscriptionType == 0" disabled value="0"><label>Standard subscription</label>
+                                            <input type="radio" [checked]="model.subscriptionType == 1" disabled value="1"><label>Data-driven subscription</label>
                                         </div>
                                     </div>
                                     <div class="mb-3 input">
                                         <h5 class="p-0">Destination</h5>
                                         <div class="col p-0">
-                                            <input type="text" class="form-control" [value]="getDestinationText(model.destination)" readonly>
+                                            <input type="text" class="form-control" value="Email" readonly>
                                         </div>
                                     </div>
-                                    <div *ngIf="model.destination == 2" class="input">
+                                    <div class="input">
                                         <h5 class="p-0">Delivery options (Email)</h5>
                                         <div>
                                             <div class="col p-0 mb-2">
-                                                <label>To</label>
+                                                <label class="px-0">To</label>
                                                 <input type="email" readonly class="form-control" [value]="model.deliveryOption.emailDeliveryOption.to">
                                             </div>
                                         </div>
                                         <div>
                                             <div class="col p-0 mb-2">
-                                                <label>Cc</label>
+                                                <label class="px-0">Cc</label>
                                                 <input type="email" readonly class="form-control" [value]="model.deliveryOption.emailDeliveryOption.cc">
                                             </div>
                                         </div>
                                         <div>
                                             <div class="col p-0 mb-2">
-                                                <label>Bcc</label>
+                                                <label class="px-0">Bcc</label>
                                                 <input type="email" readonly class="form-control" [value]="model.deliveryOption.emailDeliveryOption.bcc">
                                             </div>
                                         </div>
                                         <div>
                                             <div class="col p-0 mb-2">
-                                                <label>Reply To</label>
+                                                <label class="px-0">Reply To</label>
                                                 <input type="email" readonly class="form-control" [value]="model.deliveryOption.emailDeliveryOption.replyTo">
                                             </div>
                                         </div>
                                         <div>
                                             <div class="col p-0 mb-2">
-                                                <label>Subject</label>
+                                                <label class="px-0">Subject</label>
                                                 <input type="email" readonly class="form-control" [value]="model.deliveryOption.emailDeliveryOption.subject">
                                             </div>
                                         </div>
@@ -500,26 +499,24 @@
                                             <div class="row">
                                                 <div class="col p-0">
                                                     <input type="checkbox" disabled value="1" [checked]="model.deliveryOption.emailDeliveryOption.includeReport"><label>Include Report</label>
-                                                    <br>
                                                     <input type="checkbox" disabled value="2" [checked]="model.deliveryOption.emailDeliveryOption.includeLink"><label>Include Link</label>
-                                                    <br>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="input row">
                                             <div class="col-12 p-0 mb-2">
-                                                <label>Render Format</label>
-                                                <input type="text" readonly class="form-control" [value]="renderFormatItems[model.deliveryOption.emailDeliveryOption.renderFormat-1].value">
+                                                <label class="px-0">Render Format</label>
+                                                <input type="text" readonly class="form-control" [value]="renderFormatItems[model.deliveryOption.emailDeliveryOption.renderFormat].value">
                                             </div>
                                             <div class="col-12 p-0">
-                                                <label>Priority</label>
-                                                <input type="text" readonly class="form-control" [value]="priorityItems[model.deliveryOption.emailDeliveryOption.priority-1].value">
+                                                <label class="px-0">Priority</label>
+                                                <input type="text" readonly class="form-control" [value]="priorityItems[model.deliveryOption.emailDeliveryOption.priority].value">
                                             </div>
                                         </div>
                                     </div>
                                     <div>
                                         <div class="col">
-                                            <label>Comment</label>
+                                            <label class="px-0">Comment</label>
                                             <textarea class="form-control" [value]="model.deliveryOption.emailDeliveryOption.comment"></textarea>
                                         </div>
                                     </div>
@@ -529,50 +526,45 @@
                                 <div class="col col-6 border rounded p-4">
                                     <div class="row">
                                         <h5 class="p-0">Schedule details</h5>
-                                        <div class="col p-0 mb-5">
-                                            <input type="radio" disabled value="1" [checked]="model.scheduleDetailType == 1"><label>Shared schedule</label>
-                                            <br>
-                                            <input type="radio" disabled [checked]="model.scheduleDetailType == 2" value="2"><label>Report-specific schedule</label>
+                                        <div class="col p-0 mb-5 d-flex align-items-center text-left">
+                                            <input type="radio" disabled value="0" [checked]="model.scheduleType == 0"><label>Shared schedule</label>
+                                            <input type="radio" disabled [checked]="model.scheduleType == 1" value="1" class="px-0"><label>Report-specific schedule</label>
                                         </div>
                                     </div>
-                                    <hr class="my-4">
-                                    <div *ngIf="model.scheduleDetailType == 2" class="row">
+                                    <hr class="my-2">
+                                    <div *ngIf="model.scheduleType == 1" class="row">
                                         <div class="col p-0 mb-5">
-                                            <div *ngFor="let opt of scheduleTypeItems; index as i" class="float-start">
+                                            <div *ngFor="let opt of scheduleTypeItems; index as i" class="float-start  d-flex align-items-center">
                                                 <input type="radio" disabled [value]="opt.key" [checked]="model.scheduleType == +opt.key">
                                                 <label class="me-4 ps-1">{{opt.value}}</label>
                                             </div>
                                         </div>
-                                        <div [ngSwitch]="model.scheduleType" class="mt-4 p-0">
+                                        <div [ngSwitch]="model.scheduleDetailType" class="mt-4 p-0">
                                             <div *ngSwitchCase="1" class="row">
                                                 <div class="col p-0">
                                                     <h5>Hourly schedule</h5>
                                                     <div class="row">
                                                         <div class="row px-0">
                                                             <div class="col-6 px-0">
-                                                                <label class="mb-3">Run the schedule every:</label>
-                                                                <br>
-                                                                <div class="row d-flex justify-content-start">
-                                                                    <div class="col col-3">
-                                                                        <input type="text" class="form-control" [value]="getNumberInDigits(model.schedule.hourlySchedule.hours, 2)">
+                                                                <label class="mb-3 p-0">Run the schedule every:</label>
+                                                                <div class="row d-flex align-items-center mb-4 px-0">
+                                                                    <div class="col col-4 px-0">
+                                                                        <input type="text" class="form-control`" disabled [value]="model.schedule.hourlySchedule.hours">
                                                                     </div>
                                                                     <div class="col col-1">
                                                                         :
                                                                     </div>
-                                                                    <div class="col col-3">
-                                                                        <input type="text" class="form-control" [value]="getNumberInDigits(model.schedule.hourlySchedule.minutes, 2)">
+                                                                    <div class="col col-4 px-0">
+                                                                        <input type="text" class="form-control" disabled [value]="model.schedule.hourlySchedule.minutes">
                                                                     </div>
                                                                 </div>
-                                                                <label>Choose a time</label>
-                                                                <br>
-                                                                <input type="text" class="form-control" [value]="getFormattedTime(model.schedule.hourlySchedule.startDateTime)">
                                                             </div>
                                                         </div>
                                                         <div class="row px-0">
                                                             <div class="col-6 px-0">
                                                                 <label class="mb-3">Start time</label>
                                                                 <br>
-                                                                <label>Choose a time</label>
+                                                                <label class="px-0">Choose a time</label>
                                                                 <br>
                                                                 <input type="text" class="form-control" [value]="getFormattedTime(model.schedule.hourlySchedule.startDateTime)">
                                                             </div>
@@ -700,18 +692,16 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <hr class="my-2">
+                                        <hr class="mt-4 mb-0">
                                         <div class="row px-0">
                                             <div class="col p-0">
                                                 <h5 class="mt-4 p-0">Start and end dates</h5>
                                                 <div class="col col-6">
-                                                    <label class="mb-3">Begin running this schedule on:</label>
-                                                    <br>
+                                                    <label class="mb-3 px-0">Begin running this schedule on:</label>
                                                     <input type="text" class="form-control" disabled [value]="getFormattedScheduleStartDate()">
                                                 </div>
                                                 <div class="col col-6">
                                                     <input type="checkbox" disabled [value]="1" [checked]="isScheduleEndDateSet()"><label>Stop this schedule on:</label>
-                                                    <br>
                                                     <input type="text" class="form-control" disabled [value]="getFormattedScheduleEndDate()">
                                                 </div>
                                             </div>
@@ -726,7 +716,7 @@
                             <div class="me-4 text-end">
                                 <button mat-button color="accent" class="btn" type="button" style="border-radius: 5px;" (click)="goBack()">Go Back</button>
                             </div>
-                        </div> -->
+                        </div>
 
                     </div>
                 </div>
