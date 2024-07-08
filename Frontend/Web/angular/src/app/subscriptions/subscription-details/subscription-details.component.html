@@ -528,18 +528,18 @@
                                         <h5 class="p-0">Schedule details</h5>
                                         <div class="col p-0 mb-5 d-flex align-items-center text-left">
                                             <input type="radio" disabled value="0" [checked]="model.scheduleType == 0"><label>Shared schedule</label>
-                                            <input type="radio" disabled [checked]="model.scheduleType == 1" value="1" class="px-0"><label>Report-specific schedule</label>
+                                            <input type="radio" disabled [checked]="true" value="1" class="px-0"><label>Report-specific schedule</label>
                                         </div>
                                     </div>
                                     <hr class="my-2">
-                                    <div *ngIf="model.scheduleType == 1" class="row">
+                                    <div class="row">
                                         <div class="col p-0 mb-5">
                                             <div *ngFor="let opt of scheduleTypeItems; index as i" class="float-start  d-flex align-items-center">
                                                 <input type="radio" disabled [value]="opt.key" [checked]="model.scheduleType == +opt.key">
                                                 <label class="me-4 ps-1">{{opt.value}}</label>
                                             </div>
                                         </div>
-                                        <div [ngSwitch]="model.scheduleDetailType" class="mt-4 p-0">
+                                        <div [ngSwitch]="model.scheduleType" class="mt-4 p-0">
                                             <div *ngSwitchCase="1" class="row">
                                                 <div class="col p-0">
                                                     <h5>Hourly schedule</h5>
@@ -566,7 +566,7 @@
                                                                 <br>
                                                                 <label class="px-0">Choose a time</label>
                                                                 <br>
-                                                                <input type="text" class="form-control" [value]="getFormattedTime(model.schedule.hourlySchedule.startDateTime)">
+                                                                <input type="text" class="form-control" disabled [value]="getFormattedTime(model.schedule.hourlySchedule.startDateTime)" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -577,29 +577,27 @@
                                                 <div class="row px-0">
                                                     <div class="col px-0">
                                                         <input type="radio" disabled checked value="1"><label>On the following days:</label>
-                                                        <br>
                                                         <section class="example-section d-flex" style="margin-left: 2rem; flex: 1;">
                                                             <div *ngFor="let opt of daysOfWeekItems; index as i;" class="float-start">
-                                                                <input type="checkbox" disabled [value]="opt.key" [checked]="isKeySelected(opt.value, model.schedule.dailySchedule.selectedDays)">
+                                                                <input type="checkbox" disabled [value]="opt.key" [checked]="isKeySelected(opt.key.toString(), model.schedule.dailySchedule.days)">
                                                                 <label class="ps-1 pe-3">{{opt.value}}</label>
-                                                                <br>
                                                             </div>
                                                         </section>
                                                         <input type="radio" disabled value="2"><label>Every weekday</label>
                                                         <br>
-                                                        <input type="radio" disabled value="3"><label>Repeat after this number of days:</label>
-                                                        <br>
-                                                        <input type="number" class="form-control mt-1" disabled [value]="getNumberInDigits(model.schedule.dailySchedule.repeatAfterDaysCount, 2)">
+                                                        <div class="col d-flex flex-direction-row">
+                                                            <input type="radio" disabled value="3"><label>Repeat after this number of days:</label>
+                                                            <input type="number" class="form-control mt-1" class="w-50" disabled [value]="getNumberInDigits(model.schedule.dailySchedule.repeatIn, 2)">
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="row px-0 mt-4">
                                                     <div class="row px-0">
                                                         <div class="col-6 px-0">
-                                                            <label class="mb-3">Start time</label>
+                                                            <label class="mb-0 px-0 w-100">Start time</label>
+                                                            <label class="px-0">Choose a time</label>
                                                             <br>
-                                                            <label>Choose a time</label>
-                                                            <br>
-                                                            <input type="text" [value]="getFormattedTime(model.schedule.dailySchedule.startDateTime)">
+                                                            <input type="text" class="form-control" disabled [value]="getFormattedTime(model.schedule.dailySchedule.startDateTime)" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -682,11 +680,10 @@
                                                 <div class="row px-0 mt-4">
                                                     <div class="row px-0">
                                                         <div class="col-6 px-0">
-                                                            <label class="mb-3">Start time</label>
+                                                            <label class="mb-0 px-0 w-100">Start time</label>
+                                                            <label class="px-0">Choose a time</label>
                                                             <br>
-                                                            <label>Choose a time</label>
-                                                            <br>
-                                                            <input type="text" [value]="getFormattedTime(model.schedule.oneTimeSchedule.startDateTime)">
+                                                            <input type="text" class="form-control" disabled [value]="getFormattedTime(model.schedule.oneTimeSchedule.startDateTime)" />
                                                         </div>
                                                     </div>
                                                 </div>

@@ -176,27 +176,27 @@ export class SubscriptionDetailsComponent implements OnInit {
         next: (response: any) => {
           this.model = response.data as SubscriptionDto;
           
-          let schedule = response.data.schedule;
-          let keyValue = '';
+          // let schedule = response.data.schedule;
+          // let keyValue = '';
 
-          for ( let key in schedule ) {
-            if(schedule[key]) {
-              keyValue = key;
-            }
-          }
+          // for ( let key in schedule ) {
+          //   if(schedule[key]) {
+          //     keyValue = key;
+          //   }
+          // }
 
-          switch (keyValue) {
-            case 'hourlySchedule': this.model.scheduleDetailType = 1;
-            break;
-            case 'dailySchedule': this.model.scheduleDetailType = 2;
-            break;
-            case 'weeklySchedule': this.model.scheduleDetailType = 3;
-            break;
-            case 'monthlySchedule': this.model.scheduleDetailType = 4;
-            break;
-            case 'oneTimeSchedule': this.model.scheduleDetailType = 5;
-            break;
-          }
+          // switch (keyValue) {
+          //   case 'hourlySchedule': this.model.scheduleDetailType = 1;
+          //   break;
+          //   case 'dailySchedule': this.model.scheduleDetailType = 2;
+          //   break;
+          //   case 'weeklySchedule': this.model.scheduleDetailType = 3;
+          //   break;
+          //   case 'monthlySchedule': this.model.scheduleDetailType = 4;
+          //   break;
+          //   case 'oneTimeSchedule': this.model.scheduleDetailType = 5;
+          //   break;
+          // }
           console.log(this.model, 'response');
         }
       });
@@ -570,7 +570,7 @@ export class SubscriptionDetailsComponent implements OnInit {
   }
 
   getNumberInDigits(value: number, length: number) {
-    return value.toString().padStart(length, '0');
+    return value ? value.toString().padStart(length, '0') : null;
   }
 
   isKeySelected(key: string, keyValueList: KeyValue<string, boolean>[]) {
