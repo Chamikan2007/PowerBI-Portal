@@ -606,13 +606,13 @@
                                                 <h5 class="px-0">Weekly schedule</h5>
                                                 <div class="row px-0">
                                                     <label class="mb-3 px-0">Repeat after this number of days:</label>
-                                                    <div class="col px-0 input">
-                                                        <input type="number" class="form-control" disabled [value]="getNumberInDigits(model.schedule.weeklySchedule.repeatAfterDaysCount, 2)">
+                                                    <div class="col-4 px-0 input">
+                                                        <input type="number" class="form-control" disabled [value]="getNumberInDigits(model.schedule.weeklySchedule.repeatIn, 2)">
                                                     </div>
                                                 </div>
-                                                <section class="example-section d-flex" style="margin-left: 2rem; flex: 1;">
+                                                <section class="example-section d-flex m-0" style="margin-left: 2rem; flex: 1;">
                                                     <div *ngFor="let opt of daysOfWeekItems;" class="float-start">
-                                                        <input type="checkbox" disabled [value]="opt.key" [checked]="isKeySelected(opt.value, model.schedule.weeklySchedule.selectedDays)">
+                                                        <input type="checkbox" disabled [value]="opt.key" [checked]="isKeySelected(opt.key.toString(), model.schedule.weeklySchedule.days)">
                                                         <label class="ps-1 pe-3">{{opt.value}}</label>
                                                         <br>
                                                     </div>
@@ -620,11 +620,10 @@
                                                 <div class="row px-0 mt-4">
                                                     <div class="row px-0">
                                                         <div class="col-6 px-0">
-                                                            <label class="mb-3">Start time</label>
+                                                            <label class="mb-0 px-0 w-100">Start time</label>
+                                                            <label class="px-0">Choose a time</label>
                                                             <br>
-                                                            <label>Choose a time</label>
-                                                            <br>
-                                                            <input type="text" [value]="getFormattedTime(model.schedule.weeklySchedule.startDateTime)">
+                                                            <input type="text" class="form-control" disabled [value]="getFormattedTime(model.schedule.weeklySchedule.startDateTime)" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -634,43 +633,43 @@
                                                 <div class="row px-0">
                                                     <label class="px-0">Months:</label>
                                                     <div class="p-0">
-                                                        <section class="example-section d-flex" style="margin-left: 2rem; flex: 1;">
+                                                        <section class="example-section d-flex flex-wrap" style="flex: 1;">
                                                             <div *ngFor="let opt of monthsOfYearItems;" class="float-start">
-                                                                <input type="checkbox" disabled [value]="opt.key" [checked]="isKeySelected(opt.value, model.schedule.monthlySchedule.selectedMonths)">
+                                                                <input type="checkbox" disabled [value]="opt.key" [checked]="isKeySelected(opt.key.toString(), model.schedule.monthlySchedule.months)">
                                                                 <label class="ps-1 pe-3">{{opt.value}}</label>
-                                                                <br>
                                                             </div>
                                                         </section>
                                                     </div>
                                                 </div>
                                                 <div class="row pt-3 px-0">
-                                                    <input type="radio" disabled value="1"><label>On week of month:</label>
-                                                    <br>
-                                                    <input type="text" class="form-control" [value]="weekOfMonthItems[model.schedule.monthlySchedule.onWeekOfMonth]">
+                                                    <div class="row col pl-4">
+                                                        <label class="p-0"><input type="radio" disabled value="1" />On week of month:</label>
+                                                        <input type="text" class="form-control" disabled [value]="model.schedule.monthlySchedule.weekOfMonth">
+                                                    </div>
                                                     <div class="mt-0">
                                                         <div class="row">
                                                             <label class="px-0">On days of week:</label>
                                                         </div>
-                                                        <section class="example-section d-flex" style="margin-left: 2rem; flex: 1;">
+                                                        <section class="example-section d-flex flex-wrap m-0" style="margin-left: 2rem; flex: 1;">
                                                             <div *ngFor="let opt of daysOfWeekItems;" class="float-start">
-                                                                <input type="checkbox" disabled [value]="opt.key" [checked]="isKeySelected(opt.value, model.schedule.monthlySchedule.onDaysOfWeek)">
+                                                                <input type="checkbox" disabled [value]="opt.key" [checked]="isKeySelected(opt.key.toString(), model.schedule.monthlySchedule.days)">
                                                                 <label class="ps-1 pe-3">{{opt.value}}</label>
                                                                 <br>
                                                             </div>
                                                         </section>
                                                     </div>
-                                                    <input type="radio" disabled value="2"><label>On calendar day(s):</label>
-                                                    <br>
-                                                    <input type="text" class="form-control" disabled [value]="model.schedule.monthlySchedule.onCalendarDays">
+                                                    <div class="row col pl-4">
+                                                        <label class="p-0"><input type="radio" disabled value="2">On calendar day(s):</label>
+                                                        <input type="text" class="form-control" disabled [value]="model.schedule.monthlySchedule.calenderDays">
+                                                    </div>
                                                 </div>
                                                 <div class="row px-0 mt-4">
                                                     <div class="row px-0">
                                                         <div class="col-6 px-0">
-                                                            <label class="mb-3">Start time</label>
+                                                            <label class="mb-0 px-0 w-100">Start time</label>
+                                                            <label class="px-0">Choose a time</label>
                                                             <br>
-                                                            <label>Choose a time</label>
-                                                            <br>
-                                                            <input type="text" [value]="getFormattedTime(model.schedule.monthlySchedule.startDateTime)">
+                                                            <input type="text" class="form-control" disabled [value]="getFormattedTime(model.schedule.monthlySchedule.startDateTime)" />
                                                         </div>
                                                     </div>
                                                 </div>
