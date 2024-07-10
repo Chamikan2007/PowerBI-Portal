@@ -335,7 +335,7 @@ export class SubscriptionDetailsComponent implements OnInit {
         this.model.schedule.dailySchedule.days = [];
       } else if ( event.value == 2 ) {
         this.model.schedule.dailySchedule.days = [];
-        this.model.schedule.dailySchedule.everyWeekDay = true;
+        this.model.schedule.dailySchedule.everyWeekDay = false;
       }
     }
   }

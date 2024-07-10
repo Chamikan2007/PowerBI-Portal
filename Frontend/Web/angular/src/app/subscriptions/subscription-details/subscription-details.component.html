@@ -576,17 +576,17 @@
                                                 <h5 class="px-0">Daily schedule</h5>
                                                 <div class="row px-0">
                                                     <div class="col px-0">
-                                                        <input type="radio" disabled checked value="1"><label>On the following days:</label>
+                                                        <input type="radio" disabled value="1" [checked]="!model.schedule.dailySchedule.everyWeekDay && model.schedule.dailySchedule.days.length > 0"><label>On the following days:</label>
                                                         <section class="example-section d-flex" style="margin-left: 2rem; flex: 1;">
                                                             <div *ngFor="let opt of daysOfWeekItems; index as i;" class="float-start">
                                                                 <input type="checkbox" disabled [value]="opt.key" [checked]="isKeySelected(opt.key.toString(), model.schedule.dailySchedule.days)">
                                                                 <label class="ps-1 pe-3">{{opt.value}}</label>
                                                             </div>
                                                         </section>
-                                                        <input type="radio" disabled value="2"><label>Every weekday</label>
+                                                        <input type="radio" disabled value="2" [checked]="model.schedule.dailySchedule.everyWeekDay"><label>Every weekday</label>
                                                         <br>
                                                         <div class="col d-flex flex-direction-row">
-                                                            <input type="radio" disabled value="3"><label>Repeat after this number of days:</label>
+                                                            <input type="radio" disabled value="3" [checked]="model.schedule.dailySchedule.repeatIn"><label>Repeat after this number of days:</label>
                                                             <input type="number" class="form-control mt-1" class="w-50" disabled [value]="getNumberInDigits(model.schedule.dailySchedule.repeatIn, 2)">
                                                         </div>
                                                     </div>
@@ -643,7 +643,7 @@
                                                 </div>
                                                 <div class="row pt-3 px-0">
                                                     <div class="row col pl-4">
-                                                        <label class="p-0"><input type="radio" disabled value="1" />On week of month:</label>
+                                                        <label class="p-0"><input type="radio" disabled value="1" [checked]="model.schedule.monthlySchedule.days.length > 0"/>On week of month:</label>
                                                         <input type="text" class="form-control" disabled [value]="model.schedule.monthlySchedule.weekOfMonth">
                                                     </div>
                                                     <div class="mt-0">
@@ -659,7 +659,7 @@
                                                         </section>
                                                     </div>
                                                     <div class="row col pl-4">
-                                                        <label class="p-0"><input type="radio" disabled value="2">On calendar day(s):</label>
+                                                        <label class="p-0"><input type="radio" disabled value="2" [checked]="model.schedule.monthlySchedule.days.length == 0">On calendar day(s):</label>
                                                         <input type="text" class="form-control" disabled [value]="model.schedule.monthlySchedule.calenderDays">
                                                     </div>
                                                 </div>
