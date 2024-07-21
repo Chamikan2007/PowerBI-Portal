@@ -44,6 +44,9 @@
                                             <button type="button" class="btn icon-button-transparent" title="Reject Subscription" (click)="rejectClicked(subscription)">
                                                 <i class="fas fa-times fs-5 tbl-fav-delete"></i>
                                             </button>
+                                            <button type="button" class="btn icon-button-transparent" title="View Subscription" (click)="viewClicked(subscription)">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
                                         </div>
                                     </div>
                                     <div [id]="'detail_'+subscription.subscriptionId" class="row detail-row hidden">

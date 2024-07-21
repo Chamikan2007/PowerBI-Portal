@@ -14,8 +14,8 @@
                     <div class="body">
 
                         <form *ngIf="isReadOnly == false" class="validate-form" [formGroup]="subscriptionForm" (ngSubmit)="onSubmit()">
-                            <div class="row mb-5">
-                                <div class="col col-5 border rounded p-4">
+                            <div class="row mb-5 justify-content-between">
+                                <div class="col col-5 border width-50-col rounded p-4">
                                     <div class="mb-3 input">
                                         <div class="row">
                                             <div class="col p-0">
@@ -188,9 +188,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col col-auto"></div>
 
-                                <div class="col col-6 border rounded p-4">
+                                <div class="col col-6 border width-50-col rounded p-4">
                                     <div class="row">
                                         <h5 class="p-0">Schedule details</h5>
                                         <div class="col p-0 mb-5">
@@ -428,8 +427,8 @@
                         </form>
 
                         <div *ngIf="isReadOnly == true" class="readonly">
-                            <div class="row mb-5">
-                                <div class="col col-5 border rounded p-4">
+                            <div class="row mb-5 justify-content-between">
+                                <div class="col col-6 border width-50-col rounded p-4">
                                     <div class="mb-3 input">
                                         <div class="row">
                                             <div class="col p-0">
@@ -521,9 +520,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col col-auto"></div>
 
-                                <div class="col col-6 border rounded p-4">
+                                <div class="col col-6 border width-50-col rounded p-4">
                                     <div class="row">
                                         <h5 class="p-0">Schedule details</h5>
                                         <div class="col p-0 mb-5 d-flex align-items-center text-left">
@@ -705,12 +703,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <hr>
                             @if (error) {
+                            <hr>
                             <div class="alert alert-danger mt-3 mb-0">{{error}}</div>
                             }
-                            <div class="me-4 text-end">
-                                <button mat-button color="accent" class="btn" type="button" style="border-radius: 5px;" (click)="goBack()">Go Back</button>
+                            <div class="text-end">
+                                <div *ngIf="isApproval" class="col col-12 p-0 pt-4 pb-4 text-end">
+                                    <button mat-flat-button color="accent" [class.auth-spinner]="loading" [disabled]="loading" class="btn ms-2" type="button"  (click)="approveClicked(subscriptionId)" style="border-radius: 5px;">Approved</button>
+                                </div>
                             </div>
                         </div>
 

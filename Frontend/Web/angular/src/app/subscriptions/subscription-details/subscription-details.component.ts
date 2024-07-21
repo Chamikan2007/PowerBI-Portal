@@ -58,6 +58,7 @@ export class SubscriptionDetailsComponent implements OnInit {
   reportsList: ReportDto[] = [];
   reportPicker = new FormControl('', [Validators.required]);
   filteredReports: Observable<ReportDto[]> | undefined;
+  isApproval: boolean = false;
 
   destinationItems = SubscriptionDetailsMeta.destinationItems;
   renderFormatItems = SubscriptionDetailsMeta.renderFormatItems;
@@ -133,6 +134,8 @@ export class SubscriptionDetailsComponent implements OnInit {
       startWith(''),
       map((value: any) => this._filter(value || '')),
     );
+
+    this.isApproval = this.router.url.includes('approvals');
   }
 
   autocompleteStringValidator(validOptions: Array<ReportDto>): ValidatorFn {
@@ -151,6 +154,19 @@ export class SubscriptionDetailsComponent implements OnInit {
 
   get f() {
     return this.subscriptionForm.controls;
+  }
+
+  approveClicked(event: any) {
+    if (confirm('Are you sure you want to Approve this subscription?')) {
+      this.subscriptionService.sendSubscriptionAction(event, 'Approved', '').subscribe({
+        next: (response: ResponseDto) => {
+          if (response.isSuccess) {
+            // this.loadData();
+            this.router.navigate(['/', 'approvals']);
+          }
+        }
+      });
+    }
   }
 
   loadData() {

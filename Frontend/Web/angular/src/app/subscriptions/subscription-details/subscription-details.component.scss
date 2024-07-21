@@ -50,3 +50,7 @@ input {
         }
     }
 }
+
+.width-50-col {
+    width: calc(50% - 15px);
+}

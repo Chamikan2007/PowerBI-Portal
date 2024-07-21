@@ -100,6 +100,11 @@ export class ApprovalsListComponent {
     this.openRejectCommentDialog(event.subscriptionId, '100ms', '100ms');
   }
 
+  viewClicked(event: any) {
+    console.log('this.activatedRoute.parent', this.activatedRoute.parent);
+    this.router.navigate([event.subscriptionId], { relativeTo: this.activatedRoute.parent });
+  }
+
   showHideApprovals(event: any, subscriptionId: any) {
     let caller = event.currentTarget.children[0];
     let div = document.getElementById(`detail_${subscriptionId}`);
